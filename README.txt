@@ -4,7 +4,7 @@ Project Name :
 
 Project Description:
 
-•	Es soll eine Web–Anwendung entwickelt werden, die es dem Nutzer ermöglicht seinen Wissensstand in verschieden
+•	Es soll eine Web–Anwendung entwickelt werden, die es dem Nutzer ermöglicht, seinen Wissensstand in verschieden
     Themenfeldern zu testen.
 •	Nachdem der Nutzer aus einer Auswahl von Themenfeldern ein oder mehrere Bereiche festgelegt hat, erstellt die
     Software die gewünschte Anzahl an Fragen aus diesen Bereichen. Dies geschieht zufällig, wobei auch die Möglichkeit
