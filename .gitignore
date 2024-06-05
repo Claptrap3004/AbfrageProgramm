@@ -61,3 +61,5 @@ fabric.properties
 .idea/codestream.xml
 
 .idea/**/azureSettings.xml
+/.idea/.gitignore
+/.ddev/config.yaml
