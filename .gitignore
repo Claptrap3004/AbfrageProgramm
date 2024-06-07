@@ -1,4 +1,3 @@
-/Projektplan/
 
 composer.phar
 /vendor/
@@ -63,3 +62,7 @@ fabric.properties
 .idea/**/azureSettings.xml
 /.idea/.gitignore
 /.ddev/config.yaml
+/.idea/AbfrageProgramm.iml
+/.idea/modules.xml
+/.idea/php.xml
+/.idea/vcs.xml
