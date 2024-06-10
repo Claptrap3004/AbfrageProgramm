@@ -12,7 +12,7 @@ INSERT INTO category (text) VALUES ('PC - Grundlagen'),
 
 INSERT INTO question (category_id, user_id, text) VALUES (1,1,'Welches Bauteil eines Computers führt Berechnungen durch ?'),
                                                          (2,1,'Nennen Sie zwei Transport - Protokolle'),
-                                                         (3,1, 'Welcher SQL - Befehl wird zur Erstelleung neuer Einträge verwendet');
+                                                         (3,1, 'Welcher SQL - Befehl wird zur Erstelleung neuer Einträge verwendet ?');
 
 
 INSERT INTO answer (text) VALUES ('CPU'),
