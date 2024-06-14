@@ -1,0 +1,1 @@
+{"version":1,"defects":{"IdTextTest::testGetId":8,"quiz\\IdTextTest::testGetId":8,"quiz\\KindOfIdTextTest::testGetTableName":8},"times":{"IdTextTest::testGetId":0.015,"quiz\\IdTextTest::testGetId":0.01,"quiz\\KindOfIdTextTest::testGetTableName":0.006,"quiz\\KindOfIdTextTest::testGetName":0,"quiz\\StatsTest::testGetTimesAsked":0.007}}
