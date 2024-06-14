@@ -7,18 +7,18 @@ namespace quiz;
 class IdText
 {
     private int $id;
-    private string $identifier;
+    private string $text;
     private KindOfIdText $kindOf;
 
     /**
      * @param int $id
-     * @param string $identifier
+     * @param string $text
      * @param KindOfIdText $kindOf
      */
-    public function __construct(int $id, string $identifier, KindOfIdText $kindOf)
+    public function __construct(int $id, string $text, KindOfIdText $kindOf)
     {
         $this->id = $id;
-        $this->identifier = $identifier;
+        $this->text = $text;
         $this->kindOf = $kindOf;
     }
 
@@ -29,14 +29,14 @@ class IdText
     }
 
 
-    public function getIdentifier(): string
+    public function getText(): string
     {
-        return $this->identifier;
+        return $this->text;
     }
 
-    public function setIdentifier(string $identifier): void
+    public function setText(string $text): void
     {
-        $this->identifier = $identifier;
+        $this->text = $text;
     }
 
     public function getKindOf(): KindOfIdText

@@ -64,8 +64,9 @@ class IdTextDBHandler implements CanHandleDB
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':id', $args['id']);
             $stmt->bindParam(':text', $args['text']);
-            $stmt->execute();
+            return $stmt->execute();
         }
+        return false;
     }
 
     public function deleteAtId(int $id): bool
@@ -73,7 +74,7 @@ class IdTextDBHandler implements CanHandleDB
         $sql = "DELETE FROM $this->tableName WHERE id = :id;";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(':id', $id);
-        $stmt->execute();
+        return $stmt->execute();
     }
 
     private function validateArgsUpdate(array $args): bool

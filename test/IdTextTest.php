@@ -10,7 +10,7 @@ class IdTextTest extends \PHPUnit\Framework\TestCase
     public function testGetId()
     {
         $arrange = new namespace\IdText(1,'ICMP', KindOfIdText::ANSWER);
-        $act = $arrange->getIdentifier();
+        $act = $arrange->getText();
         $this->assertEquals('ICMP', $act);
     }
 }
