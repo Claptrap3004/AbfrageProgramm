@@ -1,4 +1,5 @@
 <?php
+namespace quiz;
 
 enum KindOfIdText : string
 {
