@@ -25,4 +25,15 @@ enum KindOfIdText : string
     {
         return $this->value;
     }
+
+    public function getDBHandler(CanConnectDB $connectDB): CanHandleDB
+    {
+        $handler = new IdTextDBHandler($this, $connectDB);
+        switch ($this->getName()){
+            case 'CATEGORY':
+            case 'ANSWER' : return new IdTextDBHandler($this, $connectDB);
+
+        }
+        return $handler;
+    }
 }
