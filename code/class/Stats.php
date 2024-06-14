@@ -1,4 +1,6 @@
 <?php
+// providing statistic for one single question
+
 namespace quiz;
 
 class Stats

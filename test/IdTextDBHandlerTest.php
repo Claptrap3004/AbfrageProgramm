@@ -26,4 +26,11 @@ class IdTextDBHandlerTest extends TestCase
         $this->assertEquals(7, $act);
 
     }
+
+    public function testDelete()
+    {
+        $arrange = new IdTextDBHandler(KindOfIdText::CATEGORY,$this->db);
+        $act = $arrange->deleteAtId(7);
+
+    }
 }

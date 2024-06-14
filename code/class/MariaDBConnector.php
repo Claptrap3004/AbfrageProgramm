@@ -1,5 +1,5 @@
 <?php
-
+// Implementation for MariaDB access
 namespace quiz;
 include_once 'CanConnectDB.php';
 

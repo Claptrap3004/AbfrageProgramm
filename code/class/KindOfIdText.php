@@ -1,4 +1,7 @@
 <?php
+// Dealing as a kind of Controller for all classes that need to provide CRUD functionality
+// Holding information of table name and providing correct handler for CRUD in db
+
 namespace quiz;
 
 enum KindOfIdText : string
@@ -18,6 +21,8 @@ enum KindOfIdText : string
         return $this->name;
     }
 
+
+    // value of enum is holding table name
     /**
      * @return string
      */
@@ -26,14 +31,14 @@ enum KindOfIdText : string
         return $this->value;
     }
 
+    // handler provider
+
     public function getDBHandler(CanConnectDB $connectDB): CanHandleDB
     {
         $handler = new IdTextDBHandler($this, $connectDB);
-        switch ($this->getName()){
-            case 'CATEGORY':
-            case 'ANSWER' : return new IdTextDBHandler($this, $connectDB);
-
-        }
-        return $handler;
+        return match ($this->getName()) {
+            'CATEGORY', 'ANSWER' => new IdTextDBHandler($this, $connectDB),
+            default => $handler,
+        };
     }
 }
