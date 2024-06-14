@@ -1,13 +1,14 @@
 <?php
 
 namespace quiz;
+include_once 'CanConnectDB.php';
 
 use Exception;
 use PDO;
 
 class MariaDBConnector implements CanConnectDB
 {
-    private string $servername = 'localhost';
+    private string $servername = '127.0.0.1:7147';
     private string $username = 'root';
     private string $password = 'root';
     private string $dbname = 'abfrageprogramm';
