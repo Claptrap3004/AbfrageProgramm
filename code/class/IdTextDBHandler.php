@@ -79,10 +79,10 @@ class IdTextDBHandler implements CanHandleDB
 
     private function validateArgsUpdate(array $args): bool
     {
-        return true;
+        return array_key_exists('text', $args) && array_key_exists('id', $args);
     }
     private function validateArgsCreate(array $args): bool
     {
-        return true;
+        return array_key_exists('text', $args);
     }
 }
