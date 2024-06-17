@@ -46,6 +46,15 @@ class Stats
         $this->timesRight = $timesRight;
     }
 
+    public function incrementTimesAsked():void
+    {
+        $this->timesAsked++;
+    }
+    public function incrementTimesRight():void
+    {
+        $this->timesRight++;
+    }
+
 
 
 }

@@ -5,9 +5,9 @@ namespace quiz;
 
 abstract class Question extends IdText
 {
-    private IdText $category;
-    private array $rightAnswers;
-    private array $wrongAnswers;
+    protected IdText $category;
+    protected array $rightAnswers;
+    protected array $wrongAnswers;
 
 
     /**
@@ -17,7 +17,7 @@ abstract class Question extends IdText
      * @param IdText[] $rightAnswers
      * @param IdText[] $wrongAnswers
      */
-    public function __construct(int $id, string $text,IdText $category, array $rightAnswers, array $wrongAnswers)
+    protected function __construct(int $id, string $text,IdText $category, array $rightAnswers, array $wrongAnswers)
     {
         parent::__construct($id, $text, KindOfIdText::QUESTION);
         $this->category = $category;

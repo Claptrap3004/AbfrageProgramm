@@ -22,11 +22,18 @@ class QuizQuestion extends Question
         $this->givenAnswers = [];
     }
 
-    public function validate()
+    public function validate(): bool
     {
-        // track stats
         // provide result
-
+        // track stats
+        usort($this->givenAnswers, fn($a, $b) => strcmp($a->id, $b->id));
+        usort($this->rightAnswers, fn($a, $b) => strcmp($a->id, $b->id));
+        $this->stats->incrementTimesAsked();
+        if ($this->givenAnswers == $this->rightAnswers){
+            $this->stats->incrementTimesRight();
+            return true;
+        }
+        return false;
     }
 
     public function getStats(): Stats
