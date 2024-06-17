@@ -46,7 +46,7 @@ class IdText
 
     public function equals(IdText $idText): bool
     {
-        return ($idText->id == $this->id);
+        return ($this->id === $idText->id & $this->text === $idText->text);
     }
 
 }
