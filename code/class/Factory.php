@@ -35,7 +35,12 @@ class Factory
         return $answers;
     }
 
+    public function createQuizQuestionById(int $id): QuizQuestion
+    {
+        $this->dbHandler = KindOfIdText::QUESTION->getDBHandler($this->connector);
+        $questionAttributes = $this->dbHandler->findById($id);
 
+    }
 
 
 

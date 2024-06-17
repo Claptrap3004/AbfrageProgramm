@@ -12,8 +12,8 @@ use PDO;
 
 class IdTextDBHandler implements CanHandleDB
 {
-    private string $tableName;
-    private PDO $connection;
+    protected string $tableName;
+    protected PDO $connection;
 
     /**
      * @param KindOfIdText $kindOfIdText
@@ -77,12 +77,12 @@ class IdTextDBHandler implements CanHandleDB
         return $stmt->execute();
     }
 
-    private function validateArgsUpdate(array $args): bool
-    {
-        return array_key_exists('text', $args) && array_key_exists('id', $args);
-    }
-    private function validateArgsCreate(array $args): bool
+    protected function validateArgsCreate(array $args): bool
     {
         return array_key_exists('text', $args);
+    }
+    protected function validateArgsUpdate(array $args): bool
+    {
+        return $this->validateArgsCreate($args) && array_key_exists('id', $args);
     }
 }
