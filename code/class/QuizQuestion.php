@@ -8,6 +8,11 @@ class QuizQuestion extends Question
     private array $givenAnswers;
 
     /**
+     * @param int $id
+     * @param string $text
+     * @param IdText $category
+     * @param IdText[] $rightAnswers
+     * @param IdText[] $wrongAnswers
      * @param Stats $stats
      */
     public function __construct(int $id, string $text,IdText $category, array $rightAnswers, array $wrongAnswers,Stats $stats)
@@ -22,6 +27,40 @@ class QuizQuestion extends Question
         // track stats
         // provide result
 
+    }
+
+    public function getStats(): Stats
+    {
+        return $this->stats;
+    }
+
+    public function getGivenAnswers(): array
+    {
+        return $this->givenAnswers;
+    }
+
+    public function addGivenAnswer(IdText $answer): void
+    {
+        if (!$this->existsInGivenAnswers($answer))
+            $this->givenAnswers[] = $answer;
+    }
+
+    public function removeGivenAnswer(IdText $answer): void
+    {
+        foreach ($this->givenAnswers as $index => $givenAnswer){
+            if ($givenAnswer->equals($answer)) {
+                unset($index, $this->givenAnswers);
+                $this->givenAnswers = array_values($this->givenAnswers);
+                break;
+            }
+        }
+    }
+
+    private function existsInGivenAnswers(IdText $answer): bool
+    {
+        foreach ($this->givenAnswers as $givenAnswer)
+            if ($givenAnswer.$this->equals($answer)) return true;
+        return false;
     }
 
 }

@@ -44,5 +44,9 @@ class IdText
         return $this->kindOf;
     }
 
+    public function equals(IdText $idText): bool
+    {
+        return ($idText->id == $this->id);
+    }
 
 }
