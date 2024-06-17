@@ -6,7 +6,7 @@ INSERT INTO user (username, email, password) VALUES ('admin', 'admin@mail.org','
 INSERT INTO category (text) VALUES ('PC - Grundlagen'),
                                    ('Netzwerk'),
                                    ('Datenbank'),
-                                   ('Programmmierung'),
+                                   ('Programmierung'),
                                    ('Projektmanagement'),
                                    ('Betriebssysteme');
 
