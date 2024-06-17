@@ -1,6 +1,7 @@
 <?php
 
 namespace quiz;
+include_once 'Question.php';
 
 class QuizQuestion extends Question
 {
@@ -26,8 +27,8 @@ class QuizQuestion extends Question
     {
         // provide result
         // track stats
-        usort($this->givenAnswers, fn($a, $b) => strcmp($a->id, $b->id));
-        usort($this->rightAnswers, fn($a, $b) => strcmp($a->id, $b->id));
+        usort($this->givenAnswers, fn($a, $b) => strcmp($a->getId(), $b->getId()));
+        usort($this->rightAnswers, fn($a, $b) => strcmp($a->getId(), $b->getId()));
         $this->stats->incrementTimesAsked();
         if ($this->givenAnswers == $this->rightAnswers){
             $this->stats->incrementTimesRight();
@@ -54,9 +55,10 @@ class QuizQuestion extends Question
 
     public function removeGivenAnswer(IdText $answer): void
     {
+        if ($this->givenAnswers == []) return;
         foreach ($this->givenAnswers as $index => $givenAnswer){
             if ($givenAnswer->equals($answer)) {
-                unset($index, $this->givenAnswers);
+                unset($this->givenAnswers[$index]);
                 $this->givenAnswers = array_values($this->givenAnswers);
                 break;
             }
@@ -66,8 +68,13 @@ class QuizQuestion extends Question
     private function existsInGivenAnswers(IdText $answer): bool
     {
         foreach ($this->givenAnswers as $givenAnswer)
-            if ($givenAnswer.$this->equals($answer)) return true;
+            if ($givenAnswer->equals($answer)) return true;
         return false;
+    }
+
+    public function setGivenAnswers(array $givenAnswers): void
+    {
+        $this->givenAnswers = $givenAnswers;
     }
 
 }
