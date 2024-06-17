@@ -1,27 +1,28 @@
 <?php
+// deals as parent class for EditQuestion and QuizQuestion class
 
 namespace quiz;
 
-class Question extends IdText
+abstract class Question extends IdText
 {
     private IdText $category;
     private array $rightAnswers;
     private array $wrongAnswers;
-    private Stats $stats;
+
 
     /**
+     * @param int $id
+     * @param string $text
      * @param IdText $category
-     * @param array $rightAnswers
-     * @param array $wrongAnswers
-     * @param Stats $stats
+     * @param IdText[] $rightAnswers
+     * @param IdText[] $wrongAnswers
      */
-    public function __construct(int $id, string $text,IdText $category, array $rightAnswers, array $wrongAnswers, Stats $stats)
+    public function __construct(int $id, string $text,IdText $category, array $rightAnswers, array $wrongAnswers)
     {
         parent::__construct($id, $text, KindOfIdText::QUESTION);
         $this->category = $category;
         $this->rightAnswers = $rightAnswers;
         $this->wrongAnswers = $wrongAnswers;
-        $this->stats = $stats;
     }
 
     public function getCategory(): IdText
@@ -37,11 +38,6 @@ class Question extends IdText
     public function getWrongAnswers(): array
     {
         return $this->wrongAnswers;
-    }
-
-    public function getStats(): Stats
-    {
-        return $this->stats;
     }
 
 
