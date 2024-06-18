@@ -1,5 +1,5 @@
 <?php
-
+// needs to be optimzed, maybe mor stub and mock
 namespace quiz;
 include '../code/class/CanHandleDB.php';
 include '../code/class/MariaDBConnector.php';
