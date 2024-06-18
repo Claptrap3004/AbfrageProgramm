@@ -32,7 +32,7 @@ INSERT INTO stats (user_id,question_id, times_asked, times_right) VALUES (2,1,0,
                                                                  (2,2,0,0),
                                                                  (2,3,0,0);
 
-INSERT INTO answerToQuestion (question_id, answer_id, isRight) VALUES (1,1,1),
+INSERT INTO answerToQuestion (question_id, answer_id, is_right) VALUES (1,1,1),
                                                                       (1,2,0),
                                                                       (1,3,0),
                                                                       (1,4,0),

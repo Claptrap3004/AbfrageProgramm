@@ -18,7 +18,7 @@ class RelationDBHandler extends IdTextDBHandler
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':question_id', $args['question_id']);
             $stmt->bindParam(':answer_id', $args['answer_id']);
-            $stmt->bindParam(':isRight', $args['isRight']);
+            $stmt->bindParam(':is_right', $args['is_right']);
             $stmt->execute();
             return $this->connection->lastInsertId();
         }
@@ -44,7 +44,7 @@ class RelationDBHandler extends IdTextDBHandler
             $stmt->bindParam(':id', $args['id']);
             $stmt->bindParam(':question_id', $args['question_id']);
             $stmt->bindParam(':answer_id', $args['answer_id']);
-            $stmt->bindParam(':isRight', $args['isRight']);
+            $stmt->bindParam(':is_right', $args['is_right']);
             return $stmt->execute();
         }
         return false;
@@ -53,7 +53,7 @@ class RelationDBHandler extends IdTextDBHandler
     {
         return array_key_exists('question_id', $args) &&
             array_key_exists('answer_id', $args) &&
-            array_key_exists('isRight', $args);
+            array_key_exists('is_right', $args);
     }
 
 }

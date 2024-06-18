@@ -43,7 +43,7 @@ CREATE TABLE answerToQuestion (
                                   id INT PRIMARY KEY AUTO_INCREMENT,
                                   question_id INT,
                                   answer_id INT,
-                                  isRight BOOL,
+                                  is_right BOOL,
                                   FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE ,
                                   FOREIGN KEY (answer_id) REFERENCES answer(id) ON DELETE CASCADE
 );
