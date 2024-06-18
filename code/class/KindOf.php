@@ -41,6 +41,7 @@ enum KindOf : string
             'CATEGORY', 'ANSWER' => new IdTextDBHandler($this, $connectDB),
             'QUESTION' => new QuestionDBHandler($this,$connectDB),
             'RELATION' => new RelationDBHandler($this,$connectDB),
+            'STATS' => new StatsDBHandler($this,$connectDB,2),
             default => $handler,
         };
     }
