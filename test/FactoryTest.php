@@ -10,6 +10,7 @@ include_once '../code/class/CanConnectDB.php';
 include_once '../code/class/QuizQuestion.php';
 include_once '../code/class/QuestionDBHandler.php';
 include_once '../code/class/RelationDBHandler.php';
+include_once '../code/class/StatsDBHandler.php';
 include_once '../code/class/Question.php';
 include_once '../code/class/Stats.php';
 include_once '../code/class/Factory.php';
@@ -102,5 +103,13 @@ class FactoryTest extends TestCase
         $arrange = new Factory();
         $act = $arrange->createQuizQuestionById(1);
         $this->assertEquals($this->testQuestion, $act);
+    }
+
+    public function testCreateStatsByQuestionId()
+    {
+        $assert = new Stats(1,2,1);
+        $arrange = new Factory();
+        $act = $arrange->crateStatsByQuestionId(1);
+        $this->assertEquals($assert,$act);
     }
 }

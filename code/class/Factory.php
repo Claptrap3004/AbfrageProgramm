@@ -32,7 +32,8 @@ class Factory
         $this->dbHandler = $kindOf->getDBHandler($this->connector);
         $answerInfos = $this->dbHandler->findAll();
         foreach ($answerInfos as $answerInfo)
-            $answers[] = new IdText($answerInfo['id'], $answerInfo['text'], $kindOf);
+            $answers[] = new IdText($answerInfo['id'],
+                                    $answerInfo['text'], $kindOf);
         return $answers;
     }
 
@@ -40,20 +41,38 @@ class Factory
     {
         $this->dbHandler = KindOf::QUESTION->getDBHandler($this->connector);
         $questionAttributes = $this->dbHandler->findById($id);
-        $category = $this->findIdTextObjectById($questionAttributes['category_id'], KindOf::CATEGORY);
+        $category = $this->findIdTextObjectById($questionAttributes['category_id'],
+                                        KindOf::CATEGORY);
 
         $this->dbHandler = KindOf::RELATION->getDBHandler($this->connector);
         $relations = $this->dbHandler->findById($id);
         $rightAnswers = [];
         $wrongAnswers = [];
         foreach ($relations as $relation){
-            $answer = $this->findIdTextObjectById($relation['answer_id'],KindOf::ANSWER);
+            $answer = $this->findIdTextObjectById($relation['answer_id'],
+                                        KindOf::ANSWER);
             if ($relation['isRight']) $rightAnswers[] = $answer;
             else $wrongAnswers[] = $answer;
         }
         // fake stats for now
         $stats = new Stats(1,0,0);
-        return new QuizQuestion($id,$questionAttributes['text'],$category,$rightAnswers,$wrongAnswers,$stats);
+        return new QuizQuestion($id,
+                                $questionAttributes['text'],
+                                $category,
+                                $rightAnswers,
+                                $wrongAnswers,
+                                $stats);
+    }
+
+    public function crateStatsByQuestionId(int $questionId): Stats
+    {
+        $this->dbHandler = KindOf::STATS->getDBHandler($this->connector);
+        $statsAttributes = $this->dbHandler->findById($questionId);
+        return new Stats($statsAttributes['id'],
+                        $statsAttributes['user_id'],
+                        $statsAttributes['question_id'],
+                        $statsAttributes['times_asked'],
+                        $statsAttributes['times_right']);
     }
 
 
