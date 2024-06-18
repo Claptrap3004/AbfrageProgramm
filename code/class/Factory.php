@@ -17,13 +17,21 @@ class Factory
     {
         $this->dbHandler = $kindOf->getDBHandler($this->connector);
         $id = $this->dbHandler->create(['text' => $text]);
-        return $id > 0 ? new IdText($id,$text,$kindOf): null;
+        return $id > 0 ? new IdText($id,
+                                    $text,
+                                    $kindOf,
+                                    $this->connector)
+                        : null;
     }
     public function findIdTextObjectById(int $id, KindOf $kindOf): ?IdText
     {
         $this->dbHandler = $kindOf->getDBHandler($this->connector);
         $infos = $this->dbHandler->findById($id);
-        return $id > 0 ? new IdText($id,$infos['text'],$kindOf): null;
+        return $id > 0 ? new IdText($id,
+                                    $infos['text'],
+                                    $kindOf,
+                                    $this->connector)
+                        : null;
     }
 
     public function findAllIdTextObject(KindOf $kindOf): array
@@ -33,7 +41,9 @@ class Factory
         $answerInfos = $this->dbHandler->findAll();
         foreach ($answerInfos as $answerInfo)
             $answers[] = new IdText($answerInfo['id'],
-                                    $answerInfo['text'], $kindOf);
+                                    $answerInfo['text'],
+                                    $kindOf,
+                                    $this->connector);
         return $answers;
     }
 
@@ -55,9 +65,10 @@ class Factory
             else $wrongAnswers[] = $answer;
         }
         // fake stats for now
-        $stats = new Stats(1,0,0);
+        $stats = new Stats(1,0,0, $this->connector);
         return new QuizQuestion($id,
                                 $questionAttributes['text'],
+                                $this->connector,
                                 $category,
                                 $rightAnswers,
                                 $wrongAnswers,
@@ -71,6 +82,7 @@ class Factory
         return new Stats($statsAttributes['id'],
                         $statsAttributes['user_id'],
                         $statsAttributes['question_id'],
+                        $this->connector,
                         $statsAttributes['times_asked'],
                         $statsAttributes['times_right']);
     }

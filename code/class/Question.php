@@ -13,13 +13,14 @@ abstract class Question extends IdText
     /**
      * @param int $id
      * @param string $text
+     * @param CanConnectDB $connector
      * @param IdText $category
      * @param IdText[] $rightAnswers
      * @param IdText[] $wrongAnswers
      */
-    protected function __construct(int $id, string $text,IdText $category, array $rightAnswers, array $wrongAnswers)
+    protected function __construct(int $id, string $text,CanConnectDB $connector,IdText $category, array $rightAnswers, array $wrongAnswers)
     {
-        parent::__construct($id, $text, KindOf::QUESTION);
+        parent::__construct($id, $text, KindOf::QUESTION, $connector);
         $this->category = $category;
         $this->rightAnswers = $rightAnswers;
         $this->wrongAnswers = $wrongAnswers;

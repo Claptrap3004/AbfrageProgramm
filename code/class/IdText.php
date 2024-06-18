@@ -9,17 +9,20 @@ class IdText
     private int $id;
     private string $text;
     private KindOf $kindOf;
+    private CanConnectDB $connector;
 
     /**
      * @param int $id
      * @param string $text
      * @param KindOf $kindOf
+     * @param CanConnectDB $connector
      */
-    public function __construct(int $id, string $text, KindOf $kindOf)
+    public function __construct(int $id, string $text, KindOf $kindOf, CanConnectDB $connector)
     {
         $this->id = $id;
         $this->text = $text;
         $this->kindOf = $kindOf;
+        $this->connector = $connector;
     }
 
 
@@ -37,6 +40,7 @@ class IdText
     public function setText(string $text): void
     {
         $this->text = $text;
+        $this->update();
     }
 
     public function getKindOf(): KindOf
@@ -47,6 +51,11 @@ class IdText
     public function equals(IdText $idText): bool
     {
         return ($this->id === $idText->id & $this->text === $idText->text);
+    }
+    private function update(): void
+    {
+        $handler = $this->kindOf->getDBHandler($this->connector);
+        $handler->update(['id' => $this->id, 'text' => $this->text]);
     }
 
 }

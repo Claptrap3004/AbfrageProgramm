@@ -10,21 +10,24 @@ class Stats
     private int $userId;
     private int $timesAsked;
     private int $timesRight;
+    private CanConnectDB $connector;
 
     /**
      * @param int $id
      * @param int $userId
      * @param int $questionId
+     * @param CanConnectDB $connector
      * @param int $timesAsked
      * @param int $timesRight
      */
-    public function __construct(int $id,int $userId, int $questionId, int $timesAsked = 0, int $timesRight = 0)
+    public function __construct(int $id,int $userId, int $questionId,CanConnectDB $connector,int $timesAsked = 0, int $timesRight = 0)
     {
         $this->id = $id;
         $this->userId = $userId;
         $this->questionId = $questionId;
         $this->timesAsked = $timesAsked;
         $this->timesRight = $timesRight;
+        $this->connector = $connector;
     }
 
     public function getId(): int
@@ -65,6 +68,11 @@ class Stats
     {
         $this->timesAsked = 0;
         $this->timesRight = 0;
+    }
+    private function update():void
+    {
+        $handler = KindOf::STATS->getDBHandler($this->connector);
+        $handler->update(['id' => $this->id, 'times_asked'=> $this->timesAsked, 'times_right'=>$this->timesRight]);
     }
 
 
