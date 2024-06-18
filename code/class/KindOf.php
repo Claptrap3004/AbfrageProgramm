@@ -40,6 +40,7 @@ enum KindOf : string
         return match ($this->getName()) {
             'CATEGORY', 'ANSWER' => new IdTextDBHandler($this, $connectDB),
             'QUESTION' => new QuestionDBHandler($this,$connectDB),
+            'RELATION' => new RelationDBHandler($this,$connectDB),
             default => $handler,
         };
     }

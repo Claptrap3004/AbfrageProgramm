@@ -40,10 +40,23 @@ class Factory
     {
         $this->dbHandler = KindOf::QUESTION->getDBHandler($this->connector);
         $questionAttributes = $this->dbHandler->findById($id);
-        $this->dbHandler = KindOf::RELATION->getDBHandler($this->connector);
+        $category = $this->findIdTextObjectById($questionAttributes['category_id'], KindOf::CATEGORY);
 
-        return null;
+        $this->dbHandler = KindOf::RELATION->getDBHandler($this->connector);
+        $relations = $this->dbHandler->findById($id);
+        $rightAnswers = [];
+        $wrongAnswers = [];
+        foreach ($relations as $relation){
+            $answer = $this->findIdTextObjectById($relation['answer_id'],KindOf::ANSWER);
+            if ($relation['isRight']) $rightAnswers[] = $answer;
+            else $wrongAnswers[] = $answer;
+        }
+        // fake stats for now
+        $stats = new Stats(1,0,0);
+        return new QuizQuestion($id,$questionAttributes['text'],$category,$rightAnswers,$wrongAnswers,$stats);
     }
+
+
 
 
 

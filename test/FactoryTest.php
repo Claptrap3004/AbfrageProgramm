@@ -8,6 +8,8 @@ include '../code/class/KindOf.php';
 include_once '../code/class/IdText.php';
 include_once '../code/class/CanConnectDB.php';
 include_once '../code/class/QuizQuestion.php';
+include_once '../code/class/QuestionDBHandler.php';
+include_once '../code/class/RelationDBHandler.php';
 include_once '../code/class/Question.php';
 include_once '../code/class/Stats.php';
 include_once '../code/class/Factory.php';
@@ -77,5 +79,28 @@ class FactoryTest extends TestCase
         $arrange = new Factory();
         $act = $arrange->findIdTextObjectById(2, KindOf::CATEGORY);
         $this->assertEquals($this->category, $act);
+    }
+
+    public function testCreateQuizQuestionById()
+    {
+        $this->id = 1;
+        $this->text = 'Welches Bauteil eines Computers führt Berechnungen durch ?';
+        $this->answer1 = new IdText(1,'CPU',KindOf::ANSWER);
+        $this->answer2 = new IdText(2,'Northbridge',KindOf::ANSWER);
+        $this->answer3 = new IdText(3,'RAM',KindOf::ANSWER);
+        $this->answer4 = new IdText(4,'USB - Port',KindOf::ANSWER);
+        $this->testRightAnswers = [];
+        $this->testWrongAnswers = [];
+        $this->testRightAnswers[] = $this->answer1;
+        $this->testWrongAnswers[] = $this->answer2;
+        $this->testWrongAnswers[] = $this->answer3;
+        $this->testWrongAnswers[] = $this->answer4;
+
+        $this->category = new IdText(1,'PC - Grundlagen', KindOf::CATEGORY);
+        $this->testQuestion = new QuizQuestion($this->id,$this->text,$this->category, $this->testRightAnswers,$this->testWrongAnswers, $this->stats);
+
+        $arrange = new Factory();
+        $act = $arrange->createQuizQuestionById(1);
+        $this->assertEquals($this->testQuestion, $act);
     }
 }
