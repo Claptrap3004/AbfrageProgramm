@@ -1,5 +1,6 @@
 <?php
-
+// responsible for creating objects of classes IdText, QuizQuestion, EditQuestion, Stats and so on
+// DBHandler id provided through KindOf enum
 namespace quiz;
 
 class Factory
@@ -12,32 +13,32 @@ class Factory
         $this->connector = new MariaDBConnector();
     }
 
-    public function createIdTextObject(string $text, KindOfIdText $kindOfIdText): ?IdText
+    public function createIdTextObject(string $text, KindOf $kindOf): ?IdText
     {
-        $this->dbHandler = $kindOfIdText->getDBHandler($this->connector);
+        $this->dbHandler = $kindOf->getDBHandler($this->connector);
         $id = $this->dbHandler->create(['text' => $text]);
-        return $id > 0 ? new IdText($id,$text,$kindOfIdText): null;
+        return $id > 0 ? new IdText($id,$text,$kindOf): null;
     }
-    public function findIdTextObjectById(int $id, KindOfIdText $kindOfIdText): ?IdText
+    public function findIdTextObjectById(int $id, KindOf $kindOf): ?IdText
     {
-        $this->dbHandler = $kindOfIdText->getDBHandler($this->connector);
+        $this->dbHandler = $kindOf->getDBHandler($this->connector);
         $infos = $this->dbHandler->findById($id);
-        return $id > 0 ? new IdText($id,$infos['text'],$kindOfIdText): null;
+        return $id > 0 ? new IdText($id,$infos['text'],$kindOf): null;
     }
 
-    public function findAllIdTextObject(KindOfIdText $kindOfIdText): array
+    public function findAllIdTextObject(KindOf $kindOf): array
     {
         $answers = [];
-        $this->dbHandler = $kindOfIdText->getDBHandler($this->connector);
+        $this->dbHandler = $kindOf->getDBHandler($this->connector);
         $answerInfos = $this->dbHandler->findAll();
         foreach ($answerInfos as $answerInfo)
-            $answers[] = new IdText($answerInfo['id'], $answerInfo['text'], $kindOfIdText);
+            $answers[] = new IdText($answerInfo['id'], $answerInfo['text'], $kindOf);
         return $answers;
     }
 
     public function createQuizQuestionById(int $id): ?QuizQuestion
     {
-        $this->dbHandler = KindOfIdText::QUESTION->getDBHandler($this->connector);
+        $this->dbHandler = KindOf::QUESTION->getDBHandler($this->connector);
         $questionAttributes = $this->dbHandler->findById($id);
         return null;
     }

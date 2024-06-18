@@ -4,7 +4,7 @@
 
 namespace quiz;
 
-enum KindOfIdText : string
+enum KindOf : string
 {
     case CATEGORY = 'category';
     case ANSWER = 'answer';

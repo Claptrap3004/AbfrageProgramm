@@ -19,7 +19,7 @@ abstract class Question extends IdText
      */
     protected function __construct(int $id, string $text,IdText $category, array $rightAnswers, array $wrongAnswers)
     {
-        parent::__construct($id, $text, KindOfIdText::QUESTION);
+        parent::__construct($id, $text, KindOf::QUESTION);
         $this->category = $category;
         $this->rightAnswers = $rightAnswers;
         $this->wrongAnswers = $wrongAnswers;

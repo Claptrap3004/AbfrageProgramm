@@ -16,13 +16,13 @@ class IdTextDBHandler implements CanHandleDB
     protected PDO $connection;
 
     /**
-     * @param KindOfIdText $kindOfIdText
+     * @param KindOf $kindOf
      * @param CanConnectDB $connectDB
      */
-    public function __construct(KindOfIdText $kindOfIdText, CanConnectDB $connectDB)
+    public function __construct(KindOf $kindOf, CanConnectDB $connectDB)
     {
 
-        $this->tableName = $kindOfIdText->getTableName();
+        $this->tableName = $kindOf->getTableName();
         $this->connection = $connectDB->getConnection();
 
     }

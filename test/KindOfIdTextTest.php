@@ -1,7 +1,7 @@
 <?php
 
 namespace quiz;
-include '../code/class/KindOfIdText.php';
+include '../code/class/KindOf.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -9,14 +9,14 @@ class KindOfIdTextTest extends TestCase
 {
     public function testGetTableName()
     {
-        $arrange = KindOfIdText::ANSWER;
+        $arrange = KindOf::ANSWER;
         $result = $arrange->getTableName();
         $this->assertEquals('answer',$result);
     }
 
     public function testGetName()
     {
-        $arrange = KindOfIdText::ANSWER;
+        $arrange = KindOf::ANSWER;
         $result = $arrange->getName();
         $this->assertEquals('ANSWER',$result);
     }

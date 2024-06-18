@@ -5,9 +5,9 @@ namespace quiz;
 class QuestionDBHandler extends IdTextDBHandler
 {
 
-    public function __construct(KindOfIdText $kindOfIdText, CanConnectDB $connectDB)
+    public function __construct(KindOf $kindOf, CanConnectDB $connectDB)
     {
-        parent::__construct($kindOfIdText, $connectDB);
+        parent::__construct($kindOf, $connectDB);
     }
 
     public function create(array $args): int

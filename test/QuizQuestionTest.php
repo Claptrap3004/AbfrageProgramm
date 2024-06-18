@@ -5,7 +5,7 @@ namespace quiz;
 include '../code/class/CanHandleDB.php';
 include '../code/class/MariaDBConnector.php';
 include '../code/class/IdTextDBHandler.php';
-include '../code/class/KindOfIdText.php';
+include '../code/class/KindOf.php';
 include_once '../code/class/IdText.php';
 include_once '../code/class/CanConnectDB.php';
 include_once '../code/class/QuizQuestion.php';
@@ -33,17 +33,17 @@ class QuizQuestionTest extends TestCase
     {
         $this->id = 1;
         $this->text = 'blabla';
-        $this->answer1 = new IdText(1,'Bla',KindOfIdText::ANSWER);
-        $this->answer2 = new IdText(2,'BlaBla',KindOfIdText::ANSWER);
-        $this->answer3 = new IdText(3,'BlaBlaBla',KindOfIdText::ANSWER);
-        $this->answer4 = new IdText(4,'BlaBlub',KindOfIdText::ANSWER);
+        $this->answer1 = new IdText(1,'Bla',KindOf::ANSWER);
+        $this->answer2 = new IdText(2,'BlaBla',KindOf::ANSWER);
+        $this->answer3 = new IdText(3,'BlaBlaBla',KindOf::ANSWER);
+        $this->answer4 = new IdText(4,'BlaBlub',KindOf::ANSWER);
         $this->testRightAnswers[] = $this->answer1;
         $this->testRightAnswers[] = $this->answer2;
         $this->testWrongAnswers[] = $this->answer3;
         $this->testWrongAnswers[] = $this->answer4;
         $this->testGivenAnswers[] = $this->answer1;
         $this->testGivenAnswers[] = $this->answer2;
-        $this->category = new IdText(1,'test', KindOfIdText::CATEGORY);
+        $this->category = new IdText(1,'test', KindOf::CATEGORY);
         $this->stats = new Stats(1,0,0);
         $this->testQuestion = new QuizQuestion($this->id,$this->text,$this->category, $this->testRightAnswers,$this->testWrongAnswers, $this->stats);
 

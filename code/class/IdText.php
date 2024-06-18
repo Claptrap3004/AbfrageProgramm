@@ -8,14 +8,14 @@ class IdText
 {
     private int $id;
     private string $text;
-    private KindOfIdText $kindOf;
+    private KindOf $kindOf;
 
     /**
      * @param int $id
      * @param string $text
-     * @param KindOfIdText $kindOf
+     * @param KindOf $kindOf
      */
-    public function __construct(int $id, string $text, KindOfIdText $kindOf)
+    public function __construct(int $id, string $text, KindOf $kindOf)
     {
         $this->id = $id;
         $this->text = $text;
@@ -39,7 +39,7 @@ class IdText
         $this->text = $text;
     }
 
-    public function getKindOf(): KindOfIdText
+    public function getKindOf(): KindOf
     {
         return $this->kindOf;
     }

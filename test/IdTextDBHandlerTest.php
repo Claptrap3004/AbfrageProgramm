@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 include '../code/class/CanHandleDB.php';
 include '../code/class/MariaDBConnector.php';
 include '../code/class/IdTextDBHandler.php';
-include '../code/class/KindOfIdText.php';
+include '../code/class/KindOf.php';
 include_once '../code/class/CanConnectDB.php';
 
 class IdTextDBHandlerTest extends TestCase
@@ -21,7 +21,7 @@ class IdTextDBHandlerTest extends TestCase
 
     public function testCreate()
     {
-        $arrange = new IdTextDBHandler(KindOfIdText::CATEGORY,$this->db);
+        $arrange = new IdTextDBHandler(KindOf::CATEGORY,$this->db);
         $act = $arrange->create(['text' => 'newCat']);
         $this->assertEquals(7, $act);
 
@@ -29,7 +29,7 @@ class IdTextDBHandlerTest extends TestCase
 
     public function testDelete()
     {
-        $arrange = new IdTextDBHandler(KindOfIdText::ANSWER,$this->db);
+        $arrange = new IdTextDBHandler(KindOf::ANSWER,$this->db);
         $act = $arrange->deleteAtId(13);
         $this->assertTrue($act);
     }
