@@ -13,6 +13,8 @@ class Stats
 
     /**
      * @param int $id
+     * @param int $userId
+     * @param int $questionId
      * @param int $timesAsked
      * @param int $timesRight
      */

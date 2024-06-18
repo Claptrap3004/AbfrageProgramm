@@ -44,7 +44,7 @@ class QuizQuestionTest extends TestCase
         $this->testGivenAnswers[] = $this->answer1;
         $this->testGivenAnswers[] = $this->answer2;
         $this->category = new IdText(1,'test', KindOf::CATEGORY);
-        $this->stats = new Stats(1,0,0);
+        $this->stats = new Stats(1,2,1);
         $this->testQuestion = new QuizQuestion($this->id,$this->text,$this->category, $this->testRightAnswers,$this->testWrongAnswers, $this->stats);
 
     }
