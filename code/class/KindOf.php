@@ -12,6 +12,7 @@ enum KindOf : string
     case QUESTION = 'question';
     case STATS = 'stats';
     case USER = 'user';
+    case RELATION = 'answerToQuestion';
 
     /**
      * @return string
@@ -38,6 +39,7 @@ enum KindOf : string
         $handler = new IdTextDBHandler($this, $connectDB);
         return match ($this->getName()) {
             'CATEGORY', 'ANSWER' => new IdTextDBHandler($this, $connectDB),
+            'QUESTION' => new QuestionDBHandler($this,$connectDB),
             default => $handler,
         };
     }

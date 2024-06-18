@@ -40,6 +40,8 @@ class Factory
     {
         $this->dbHandler = KindOf::QUESTION->getDBHandler($this->connector);
         $questionAttributes = $this->dbHandler->findById($id);
+        $this->dbHandler = KindOf::RELATION->getDBHandler($this->connector);
+
         return null;
     }
 
