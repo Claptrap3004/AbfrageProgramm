@@ -13,22 +13,27 @@ class MariaDBConnector implements CanConnectDB
     private string $username = 'root';
     private string $password = 'root';
     private string $dbname = 'abfrageprogramm';
-    private \PDO $connection;
+    private static ?\PDO $connection = null;
+
+
+    public function __construct()
+    {
+
+    }
 
     /**
      * @throws Exception
      */
-    public function __construct()
-    {
-        try {
-            $this->connection =  new PDO("mysql:host=$this->servername;dbname=$this->dbname", $this->username, $this->password);
-        } catch (Exception $e) {
-            throw new Exception('FEHLER : ' . $e->getMessage() . '<br> Datei : ' . $e->getFile() . '<br> Zeile : ' . $e->getLine() . '<br> Trace : ' . $e->getTraceAsString());
-        }
-    }
-
     public function getConnection(): \PDO
     {
-        return $this->connection;
+        if (!self::$connection){
+            try {
+                self::$connection = new PDO("mysql:host=$this->servername;dbname=$this->dbname", $this->username, $this->password);
+            } catch (Exception $e) {
+                throw new Exception('FEHLER : ' . $e->getMessage() . '<br> Datei : ' . $e->getFile() . '<br> Zeile : ' . $e->getLine() . '<br> Trace : ' . $e->getTraceAsString());
+            }
+
+        }
+        return self::$connection;
     }
 }
