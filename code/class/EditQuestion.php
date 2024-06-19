@@ -9,8 +9,11 @@ class EditQuestion extends Question
     private CanHandleDB $relator;
 
     // maps AnswerId($key) to RelationAttributesArray($value)
-    // to crete a new relation an associative array whit values for question_is, answer_id and is_right needs to be
-    // passed,  for update also answerToQuestion_id needs to be passed
+    // to crete a new relation an associative array whit values for question_id, answer_id and is_right needs to be
+    // passed,  for update also answerToQuestion_id needs to be passed. To check if new relation needs to be created or
+    // existing relation needs to be modified the id is set to null in relationMapper value when new key needs to be
+    // created. When saving the edited question every entry in relationMapper is checked. If there is an id this entry
+    // is updated in database, else new entry in database is going to be created.
     private array $relationMapper = [];
     private array $allAnswers;
 
@@ -29,6 +32,9 @@ class EditQuestion extends Question
         $this->allAnswers = array_merge($this->rightAnswers,$this->wrongAnswers);
         $this->setRelationMapper();
     }
+
+    // gets all relation found for that question in database and creates an entry in relationMapper for each answerId
+    // being found where the answerId is taken as key in mapper array
     private function setRelationMapper():void{
         $relations = $this->relator->findById($this->getId());
         foreach ($relations as $relation){
@@ -37,16 +43,19 @@ class EditQuestion extends Question
         }
     }
 
+    // checks if relation to that answer already exists in mapper. If exists only the value for key 'is_right' is
+    // changed, else new entry in mapper is created. In that case the 'id' value is set to null that the update
+    // function can distinguish between new creates and updates in database
     public function setAnswerRelation(IdText $answer, bool $isRight): void
     {
         $answerId = $answer->getId();
         if (array_key_exists($answerId,$this->relationMapper))
-            ($this->relationMapper[$answerId]['is_right'] = $isRight);
+            ($this->relationMapper[$answerId]['is_right'] = $isRight ? 1 : 0);
         else $this->relationMapper["$answerId"] = [
             'id' => null,
             'question_id' => $this->getId(),
             'answer_id' => $answerId,
-            'is_right' => $isRight];
+            'is_right' => $isRight ? 1 : 0];
     }
 
 
@@ -60,6 +69,9 @@ class EditQuestion extends Question
     {
 
     }
+
+    // removes answer from allAnswers list as well as removing relation in db. With that approach risk of invalid
+    // relations in db is minimized
     public function removeAnswer(IdText $answer): void
     {
         $answerId = $answer->getId();
@@ -73,6 +85,7 @@ class EditQuestion extends Question
     }
 
     /**
+     * checks if minimum of 4 choices / answers to questions is fulfilled, if not exception is thrown
      * @throws Exception
      */
     public function saveQuestion():void
@@ -81,6 +94,8 @@ class EditQuestion extends Question
         else throw new Exception("Speichern der Frage nicht möglich, da weniger als 4 Antwortmöglichkeiten hinterlegt wurden");
     }
 
+    // after check by saveQuestion the question text and category id are being updated in db, relations are either being
+    // uodated or created
     protected function update(): void
     {
         $handler = $this->kindOf->getDBHandler($this->connector);
