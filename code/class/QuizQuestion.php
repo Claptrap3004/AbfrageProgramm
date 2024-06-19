@@ -11,6 +11,7 @@ class QuizQuestion extends Question
     /**
      * @param int $id
      * @param string $text
+     * @param CanConnectDB $connector
      * @param IdText $category
      * @param IdText[] $rightAnswers
      * @param IdText[] $wrongAnswers

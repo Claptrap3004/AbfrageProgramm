@@ -6,10 +6,10 @@ namespace quiz;
 
 class IdText
 {
-    private int $id;
-    private string $text;
-    private KindOf $kindOf;
-    private CanConnectDB $connector;
+    protected int $id;
+    protected string $text;
+    protected KindOf $kindOf;
+    protected CanConnectDB $connector;
 
     /**
      * @param int $id
@@ -52,7 +52,7 @@ class IdText
     {
         return ($this->id === $idText->id & $this->text === $idText->text);
     }
-    private function update(): void
+    protected function update(): void
     {
         $handler = $this->kindOf->getDBHandler($this->connector);
         $handler->update(['id' => $this->id, 'text' => $this->text]);

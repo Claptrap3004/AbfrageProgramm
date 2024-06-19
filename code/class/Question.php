@@ -18,7 +18,7 @@ abstract class Question extends IdText
      * @param IdText[] $rightAnswers
      * @param IdText[] $wrongAnswers
      */
-    protected function __construct(int $id, string $text,CanConnectDB $connector,IdText $category, array $rightAnswers, array $wrongAnswers)
+    protected function __construct(int $id, string $text, CanConnectDB $connector, IdText $category, array $rightAnswers, array $wrongAnswers)
     {
         parent::__construct($id, $text, KindOf::QUESTION, $connector);
         $this->category = $category;
@@ -40,6 +40,5 @@ abstract class Question extends IdText
     {
         return $this->wrongAnswers;
     }
-
 
 }

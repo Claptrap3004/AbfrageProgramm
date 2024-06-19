@@ -10,6 +10,9 @@ include_once '../code/class/CanConnectDB.php';
 
 class MariaDBConnectorTest extends TestCase
 {
+    /**
+     * @throws \Exception
+     */
     public function testGetConnection()
     {
         $arrange = new MariaDBConnector();
