@@ -1,6 +1,6 @@
 <?php
 // responsible for creating objects of classes IdText, QuizQuestion, EditQuestion, Stats and so on
-// DBHandler id provided through KindOf enum
+// DBHandler is provided through KindOf enum
 namespace quiz;
 
 class Factory
