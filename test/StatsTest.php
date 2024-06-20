@@ -4,9 +4,7 @@ namespace quiz;
 
 use PHPUnit\Framework\TestCase;
 
-include '../code/class/Stats.php';
-
-include '../code/class/MariaDBConnector.php';
+include 'classIncludes.php';
 
 class StatsTest extends TestCase
 {

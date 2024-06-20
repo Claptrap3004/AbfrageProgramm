@@ -2,6 +2,9 @@
 // Dealing as a kind of Controller for all classes that need to provide CRUD functionality
 // Holding information of table name and providing correct handler for CRUD in db
 
+// for dev the user_id is set to 2 hardcoded. After User class and functionality is implemented this must be changed to
+// something like $_Session['userId']
+
 namespace quiz;
 
 enum KindOf : string

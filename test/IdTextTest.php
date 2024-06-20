@@ -1,11 +1,12 @@
 <?php
 
 namespace quiz;
+use PHPUnit\Framework\TestCase;
+
 require __DIR__ . '/../vendor/autoload.php';
-include '../code/class/IdText.php';
+include 'classIncludes.php';
 
-
-class IdTextTest extends \PHPUnit\Framework\TestCase
+class IdTextTest extends TestCase
 {
     public function testGetId()
     {

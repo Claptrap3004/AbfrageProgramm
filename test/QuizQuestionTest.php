@@ -2,16 +2,7 @@
 
 namespace quiz;
 // require __DIR__ . '/../vendor/autoload.php';
-include '../code/class/CanHandleDB.php';
-include '../code/class/MariaDBConnector.php';
-include '../code/class/IdTextDBHandler.php';
-include '../code/class/KindOf.php';
-include_once '../code/class/IdText.php';
-include_once '../code/class/CanConnectDB.php';
-include_once '../code/class/QuizQuestion.php';
-include_once '../code/class/Question.php';
-include_once '../code/class/Stats.php';
-
+include 'classIncludes.php';
 use PHPUnit\Framework\TestCase;
 
 class QuizQuestionTest extends TestCase

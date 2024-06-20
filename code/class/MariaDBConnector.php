@@ -9,14 +9,14 @@ use PDO;
 
 class MariaDBConnector implements CanConnectDB
 {
-    private string $servername = '127.0.0.1:6862';
+    private string $servername = '127.0.0.1:63075';
     private string $username = 'root';
     private string $password = 'root';
     private string $dbname = 'abfrageprogramm';
     private static ?\PDO $connection = null;
 
 
-    public function __construct()
+    public function __construct(string $dbname = 'abfrageprogramm')
     {
 
     }

@@ -1,7 +1,7 @@
 <?php
 
 namespace quiz;
-include '../code/class/KindOf.php';
+include 'classIncludes.php';
 
 use PHPUnit\Framework\TestCase;
 

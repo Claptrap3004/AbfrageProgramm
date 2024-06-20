@@ -1,19 +1,7 @@
 <?php
 // needs to be optimzed, maybe mor stub and mock
 namespace quiz;
-include '../code/class/CanHandleDB.php';
-include '../code/class/MariaDBConnector.php';
-include '../code/class/IdTextDBHandler.php';
-include '../code/class/KindOf.php';
-include_once '../code/class/IdText.php';
-include_once '../code/class/CanConnectDB.php';
-include_once '../code/class/QuizQuestion.php';
-include_once '../code/class/QuestionDBHandler.php';
-include_once '../code/class/RelationDBHandler.php';
-include_once '../code/class/StatsDBHandler.php';
-include_once '../code/class/Question.php';
-include_once '../code/class/Stats.php';
-include_once '../code/class/Factory.php';
+include 'classIncludes.php';
 use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase

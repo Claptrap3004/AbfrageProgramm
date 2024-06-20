@@ -4,10 +4,7 @@ namespace quiz;
 
 use PHPUnit\Framework\TestCase;
 
-include '../code/class/CanHandleDB.php';
-include '../code/class/MariaDBConnector.php';
-include_once '../code/class/CanConnectDB.php';
-
+include 'classIncludes.php';
 class MariaDBConnectorTest extends TestCase
 {
     /**
