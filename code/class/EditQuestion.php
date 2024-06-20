@@ -1,7 +1,7 @@
 <?php
 
 namespace quiz;
-
+//include_once 'Question.php';
 use Exception;
 
 class EditQuestion extends Question

@@ -22,20 +22,21 @@ class FactoryTest extends TestCase
     private Stats $stats;
     public function setUp(): void
     {
-        $this->connector = new MariaDBConnector();
+        include_once 'rebuildTestDB.php';
+        $this->connector = new MariaDBConnector('test');
         $this->id = 1;
-        $this->text = 'blabla';
-        $this->answer1 = new IdText(1,'Bla',KindOf::ANSWER, $this->connector);
-        $this->answer2 = new IdText(2,'BlaBla',KindOf::ANSWER, $this->connector);
-        $this->answer3 = new IdText(3,'BlaBlaBla',KindOf::ANSWER, $this->connector);
-        $this->answer4 = new IdText(15,'BlaBlub',KindOf::ANSWER, $this->connector);
+        $this->text = 'Welches Bauteil eines Computers führt Berechnungen durch ?';
+        $this->answer1 = new IdText(1,'CPU',KindOf::ANSWER, $this->connector);
+        $this->answer2 = new IdText(2,'Northbridge',KindOf::ANSWER, $this->connector);
+        $this->answer3 = new IdText(3,'RAM',KindOf::ANSWER, $this->connector);
+        $this->answer4 = new IdText(15,'USB - Port',KindOf::ANSWER, $this->connector);
         $this->testRightAnswers[] = $this->answer1;
-        $this->testRightAnswers[] = $this->answer2;
+        $this->testWrongAnswers[] = $this->answer2;
         $this->testWrongAnswers[] = $this->answer3;
         $this->testWrongAnswers[] = $this->answer4;
         $this->testGivenAnswers[] = $this->answer1;
-        $this->testGivenAnswers[] = $this->answer2;
-        $this->category = new IdText(9,'test', KindOf::CATEGORY, $this->connector, $this->connector);
+
+        $this->category = new IdText(1,'PC - Grundlagen', KindOf::CATEGORY, $this->connector, $this->connector);
         $this->stats = new Stats(1,2,1, $this->connector);
         $this->testQuestion = new QuizQuestion($this->id,$this->text, $this->connector,$this->category, $this->testRightAnswers,$this->testWrongAnswers, $this->stats);
 
@@ -59,9 +60,10 @@ class FactoryTest extends TestCase
 
     public function testCreateIdTextObject()
     {
+        $assert = new IdText(7,'text', KindOf::CATEGORY, $this->connector);
         $arrange = new Factory();
-        $act = $arrange->createIdTextObject('test',KindOf::CATEGORY);
-        $this->assertEquals($this->category, $act);
+        $act = $arrange->createIdTextObject('text',KindOf::CATEGORY);
+        $this->assertEquals($assert, $act);
     }
 
     public function testFindIdTetObjectById()

@@ -3,6 +3,7 @@
 
 namespace quiz;
 
+
 abstract class Question extends IdText
 {
     protected IdText $category;
