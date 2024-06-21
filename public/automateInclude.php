@@ -1,5 +1,8 @@
 <?php
-spl_autoload_register(function ($class): void{
-    include '../code/class/' . $class . '.php';
+spl_autoload_register(function ($class){
+    $part = explode('\\', $class);
+    $class = $part[1];
+    require $_SERVER['DOCUMENT_ROOT'] . 'code/class/' . $class . '.php';
 });
+
 

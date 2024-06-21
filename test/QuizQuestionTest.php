@@ -1,9 +1,12 @@
 <?php
-
-namespace quiz;
-// require __DIR__ . '/../vendor/autoload.php';
-include 'classIncludes.php';
+require 'public/automateInclude.php';
 use PHPUnit\Framework\TestCase;
+use quiz\CanConnectDB;
+use quiz\IdText;
+use quiz\KindOf;
+use quiz\MariaDBConnector;
+use quiz\QuizQuestion;
+use quiz\Stats;
 
 class QuizQuestionTest extends TestCase
 {

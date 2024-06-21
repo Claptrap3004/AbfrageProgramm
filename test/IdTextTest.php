@@ -1,16 +1,15 @@
 <?php
-
-namespace quiz;
+require 'public/automateInclude.php';
 use PHPUnit\Framework\TestCase;
-
-require __DIR__ . '/../vendor/autoload.php';
-include 'classIncludes.php';
+use quiz\IdText;
+use quiz\KindOf;
+use quiz\MariaDBConnector;
 
 class IdTextTest extends TestCase
 {
     public function testGetId()
     {
-        $arrange = new namespace\IdText(1,'ICMP', KindOf::ANSWER, new MariaDBConnector());
+        $arrange = new IdText(1,'ICMP', KindOf::ANSWER, new MariaDBConnector());
         $act = $arrange->getText();
         $this->assertEquals('ICMP', $act);
     }

@@ -1,10 +1,9 @@
 <?php
-
-namespace quiz;
-
+require 'public/automateInclude.php';
 use PHPUnit\Framework\TestCase;
+use quiz\MariaDBConnector;
+use quiz\Stats;
 
-include 'classIncludes.php';
 
 class StatsTest extends TestCase
 {

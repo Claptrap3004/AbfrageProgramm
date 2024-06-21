@@ -2,23 +2,22 @@
 // Implementation for MariaDB access
 // if not working in test environment maybe the port needs to be changed. See ddev describe
 namespace quiz;
-include_once 'CanConnectDB.php';
 
 use Exception;
 use PDO;
 
 class MariaDBConnector implements CanConnectDB
 {
-    private string $servername = '127.0.0.1:63075';
+    private string $servername = 'db:3306';
     private string $username = 'root';
     private string $password = 'root';
-    private string $dbname = 'abfrageprogramm';
+    private string $dbname;
     private static ?\PDO $connection = null;
 
 
     public function __construct(string $dbname = 'abfrageprogramm')
     {
-
+        $this->dbname = $dbname;
     }
 
     /**

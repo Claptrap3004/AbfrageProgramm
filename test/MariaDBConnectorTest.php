@@ -1,10 +1,8 @@
 <?php
-
-namespace quiz;
-
+require 'public/automateInclude.php';
 use PHPUnit\Framework\TestCase;
+use quiz\MariaDBConnector;
 
-include 'classIncludes.php';
 class MariaDBConnectorTest extends TestCase
 {
     /**

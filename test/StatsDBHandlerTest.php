@@ -1,9 +1,10 @@
 <?php
-
-namespace quiz;
-include 'classIncludes.php';
-use PDO;
+require 'public/automateInclude.php';
 use PHPUnit\Framework\TestCase;
+use quiz\CanConnectDB;
+use quiz\KindOf;
+use quiz\MariaDBConnector;
+use quiz\StatsDBHandler;
 
 class StatsDBHandlerTest extends TestCase
 {

@@ -8,9 +8,9 @@ class Factory
     private CanConnectDB $connector;
     private CanHandleDB $dbHandler;
 
-    public function __construct()
+    public function __construct(CanConnectDB $connector = null)
     {
-        $this->connector = new MariaDBConnector();
+        $this->connector = $connector == null ? new MariaDBConnector(): $connector;
     }
 
     public function createIdTextObject(string $text, KindOf $kindOf): ?IdText
@@ -61,11 +61,11 @@ class Factory
         foreach ($relations as $relation){
             $answer = $this->findIdTextObjectById($relation['answer_id'],
                                         KindOf::ANSWER);
-            if ($relation['isRight']) $rightAnswers[] = $answer;
+            if ($relation['is_right']) $rightAnswers[] = $answer;
             else $wrongAnswers[] = $answer;
         }
-        // fake stats for now
-        $stats = new Stats(1,0,0, $this->connector);
+
+        $stats = $this->createStatsByQuestionId($id);
         return new QuizQuestion($id,
                                 $questionAttributes['text'],
                                 $this->connector,
@@ -75,7 +75,7 @@ class Factory
                                 $stats);
     }
 
-    public function crateStatsByQuestionId(int $questionId): Stats
+    public function createStatsByQuestionId(int $questionId): Stats
     {
         $this->dbHandler = KindOf::STATS->getDBHandler($this->connector);
         $statsAttributes = $this->dbHandler->findById($questionId);

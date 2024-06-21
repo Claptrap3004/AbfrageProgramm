@@ -1,7 +1,6 @@
 <?php
 
 namespace quiz;
-//include_once 'Question.php';
 
 
 class QuizQuestion extends Question

@@ -1,12 +1,13 @@
 <?php
 
+
+include 'public/automateInclude.php';
 use quiz\MariaDBConnector;
-include_once '../code/class/CanConnectDB.php';
-include_once '../code/class/MariaDBConnector.php';
+
 /**
  * @throws Exception
  */
-function executeSQLScript(string $filename)
+function executeSQLScript(string $filename): void
 {
     $connector = new MariaDBConnector('test');
     $conn = $connector->getConnection();
@@ -30,7 +31,7 @@ function executeSQLScript(string $filename)
 }
 
 try {
-    executeSQLScript('testDBCreate.sql');
-    executeSQLScript('testDBPop.sql');
+    executeSQLScript('test/testDBCreate.sql');
+    executeSQLScript('test/testDBPop.sql');
 } catch (Exception $e) {
 }

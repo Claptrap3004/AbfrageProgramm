@@ -1,9 +1,7 @@
 <?php
-
-namespace quiz;
-include 'classIncludes.php';
-
+require 'public/automateInclude.php';
 use PHPUnit\Framework\TestCase;
+use quiz\KindOf;
 
 class KindOfIdTextTest extends TestCase
 {

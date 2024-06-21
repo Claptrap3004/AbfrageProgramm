@@ -1,8 +1,16 @@
 <?php
 // needs to be optimzed, maybe mor stub and mock
-namespace quiz;
-include 'classIncludes.php';
+require 'public/automateInclude.php';
 use PHPUnit\Framework\TestCase;
+use quiz\CanConnectDB;
+use quiz\Factory;
+use quiz\IdText;
+use quiz\KindOf;
+use quiz\MariaDBConnector;
+use quiz\QuizQuestion;
+use quiz\Stats;
+
+
 
 class FactoryTest extends TestCase
 {
@@ -36,7 +44,7 @@ class FactoryTest extends TestCase
         $this->testWrongAnswers[] = $this->answer4;
         $this->testGivenAnswers[] = $this->answer1;
 
-        $this->category = new IdText(1,'PC - Grundlagen', KindOf::CATEGORY, $this->connector, $this->connector);
+        $this->category = new IdText(1,'PC - Grundlagen', KindOf::CATEGORY,$this->connector);
         $this->stats = new Stats(1,2,1, $this->connector);
         $this->testQuestion = new QuizQuestion($this->id,$this->text, $this->connector,$this->category, $this->testRightAnswers,$this->testWrongAnswers, $this->stats);
 
@@ -44,7 +52,8 @@ class FactoryTest extends TestCase
 
     public function testFindAllIdTextObject()
     {
-        $factory = new Factory();
+        include_once 'rebuildTestDB.php';
+        $factory = new Factory($this->connector);
         $assertion = [
             new IdText(1,'PC - Grundlagen', KindOf::CATEGORY, $this->connector),
             new IdText(2,'Netzwerk', KindOf::CATEGORY, $this->connector),
@@ -60,24 +69,27 @@ class FactoryTest extends TestCase
 
     public function testCreateIdTextObject()
     {
+        include_once 'rebuildTestDB.php';
         $assert = new IdText(7,'text', KindOf::CATEGORY, $this->connector);
-        $arrange = new Factory();
+        $arrange = new Factory($this->connector);
         $act = $arrange->createIdTextObject('text',KindOf::CATEGORY);
         $this->assertEquals($assert, $act);
     }
 
     public function testFindIdTetObjectById()
     {
+        include_once 'rebuildTestDB.php';
         $this->category = new IdText(2,'Netzwerk', KindOf::CATEGORY, $this->connector);
-        $arrange = new Factory();
+        $arrange = new Factory($this->connector);
         $act = $arrange->findIdTextObjectById(2, KindOf::CATEGORY);
         $this->assertEquals($this->category, $act);
     }
 
     public function testCreateQuizQuestionById()
     {
+        include_once 'rebuildTestDB.php';
         $this->id = 1;
-        $this->text = 'Welches Bauteil eines Computers führt Beechnungen durch ?';
+        $this->text = 'Welches Bauteil eines Computers führt Berechnungen durch ?';
         $this->answer1 = new IdText(1,'CPU',KindOf::ANSWER, $this->connector);
         $this->answer2 = new IdText(2,'Northbridge',KindOf::ANSWER, $this->connector);
         $this->answer3 = new IdText(3,'RAM',KindOf::ANSWER, $this->connector);
@@ -92,16 +104,17 @@ class FactoryTest extends TestCase
         $this->category = new IdText(1,'PC - Grundlagen', KindOf::CATEGORY, $this->connector);
         $this->testQuestion = new QuizQuestion($this->id,$this->text, $this->connector,$this->category, $this->testRightAnswers,$this->testWrongAnswers, $this->stats);
 
-        $arrange = new Factory();
+        $arrange = new Factory($this->connector);
         $act = $arrange->createQuizQuestionById(1);
         $this->assertEquals($this->testQuestion, $act);
     }
 
     public function testCreateStatsByQuestionId()
     {
+        include_once 'rebuildTestDB.php';
         $assert = new Stats(1,2,1, $this->connector);
-        $arrange = new Factory();
-        $act = $arrange->crateStatsByQuestionId(1);
+        $arrange = new Factory($this->connector);
+        $act = $arrange->createStatsByQuestionId(1);
         $this->assertEquals($assert,$act);
     }
 }

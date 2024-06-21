@@ -1,10 +1,12 @@
 <?php
-
-namespace quiz;
-
+require 'public/automateInclude.php';
 use PHPUnit\Framework\TestCase;
+use quiz\CanConnectDB;
+use quiz\IdTextDBHandler;
+use quiz\KindOf;
+use quiz\MariaDBConnector;
 
-include 'classIncludes.php';
+
 class IdTextDBHandlerTest extends TestCase
 {
     private CanConnectDB $db;
