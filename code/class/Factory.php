@@ -87,6 +87,31 @@ class Factory
                         $statsAttributes['times_right']);
     }
 
+    public function createEditQuestionById(int $id):EditQuestion
+    {
+        $this->dbHandler = KindOf::QUESTION->getDBHandler($this->connector);
+        $questionAttributes = $this->dbHandler->findById($id);
+        $category = $this->findIdTextObjectById($questionAttributes['category_id'],
+            KindOf::CATEGORY);
+        $this->dbHandler = KindOf::RELATION->getDBHandler($this->connector);
+        $relations = $this->dbHandler->findById($id);
+
+        $rightAnswers = [];
+        $wrongAnswers = [];
+        foreach ($relations as $relation){
+            $answer = $this->findIdTextObjectById($relation['answer_id'],
+                KindOf::ANSWER);
+            if ($relation['is_right']) $rightAnswers[] = $answer;
+            else $wrongAnswers[] = $answer;
+        }
+        return new EditQuestion($id,
+            $questionAttributes['text'],
+            $this->connector,
+            $category,
+            $rightAnswers,
+            $wrongAnswers);
+    }
+
 
 
 

@@ -15,7 +15,7 @@ class EditQuestion extends Question
     // created. When saving the edited question every entry in relationMapper is checked. If there is an id this entry
     // is updated in database, else new entry in database is going to be created.
     private array $relationMapper = [];
-    private array $allAnswers;
+    private array $allAnswers = [];
 
     /**
      * @param int $id
@@ -40,6 +40,7 @@ class EditQuestion extends Question
         foreach ($relations as $relation){
             $answerId = $relation['answer_id'];
             $this->relationMapper[$answerId] = $relation;
+
         }
     }
 
