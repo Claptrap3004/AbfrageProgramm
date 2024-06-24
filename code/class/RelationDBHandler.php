@@ -30,7 +30,7 @@ class RelationDBHandler extends IdTextDBHandler
     // of a single relation by its id
     public function findById(int $id): array
     {
-        $sql = "SELECT id, answer_id, is_right FROM $this->tableName WHERE question_id = :id;";
+        $sql = "SELECT * FROM $this->tableName WHERE question_id = :id;";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

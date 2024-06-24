@@ -37,7 +37,7 @@ class FactoryTest extends TestCase
         $this->answer1 = new IdText(1,'CPU',KindOf::ANSWER, $this->connector);
         $this->answer2 = new IdText(2,'Northbridge',KindOf::ANSWER, $this->connector);
         $this->answer3 = new IdText(3,'RAM',KindOf::ANSWER, $this->connector);
-        $this->answer4 = new IdText(15,'USB - Port',KindOf::ANSWER, $this->connector);
+        $this->answer4 = new IdText(4,'USB - Port',KindOf::ANSWER, $this->connector);
         $this->testRightAnswers[] = $this->answer1;
         $this->testWrongAnswers[] = $this->answer2;
         $this->testWrongAnswers[] = $this->answer3;

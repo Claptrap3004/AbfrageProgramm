@@ -43,6 +43,12 @@ class EditQuestion extends Question
         }
     }
 
+    public function getRelationMapper(): array
+    {
+        return $this->relationMapper;
+    }
+
+
     // checks if relation to that answer already exists in mapper. If exists only the value for key 'is_right' is
     // changed, else new entry in mapper is created. In that case the 'id' value is set to null that the update
     // function can distinguish between new creates and updates in database
@@ -90,7 +96,7 @@ class EditQuestion extends Question
      */
     public function saveQuestion():void
     {
-        if ((count($this->rightAnswers) + count($this->wrongAnswers)) >= 4) $this->update();
+        if (count($this->relationMapper) >= 4) $this->update();
         else throw new Exception("Speichern der Frage nicht möglich, da weniger als 4 Antwortmöglichkeiten hinterlegt wurden");
     }
 
