@@ -2,13 +2,14 @@
 
 namespace quiz;
 
+use KindOf;
 use PDO;
 
 class RelationDBHandler extends IdTextDBHandler
 {
-    public function __construct(KindOf $kindOf, CanConnectDB $connectDB)
+    public function __construct(KindOf $kindOf)
     {
-        parent::__construct($kindOf, $connectDB);
+        parent::__construct($kindOf);
     }
 
     public function create(array $args): int

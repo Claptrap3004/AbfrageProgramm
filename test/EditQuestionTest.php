@@ -1,12 +1,8 @@
 <?php
 require 'public/automateInclude.php';
+
 use PHPUnit\Framework\TestCase;
-use quiz\CanConnectDB;
-use quiz\EditQuestion;
-use quiz\IdText;
-use quiz\KindOf;
 use quiz\MariaDBConnector;
-use quiz\Stats;
 
 class EditQuestionTest extends TestCase
 {

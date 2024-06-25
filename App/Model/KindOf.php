@@ -5,7 +5,14 @@
 // for dev the user_id is set to 2 hardcoded. After User class and functionality is implemented this must be changed to
 // something like $_Session['userId']
 
-namespace quiz;
+
+use quiz\CanConnectDB;
+use quiz\CanHandleDB;
+use quiz\IdTextDBHandler;
+use quiz\QuestionDBHandler;
+use quiz\RelationDBHandler;
+use quiz\StatsDBHandler;
+use quiz\UserDBHandler;
 
 enum KindOf : string
 {
@@ -37,15 +44,15 @@ enum KindOf : string
 
     // handler provider
 
-    public function getDBHandler(CanConnectDB $connectDB): CanHandleDB
+    public function getDBHandler(): CanHandleDB
     {
-        $handler = new IdTextDBHandler($this, $connectDB);
+        $handler = new IdTextDBHandler($this);
         return match ($this->getName()) {
-            'CATEGORY', 'ANSWER' => new IdTextDBHandler($this, $connectDB),
-            'QUESTION' => new QuestionDBHandler($this,$connectDB),
-            'RELATION' => new RelationDBHandler($this,$connectDB),
-            'STATS' => new StatsDBHandler($this,$connectDB,2),
-            'USER' => new UserDBHandler($this,$connectDB),
+            'CATEGORY', 'ANSWER' => new IdTextDBHandler($this),
+            'QUESTION' => new QuestionDBHandler($this),
+            'RELATION' => new RelationDBHandler($this),
+            'STATS' => new StatsDBHandler($this,2),
+            'USER' => new UserDBHandler($this,),
             default => $handler
         };
     }

@@ -1,15 +1,10 @@
 <?php
 // needs to be optimzed, maybe mor stub and mock
 require 'public/automateInclude.php';
+
 use PHPUnit\Framework\TestCase;
 use quiz\CanConnectDB;
-use quiz\Factory;
-use quiz\IdText;
-use quiz\KindOf;
 use quiz\MariaDBConnector;
-use quiz\QuizQuestion;
-use quiz\Stats;
-
 
 
 class FactoryTest extends TestCase

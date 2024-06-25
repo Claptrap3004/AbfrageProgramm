@@ -8,22 +8,22 @@
 
 namespace quiz;
 
+use KindOf;
 use PDO;
 
-class IdTextDBHandler implements CanHandleDB
+class IdTextDBHandler extends DataBase implements CanHandleDB
 {
     protected string $tableName;
     protected PDO $connection;
 
     /**
      * @param KindOf $kindOf
-     * @param CanConnectDB $connectDB
      */
-    public function __construct(KindOf $kindOf, CanConnectDB $connectDB)
+    public function __construct(KindOf $kindOf)
     {
 
         $this->tableName = $kindOf->getTableName();
-        $this->connection = $connectDB->getConnection();
+        $this->connection = $this->connect();
 
     }
 

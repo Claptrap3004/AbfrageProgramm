@@ -1,8 +1,8 @@
 <?php
 // deals as parent class for EditQuestion and QuizQuestion class
 
-namespace quiz;
 
+use quiz\CanConnectDB;
 
 abstract class Question extends IdText
 {

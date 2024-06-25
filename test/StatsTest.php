@@ -1,8 +1,8 @@
 <?php
 require 'public/automateInclude.php';
+
 use PHPUnit\Framework\TestCase;
 use quiz\MariaDBConnector;
-use quiz\Stats;
 
 
 class StatsTest extends TestCase

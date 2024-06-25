@@ -1,9 +1,9 @@
 <?php
 require 'public/automateInclude.php';
+
 use PHPUnit\Framework\TestCase;
 use quiz\CanConnectDB;
 use quiz\IdTextDBHandler;
-use quiz\KindOf;
 use quiz\MariaDBConnector;
 
 

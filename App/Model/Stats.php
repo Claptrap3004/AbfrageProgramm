@@ -1,7 +1,8 @@
 <?php
 // providing statistic for one single question
 
-namespace quiz;
+
+use quiz\CanConnectDB;
 
 class Stats
 {

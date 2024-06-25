@@ -1,7 +1,7 @@
 <?php
 
-namespace quiz;
 
+use quiz\CanConnectDB;
 
 class QuizQuestion extends Question
 {

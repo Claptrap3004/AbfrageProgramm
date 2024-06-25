@@ -7,9 +7,14 @@ abstract class DataBase
 {
     protected string $tablename = 'user';
     static protected ?PDO $conn = null;
+    static protected ?CanConnectDB $connector = null;
     protected function connect():PDO|null
     {
-        if (self::$conn === null) self::$conn = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME,DB_USER, DB_PASSWORD);
+        if (self::$connector === null) self::$connector = new MariaDBConnector();
+        if (self::$conn === null) try {
+            self::$conn = self::$connector->getConnection();
+        } catch (\Exception $e) {
+        }
         return self::$conn;
     }
 

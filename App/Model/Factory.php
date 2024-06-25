@@ -1,36 +1,35 @@
 <?php
 // responsible for creating objects of classes IdText, QuizQuestion, EditQuestion, Stats and so on
 // DBHandler is provided through KindOf enum
-namespace quiz;
 
-class Factory
+use quiz\CanConnectDB;
+use quiz\CanHandleDB;
+use quiz\DataBase;
+use quiz\MariaDBConnector;
+
+class Factory extends DataBase
 {
-    private CanConnectDB $connector;
     private CanHandleDB $dbHandler;
 
-    public function __construct(CanConnectDB $connector = null)
-    {
-        $this->connector = $connector == null ? new MariaDBConnector(): $connector;
-    }
+
 
     public function createIdTextObject(string $text, KindOf $kindOf): ?IdText
     {
-        $this->dbHandler = $kindOf->getDBHandler($this->connector);
+        $this->dbHandler = $kindOf->getDBHandler();
         $id = $this->dbHandler->create(['text' => $text]);
         return $id > 0 ? new IdText($id,
                                     $text,
-                                    $kindOf,
-                                    $this->connector)
+                                    $kindOf)
                         : null;
     }
     public function findIdTextObjectById(int $id, KindOf $kindOf): ?IdText
     {
-        $this->dbHandler = $kindOf->getDBHandler($this->connector);
+        $this->dbHandler = $kindOf->getDBHandler();
         $infos = $this->dbHandler->findById($id);
         return $id > 0 ? new IdText($id,
                                     $infos['text'],
-                                    $kindOf,
-                                    $this->connector)
+                                    $kindOf
+                                    )
                         : null;
     }
 

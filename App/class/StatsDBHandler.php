@@ -2,15 +2,16 @@
 
 namespace quiz;
 
+use KindOf;
 use PDO;
 
 class StatsDBHandler extends IdTextDBHandler
 {
     private int $userId;
 
-    public function __construct(KindOf $kindOf, CanConnectDB $connectDB, int $userId)
+    public function __construct(KindOf $kindOf, int $userId)
     {
-        parent::__construct($kindOf, $connectDB);
+        parent::__construct($kindOf);
         $this->userId = $userId;
     }
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace quiz;
 //include_once 'Question.php';
-use Exception;
+use quiz\CanConnectDB;
+use quiz\CanHandleDB;
 
 class EditQuestion extends Question
 {

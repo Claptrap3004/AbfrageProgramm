@@ -1,8 +1,7 @@
 <?php
 require 'public/automateInclude.php';
+
 use PHPUnit\Framework\TestCase;
-use quiz\IdText;
-use quiz\KindOf;
 use quiz\MariaDBConnector;
 
 class IdTextTest extends TestCase
