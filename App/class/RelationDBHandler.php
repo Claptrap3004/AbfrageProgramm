@@ -2,7 +2,6 @@
 
 namespace quiz;
 
-use KindOf;
 use PDO;
 
 class RelationDBHandler extends IdTextDBHandler

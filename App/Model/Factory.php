@@ -1,12 +1,7 @@
 <?php
 // responsible for creating objects of classes IdText, QuizQuestion, EditQuestion, Stats and so on
 // DBHandler is provided through KindOf enum
-
-use quiz\CanConnectDB;
-use quiz\CanHandleDB;
-use quiz\DataBase;
-use quiz\MariaDBConnector;
-
+namespace quiz;
 class Factory extends DataBase
 {
     private CanHandleDB $dbHandler;

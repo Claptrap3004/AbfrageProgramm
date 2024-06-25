@@ -1,7 +1,7 @@
 <?php
 
 
-use quiz\Model;
+namespace quiz;
 
 class User extends Model
 {

@@ -1,5 +1,5 @@
 <?php
-
+namespace quiz;
 //include_once 'Question.php';
 use quiz\CanConnectDB;
 use quiz\CanHandleDB;

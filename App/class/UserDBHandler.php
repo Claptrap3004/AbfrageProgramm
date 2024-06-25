@@ -2,7 +2,6 @@
 
 namespace quiz;
 
-use PDO;
 
 class UserDBHandler extends IdTextDBHandler
 {

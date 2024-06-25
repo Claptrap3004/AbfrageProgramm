@@ -2,7 +2,7 @@
 // instantiation of this class works for answers and categories, most other classes can inherit this as base.
 // kindOfText defines to which type in the DB the class refers. The Enum deals as kind of controller for choosing the
 // correct implementation of CanHandleDB Interface
-
+namespace quiz;
 use quiz\CanConnectDB;
 
 class IdText

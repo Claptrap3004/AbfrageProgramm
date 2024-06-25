@@ -2,8 +2,7 @@
 // deals as parent class for EditQuestion and QuizQuestion class
 
 
-use quiz\CanConnectDB;
-
+namespace quiz;
 abstract class Question extends IdText
 {
     protected IdText $category;

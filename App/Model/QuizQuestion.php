@@ -1,8 +1,6 @@
 <?php
 
-
-use quiz\CanConnectDB;
-
+namespace quiz;
 class QuizQuestion extends Question
 {
     private Stats $stats;

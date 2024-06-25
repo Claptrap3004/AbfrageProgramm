@@ -2,7 +2,7 @@
 
 namespace quiz;
 
-use KindOf;
+
 use PDO;
 
 class StatsDBHandler extends IdTextDBHandler

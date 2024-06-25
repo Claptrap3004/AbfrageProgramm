@@ -5,14 +5,9 @@
 // for dev the user_id is set to 2 hardcoded. After User class and functionality is implemented this must be changed to
 // something like $_Session['userId']
 
+namespace quiz;
 
-use quiz\CanConnectDB;
-use quiz\CanHandleDB;
-use quiz\IdTextDBHandler;
-use quiz\QuestionDBHandler;
-use quiz\RelationDBHandler;
-use quiz\StatsDBHandler;
-use quiz\UserDBHandler;
+
 
 enum KindOf : string
 {

@@ -2,7 +2,7 @@
 
 namespace quiz;
 
-use KindOf;
+
 
 class QuestionDBHandler extends IdTextDBHandler
 {

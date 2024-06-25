@@ -8,7 +8,6 @@
 
 namespace quiz;
 
-use KindOf;
 use PDO;
 
 class IdTextDBHandler extends DataBase implements CanHandleDB
