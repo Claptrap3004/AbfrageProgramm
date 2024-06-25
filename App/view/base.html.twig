@@ -10,12 +10,11 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     {% block head %}
-        <title>Quiz {% block title %}{% endblock %}</title>
     {% endblock %}
+        <title>Quiz {% block title %}{% endblock %}</title>
 </head>
-<body>
 <div id="header">
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary text-white mb-5">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary text-white mb-5 sticky-top">
     <div class="container-fluid">
         <a href="#" class="navbar-brand">Quiz</a>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -36,7 +35,7 @@
     </div>
 </nav>
 </div>
-<div id="content">{% block content %}{% endblock %}</div>
+<div id="content position-relative">{% block content %}{% endblock %}</div>
 <div id="footer" class="text-end fixed-bottom">
     {% block footer %}
         &copy; Copyright 2024 by René</a>.
