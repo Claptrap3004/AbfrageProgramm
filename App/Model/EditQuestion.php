@@ -20,15 +20,14 @@ class EditQuestion extends Question
     /**
      * @param int $id
      * @param string $text
-     * @param CanConnectDB $connector
      * @param IdText $category
      * @param IdText[] $rightAnswers
      * @param IdText[] $wrongAnswers
      */
-    public function __construct(int $id, string $text, CanConnectDB $connector, IdText $category, array $rightAnswers, array $wrongAnswers)
+    public function __construct(int $id, string $text, IdText $category, array $rightAnswers, array $wrongAnswers)
     {
-        parent::__construct($id, $text, $connector, $category, $rightAnswers, $wrongAnswers);
-        $this->relator = KindOf::RELATION->getDBHandler($connector);
+        parent::__construct($id, $text, $category, $rightAnswers, $wrongAnswers);
+        $this->relator = KindOf::RELATION->getDBHandler();
         $this->allAnswers = array_merge($this->rightAnswers,$this->wrongAnswers);
         $this->setRelationMapper();
     }

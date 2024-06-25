@@ -36,24 +36,23 @@ class Factory extends DataBase
     public function findAllIdTextObject(KindOf $kindOf): array
     {
         $answers = [];
-        $this->dbHandler = $kindOf->getDBHandler($this->connector);
+        $this->dbHandler = $kindOf->getDBHandler();
         $answerInfos = $this->dbHandler->findAll();
         foreach ($answerInfos as $answerInfo)
             $answers[] = new IdText($answerInfo['id'],
                                     $answerInfo['text'],
-                                    $kindOf,
-                                    $this->connector);
+                                    $kindOf);
         return $answers;
     }
 
     public function createQuizQuestionById(int $id): ?QuizQuestion
     {
-        $this->dbHandler = KindOf::QUESTION->getDBHandler($this->connector);
+        $this->dbHandler = KindOf::QUESTION->getDBHandler();
         $questionAttributes = $this->dbHandler->findById($id);
         $category = $this->findIdTextObjectById($questionAttributes['category_id'],
                                         KindOf::CATEGORY);
 
-        $this->dbHandler = KindOf::RELATION->getDBHandler($this->connector);
+        $this->dbHandler = KindOf::RELATION->getDBHandler();
         $relations = $this->dbHandler->findById($id);
         $rightAnswers = [];
         $wrongAnswers = [];
@@ -67,7 +66,6 @@ class Factory extends DataBase
         $stats = $this->createStatsByQuestionId($id);
         return new QuizQuestion($id,
                                 $questionAttributes['text'],
-                                $this->connector,
                                 $category,
                                 $rightAnswers,
                                 $wrongAnswers,
@@ -76,23 +74,22 @@ class Factory extends DataBase
 
     public function createStatsByQuestionId(int $questionId): Stats
     {
-        $this->dbHandler = KindOf::STATS->getDBHandler($this->connector);
+        $this->dbHandler = KindOf::STATS->getDBHandler();
         $statsAttributes = $this->dbHandler->findById($questionId);
         return new Stats($statsAttributes['id'],
                         $statsAttributes['user_id'],
                         $statsAttributes['question_id'],
-                        $this->connector,
                         $statsAttributes['times_asked'],
                         $statsAttributes['times_right']);
     }
 
     public function createEditQuestionById(int $id):EditQuestion
     {
-        $this->dbHandler = KindOf::QUESTION->getDBHandler($this->connector);
+        $this->dbHandler = KindOf::QUESTION->getDBHandler();
         $questionAttributes = $this->dbHandler->findById($id);
         $category = $this->findIdTextObjectById($questionAttributes['category_id'],
             KindOf::CATEGORY);
-        $this->dbHandler = KindOf::RELATION->getDBHandler($this->connector);
+        $this->dbHandler = KindOf::RELATION->getDBHandler();
         $relations = $this->dbHandler->findById($id);
 
         $rightAnswers = [];
@@ -105,7 +102,6 @@ class Factory extends DataBase
         }
         return new EditQuestion($id,
             $questionAttributes['text'],
-            $this->connector,
             $category,
             $rightAnswers,
             $wrongAnswers);

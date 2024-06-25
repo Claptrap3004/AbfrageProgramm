@@ -11,15 +11,15 @@ class QuizQuestion extends Question
     /**
      * @param int $id
      * @param string $text
-     * @param CanConnectDB $connector
+
      * @param IdText $category
      * @param IdText[] $rightAnswers
      * @param IdText[] $wrongAnswers
      * @param Stats $stats
      */
-    public function __construct(int $id, string $text,CanConnectDB $connector,IdText $category, array $rightAnswers, array $wrongAnswers,Stats $stats)
+    public function __construct(int $id, string $text,IdText $category, array $rightAnswers, array $wrongAnswers,Stats $stats)
     {
-        parent::__construct($id,$text,$connector,$category,$rightAnswers,$wrongAnswers);
+        parent::__construct($id,$text,$category,$rightAnswers,$wrongAnswers);
         $this->stats = $stats;
         $this->givenAnswers = [];
     }
