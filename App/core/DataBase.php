@@ -1,6 +1,8 @@
 <?php
 namespace quiz;
 
+use PDO;
+
 abstract class DataBase
 {
     protected string $tablename = 'user';
