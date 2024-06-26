@@ -9,10 +9,10 @@ class QuizContentDBHandler extends IdTextDBHandler
     public function __construct(KindOf $kindOf)
     {
         parent::__construct($kindOf);
-        $this->setTabename();
+        $this->setTablename();
     }
 
-    private function setTabename(): void
+    private function setTablename(): void
     {
         $factory = Factory::getFactory();
         $user = $factory->createUser($_SESSION['UserId']);
