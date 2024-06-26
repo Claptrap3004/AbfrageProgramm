@@ -76,9 +76,12 @@ class QuizQuestion extends Question
         $this->givenAnswers = $givenAnswers;
     }
 
-    public function writeResultDB()
+    public function writeResultDB(): void
     {
-
+        $answerIds = [];
+        foreach ($this->givenAnswers as $answer) $answerIds[]=$answer->getId();
+        $handler = KindOf::QUIZCONTENT->getDBHandler();
+        $handler->update(['question_id' => $this->id, 'answers' => $answerIds]);
     }
 
 }
