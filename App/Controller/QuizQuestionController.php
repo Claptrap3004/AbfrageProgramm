@@ -7,8 +7,13 @@ class QuizQuestionController extends Controller
 
     public function index(array $data = []): void
     {
+        $this->fillTable([1,2,3]);
 
-
+    }
+    public function fillTable(array $data = []): void
+    {
+        $handler = KindOf::QUIZCONTENT->getDBHandler();
+        $handler->create(['question_ids' => $data]);
     }
 
     public function answer(int $id): void
@@ -35,10 +40,12 @@ class QuizQuestionController extends Controller
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $data = $handler->findAll();
+        var_dump($data);
         $id = null;
         foreach ($data as $item){
-            if ($data['is_actual']) $id = $data['question_id'];
+            if ($item['is_actual']) $id = $item['question_id'];
         }
+        echo $id;
         if ($id) header("refresh:1;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/answer/$id'");
         else $this->view('quiz/final',[]);
     }

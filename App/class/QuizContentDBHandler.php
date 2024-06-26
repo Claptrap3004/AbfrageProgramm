@@ -10,6 +10,7 @@ class QuizContentDBHandler extends IdTextDBHandler
     {
         parent::__construct($kindOf);
         $this->setTablename();
+//        $this->createTables();
     }
 
     private function setTablename(): void
@@ -17,8 +18,8 @@ class QuizContentDBHandler extends IdTextDBHandler
         $factory = Factory::getFactory();
         $user = $factory->createUser($_SESSION['UserId']);
         $email = $user->getEmail();
-        str_replace('.', '_', $email);
-        str_replace('@', '_', $email);
+        $email = str_replace('.', '_', $email);
+        $email = str_replace('@', '_', $email);
         $this->tableName = $this->tableName . $email;
     }
 
@@ -26,14 +27,13 @@ class QuizContentDBHandler extends IdTextDBHandler
     // with list of question-ids setting first to actual
     public function create(array $args): int
     {
+        if (!$this->validateArgsCreate($args)) return -1;
         $this->createTables();
-        foreach ($args as $index => $questionId)
-            if ($this->validateArgsCreate($args)) {
-                $sql = "INSERT INTO $this->tableName (question_id,is_actual) VALUES (:question_id,:is_actual);";
-                $stmt = $this->connection->prepare($sql);
+        $sql = "INSERT INTO $this->tableName (question_id,is_actual) VALUES (:question_id,:is_actual);";
+        $stmt = $this->connection->prepare($sql);
+        foreach ($args['question_ids'] as $index => $questionId){
                 $isActual = $index == 0 ? 1 : 0;
-                $stmt->execute([':question_id' => $questionId, ':is_actual' => $isActual]);
-            }
+                $stmt->execute([':question_id' => $questionId, ':is_actual' => $isActual]);}
         return 1;
     }
 
@@ -41,15 +41,14 @@ class QuizContentDBHandler extends IdTextDBHandler
     {
         $track = $this->getTrackTableName();
         $sqls = [];
-        $sqls[] = "DROP TABLE IF EXITS $this->tableName;";
+        $sqls[] = "DROP TABLE IF EXISTS $this->tableName;";
         $sqls[] = "CREATE TABLE $this->tableName (id INT PRIMARY KEY AUTO_INCREMENT,
         question_id INT, 
         is_actual BOOL);";
-        $sqls[] = "DROP TABLE IF EXITS $track;";
+        $sqls[] = "DROP TABLE IF EXISTS $track;";
         $sqls[] = "CREATE TABLE $track(id INT PRIMARY KEY AUTO_INCREMENT,
         question_id INT,
-         answer_id INT,
-         FOREIGN KEY (question_id) REFERENCES $this->tableName(question_id));";
+         answer_id INT);";
         foreach ($sqls as $sql) {
             $stmt = $this->connection->prepare($sql);
             $stmt->execute();
@@ -92,14 +91,14 @@ class QuizContentDBHandler extends IdTextDBHandler
             $table = $this->getTrackTableName();
             $sql = "DELETE FROM $table WHERE question_id = :id";
             $stmt = $this->connection->prepare($sql);
-            $stmt->execute([':id' => $args['questionId']]);
+            $stmt->execute([':id' => $args['question_id']]);
             foreach ($args['answers'] as $answerId) {
                 $sql = "INSERT INTO $table (question_id,answer_id) VALUES (:question_id,:answer_id)";
                 $stmt = $this->connection->prepare($sql);
                 $success = $stmt->execute([':question_id' => $args['questionId'], ':answer_id' => $answerId]);
                 if (!$success) return false;
             }
-            $this->setNextAsActual($args['questionId']);
+            $this->setNextAsActual($args['question_id']);
             return true;
         }
         return false;
@@ -110,7 +109,7 @@ class QuizContentDBHandler extends IdTextDBHandler
     {
         $sql = "SELECT id FROM $this->tableName WHERE question_id = :question_id";
         $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
+        $stmt->execute(['question_id'=>$questionId]);
         $id = $stmt->fetch(2)['id'];
         $sql = "UPDATE $this->tableName SET is_actual = :is_actual WHERE id = :id";
         $stmt = $this->connection->prepare($sql);

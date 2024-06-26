@@ -10,6 +10,20 @@ class User extends Model
     private string $email;
     private string $pwhash;
 
+    /**
+     * @param int $id
+     * @param string $username
+     * @param string $email
+     * @param string $pwhash
+     */
+    public function __construct(int $id, string $username, string $email, string $pwhash)
+    {
+        $this->id = $id;
+        $this->username = $username;
+        $this->email = $email;
+        $this->pwhash = $pwhash;
+    }
+
 
     public function getId(): int
     {

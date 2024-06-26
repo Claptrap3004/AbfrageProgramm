@@ -1,6 +1,7 @@
 <?php
 namespace quiz;
 session_start();
+$_SESSION['UserId'] = 2;
 require '../App/core/init.php';
 
 $router = new App();

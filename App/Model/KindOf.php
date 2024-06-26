@@ -42,12 +42,13 @@ enum KindOf : string
 
     public function getDBHandler(): CanHandleDB
     {
+        $userid = $_SESSION['UserId'] ?? 2;
         $handler = new IdTextDBHandler($this);
         return match ($this->getName()) {
             'CATEGORY', 'ANSWER' => new IdTextDBHandler($this),
             'QUESTION' => new QuestionDBHandler($this),
             'RELATION' => new RelationDBHandler($this),
-            'STATS' => new StatsDBHandler($this,2),
+            'STATS' => new StatsDBHandler($this,$userid),
             'USER' => new UserDBHandler($this),
             'QUIZCONTENT' => new QuizContentDBHandler($this),
             default => $handler

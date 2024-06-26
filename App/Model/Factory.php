@@ -112,7 +112,7 @@ class Factory extends DataBase
     {
         $this->dbHandler = new UserDBHandler(KindOf::USER);
         $userData = $this->dbHandler->findById($id);
-        return $userData ? new User($userData) : null;
+        return $userData ? new User($userData['id'], $userData['username'], $userData['email'], $userData['password']) : null;
     }
 
 
