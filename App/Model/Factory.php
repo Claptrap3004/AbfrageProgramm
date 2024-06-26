@@ -5,8 +5,13 @@ namespace quiz;
 class Factory extends DataBase
 {
     private CanHandleDB $dbHandler;
+    private static ?Factory $factory = null;
 
-
+    public static function getFactory(): ?Factory
+    {
+        if (self::$factory === null) self::$factory = new Factory();
+        return self::$factory;
+    }
 
     public function createIdTextObject(string $text, KindOf $kindOf): ?IdText
     {
@@ -44,6 +49,7 @@ class Factory extends DataBase
     {
         $this->dbHandler = KindOf::QUESTION->getDBHandler();
         $questionAttributes = $this->dbHandler->findById($id);
+        if ($questionAttributes === null) return null;
         $category = $this->findIdTextObjectById($questionAttributes['category_id'],
                                         KindOf::CATEGORY);
 

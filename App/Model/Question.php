@@ -40,4 +40,9 @@ abstract class Question extends IdText
         return $this->wrongAnswers;
     }
 
+    public function getAnswers():array
+    {
+        return array_merge($this->rightAnswers,$this->wrongAnswers);
+    }
+
 }

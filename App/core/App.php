@@ -4,23 +4,24 @@
 namespace quiz;
 class App
 {
-    private string $prefix = '\core\\';
-    private string $controller = '\core\UserController';
+    private string $prefix = '\quiz\\';
+    private string $controller = '\quiz\UserController';
     private string $method = 'index';
 
     private function urlExplode(): array
     {
-        return explode('/', $_GET['url']);
+        $url = ltrim($_GET['url'], '/');
+        return explode('/', $url);
     }
 
     public function loadController(): void
     {
         $url = $this->urlExplode();
         $file = '../App/Controller/' . ucfirst($url[0]) . 'Controller.php';
-
+        echo $file;
         if (file_exists($file)) {
             require $file;
-            $this->controller = ucfirst($url[0]) . 'Controller';
+            $this->controller = $this->prefix . ucfirst($url[0]) . 'Controller';
             $controller = new $this->controller;
 
             if (!empty($url[1])) $this->method = method_exists($controller, $url[1]) ? $url[1] : 'index';
@@ -31,7 +32,7 @@ class App
 
     private function pageNotFound()
     {
-        require '../app/Controller/PageNotFoundController.php';
+        require '../App/Controller/PageNotFoundController.php';
         $this->controller = $this->prefix . 'PageNotFoundController';
 
     }

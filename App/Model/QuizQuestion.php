@@ -76,4 +76,9 @@ class QuizQuestion extends Question
         $this->givenAnswers = $givenAnswers;
     }
 
+    public function writeResultDB()
+    {
+
+    }
+
 }

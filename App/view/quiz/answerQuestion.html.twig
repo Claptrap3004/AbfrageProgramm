@@ -16,6 +16,7 @@
             <div class="col-7 w-60 bg-light rounded-3 my-1 mx-5 p-2 align-self-center">
                 <div class="row align-self-center mx-5 pb-2">
                     <label>
+                        <input type="hidden" name="questionId" value="{{ question.id }}">
                         <button type="button"
                                 class="col align-self-center bold btn btn-primary rounded-3 shadow btn-lg disabled mx-2 my-4 p-2 w-100">
                             {{ question.text }}
@@ -26,6 +27,8 @@
                     <div class="row align-self-center mx-5 py-2">
                         <label>
                             <button type="button"
+                                    name="answers[]"
+                                    value="{{ answer.id }}"
                                     class="col align-self-center btn btn-outline-secondary rounded-3 shadow-sm btn-lg mx-2 my-2 p-2 w-100"
                                     data-bs-toggle="button"
                                     autocomplete="off">{{ answer.text }}</button>
@@ -58,19 +61,19 @@
             <div class="row p-2 m-2">
                 <div class="col-lg-4 text-center">
                     <label>
-                        <input type="button" name="reset" class="align-self-center btn-lg btn-info shadow-sm"
+                        <input type="submit" name="reset" class="align-self-center btn-lg btn-info shadow-sm"
                                value="zurücksetzen">
                     </label>
                 </div>
                 <div class="col-lg-2 text-center">
                     <label>
-                        <input type="button" name="skip" class="align-self-center btn-lg btn-info shadow-sm"
+                        <input type="submit" name="skip" class="align-self-center btn-lg btn-info shadow-sm"
                                value="Frage überspringen">
                     </label>
                 </div>
                 <div class="col-lg-3 text-center">
                     <label>
-                        <input type="button" name="confirm" class="align-self-center btn-lg btn-info shadow-sm"
+                        <input type="submit" name="confirm" class="align-self-center btn-lg btn-info shadow-sm"
                                value="Antwort abgeben">
                     </label>
                 </div>

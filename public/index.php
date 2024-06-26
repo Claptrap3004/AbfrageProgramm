@@ -1,27 +1,31 @@
 <?php
-require '../vendor/autoload.php';
-require 'automate.php';
-//include '../core\App/class/MariaDBConnector.php';
-use quiz\MariaDBConnector;
-$conn = new MariaDBConnector();
+namespace quiz;
+session_start();
+require '../App/core/init.php';
 
-$loader = new \Twig\Loader\FilesystemLoader('../App/view');
-$twig = new \Twig\Environment($loader);
-$viewname = "quiz/answerQuestion";
-//$viewname = "quiz/selectQuestions";
+$router = new App();
+$router->loadController();
 
-//$viewFile = '../App/view/' .  ucfirst($viewname). '.html.twig';
-$viewFile = "../App/view/". $viewname . ".html.twig";
-//$viewFile = "../App/view/quiz/selectQuestions.html.twig";
-if (file_exists($viewFile)) {
 
-    echo $twig->render("$viewname.html.twig",['question' => ['id' => 1, 'text'=>'Frage blablblablablbalbl',
-    'answers' => [['id' => 1, 'text' => 'CPU'],
-                ['id' => 2, 'text' => 'RAM'],
-                ['id' => 3, 'text' => 'ROM'],
-                ['id' => 4, 'text' => 'Blub']],
-    'stats' => ['id'=>1, 'timesAsked' => 2, 'timesRight'=> 1]]]);
-
+//$conn = new MariaDBConnector();
+//
+//$loader = new \Twig\Loader\FilesystemLoader('../App/view');
+//$twig = new \Twig\Environment($loader);
+//$viewname = "quiz/answerQuestion";
+////$viewname = "quiz/selectQuestions";
+//
+////$viewFile = '../App/view/' .  ucfirst($viewname). '.html.twig';
+//$viewFile = "../App/view/". $viewname . ".html.twig";
+////$viewFile = "../App/view/quiz/selectQuestions.html.twig";
+//if (file_exists($viewFile)) {
+//
+//    echo $twig->render("$viewname.html.twig",['question' => ['id' => 1, 'text'=>'Frage blablblablablbalbl',
+//    'answers' => [['id' => 1, 'text' => 'CPU'],
+//                ['id' => 2, 'text' => 'RAM'],
+//                ['id' => 3, 'text' => 'ROM'],
+//                ['id' => 4, 'text' => 'Blub']],
+//    'stats' => ['id'=>1, 'timesAsked' => 2, 'timesRight'=> 1]]]);
+//
 
 //    echo $twig->render("$viewname.html.twig",['categories' => [
 //        ['id'=> 1,'name' => 'PC','number'=> 10],
@@ -36,5 +40,5 @@ if (file_exists($viewFile)) {
 
 
 //            require $viewFile;
-}
+//}
 //include "../view/quiz/selectQuestions.html.twig";

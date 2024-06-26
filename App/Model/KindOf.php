@@ -19,6 +19,7 @@ enum KindOf : string
     case USER = 'user';
     case RELATION = 'answerToQuestion';
 
+
     /**
      * @return string
      */
