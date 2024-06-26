@@ -24,11 +24,11 @@ class QuizQuestionController extends Controller
             $questionId = $_POST['questionId'] ?? $id;
             $question = $factory->createQuizQuestionById($questionId);
             foreach ($answers as $answer) {
-                $question->addGivenAnswer($factory->findIdTextObjectById($answer, KindOf::ANSWER));
+                if ((int)$answer > 0) $question->addGivenAnswer($factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
             }
             $question->writeResultDB();
 
-            header("refresh:1;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+            header("refresh:0.2;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
         } else {
             $question = $factory->createQuizQuestionById($id);
             if ($question) $this->view('quiz/answerQuestion', ['question' => $question]);
@@ -40,14 +40,12 @@ class QuizQuestionController extends Controller
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $data = $handler->findAll();
-        var_dump($data);
         $id = null;
         foreach ($data as $item){
             if ($item['is_actual']) $id = $item['question_id'];
         }
-        echo $id;
         if ($id) header("refresh:1;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/answer/$id'");
-        else $this->view('quiz/final',[]);
+        else header("refresh:1;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/final'");
     }
 
     // redirects to page where user can decide whether to check all questions from beginning or
@@ -56,7 +54,7 @@ class QuizQuestionController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $dbhandler = KindOf::QUIZCONTENT->getDBHandler();
-            if(isset ($_POST['finalize'])){
+            if(isset ($_POST['confirm'])){
                 $factory = Factory::getFactory();
                 $answeredQuestionsData = $dbhandler->findAll();
                 $questionsAsked = count($answeredQuestionsData);

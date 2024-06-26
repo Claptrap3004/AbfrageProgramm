@@ -95,7 +95,7 @@ class QuizContentDBHandler extends IdTextDBHandler
             foreach ($args['answers'] as $answerId) {
                 $sql = "INSERT INTO $table (question_id,answer_id) VALUES (:question_id,:answer_id)";
                 $stmt = $this->connection->prepare($sql);
-                $success = $stmt->execute([':question_id' => $args['questionId'], ':answer_id' => $answerId]);
+                $success = $stmt->execute([':question_id' => $args['question_id'], ':answer_id' => $answerId]);
                 if (!$success) return false;
             }
             $this->setNextAsActual($args['question_id']);

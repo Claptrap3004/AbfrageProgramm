@@ -24,14 +24,18 @@
                     </label>
                 </div>
                 {% for answer in question.answers %}
+                    {% set b_id = 1000 + answer.id %}
+
                     <div class="row align-self-center mx-5 py-2">
-                        <label>
+                        <label><input type="hidden" name="answers[]" id="{{ answer.id }}" value="">
                             <button type="button"
-                                    name="answers[]"
+                                    id="{{ b_id }}"
                                     value="{{ answer.id }}"
                                     class="col align-self-center btn btn-outline-secondary rounded-3 shadow-sm btn-lg mx-2 my-2 p-2 w-100"
                                     data-bs-toggle="button"
-                                    autocomplete="off">{{ answer.text }}</button>
+                                    autocomplete="off"
+                                    onclick="clickFn({{ b_id }},{{ answer.id }})"
+                            >{{ answer.text }}</button>
                         </label>
                         {#                                <label class="btn btn-outline-primary rounded-3">{{ answer.text }} #}
                         {#                                    <input type="checkbox" class="btn-check"  name="answers[]" autocomplete="off" #}
@@ -82,4 +86,10 @@
         <div class="col-2">
         </div>
     </form>
+    <script>
+        function clickFn(id, value) {
+            const checkbox = document.getElementById(id)
+            document.getElementById(value).value = checkbox.checked ?   0 : value;
+        }
+    </script>
 {% endblock %}
