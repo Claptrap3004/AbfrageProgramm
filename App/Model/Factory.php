@@ -108,6 +108,12 @@ class Factory extends DataBase
             $wrongAnswers);
     }
 
+    public function createUser(int $id):?User
+    {
+        $this->dbHandler = new UserDBHandler(KindOf::USER);
+        $userData = $this->dbHandler->findById($id);
+        return $userData ? new User($userData) : null;
+    }
 
 
 

@@ -18,7 +18,7 @@ enum KindOf : string
     case STATS = 'stats';
     case USER = 'user';
     case RELATION = 'answerToQuestion';
-
+    case QUIZCONTENT ='quiz_content_';
 
     /**
      * @return string
@@ -48,7 +48,8 @@ enum KindOf : string
             'QUESTION' => new QuestionDBHandler($this),
             'RELATION' => new RelationDBHandler($this),
             'STATS' => new StatsDBHandler($this,2),
-            'USER' => new UserDBHandler($this,),
+            'USER' => new UserDBHandler($this),
+            'QUIZCONTENT' => new QuizContentDBHandler($this),
             default => $handler
         };
     }
