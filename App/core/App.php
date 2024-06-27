@@ -18,7 +18,6 @@ class App
     {
         $url = $this->urlExplode();
         $file = '../App/Controller/' . ucfirst($url[0]) . 'Controller.php';
-        echo $file;
         if (file_exists($file)) {
             require $file;
             $this->controller = $this->prefix . ucfirst($url[0]) . 'Controller';

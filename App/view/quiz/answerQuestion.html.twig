@@ -15,51 +15,38 @@
             </div>
             <div class="col-7 w-60 bg-light rounded-3 my-1 mx-5 p-2 align-self-center">
                 <div class="row align-self-center mx-5 pb-2">
-                    <label>
+                    <label class="col align-self-center bold btn btn-primary rounded-3 shadow btn-lg disabled mx-2 my-4 p-2 w-100">
                         <input type="hidden" name="questionId" value="{{ question.id }}">
-                        <button type="button"
-                                class="col align-self-center bold btn btn-primary rounded-3 shadow btn-lg disabled mx-2 my-4 p-2 w-100">
                             {{ question.text }}
-                        </button>
                     </label>
                 </div>
                 {% for answer in question.answers %}
                     {% set b_id = 1000 + answer.id %}
-
-                    <div class="row align-self-center mx-5 py-2">
-                        <label><input type="hidden" name="answers[]" id="{{ answer.id }}" value="">
-                            <button type="button"
-                                    id="{{ b_id }}"
-                                    value="{{ answer.id }}"
-                                    class="col align-self-center btn btn-outline-secondary rounded-3 shadow-sm btn-lg mx-2 my-2 p-2 w-100"
-                                    data-bs-toggle="button"
-                                    autocomplete="off"
-                                    onclick="clickFn({{ b_id }},{{ answer.id }})"
-                            >{{ answer.text }}</button>
+                    <div class="row align-self-center mx-5 pb-2">
+                        <label class="col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-2 my-2 p-2 w-100"
+                               data-bs-toggle='button' onclick="clickFn({{ answer.id }})">{{ answer.text }}
+                            <input type="checkbox" name="answers[]" id="{{ answer.id }}" value="{{ answer.id }}"
+                                   hidden="hidden">
                         </label>
-                        {#                                <label class="btn btn-outline-primary rounded-3">{{ answer.text }} #}
-                        {#                                    <input type="checkbox" class="btn-check"  name="answers[]" autocomplete="off" #}
-                        {#                                           value="{{ answer.id }}"> #}
-                        {#                                </label><br> #}
                     </div>
                 {% endfor %}
             </div>
 
-            <div class="col-2 w-20 align-self-right">
-                <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
-                    <div class="card-body rounded-3">
-                        <br>
-                        <h5 class="card-title">Statistic Question #{{ question.id }}</h5>
-                        <br>
-                        <br>
-                        <p class="card-text">{{ question.stats.timesAsked }} times asked</p>
-                        <br>
-                        <p class="card-text">{{ question.stats.timesRight }} times answered correct</p>
-                    </div>
+        <div class="col-2 w-20 align-self-right">
+            <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
+                <div class="card-body rounded-3">
+                    <br>
+                    <h5 class="card-title">Statistic Question #{{ question.id }}</h5>
+                    <br>
+                    <br>
+                    <p class="card-text">{{ question.stats.timesAsked }} times asked</p>
+                    <br>
+                    <p class="card-text">{{ question.stats.timesRight }} times answered correct</p>
                 </div>
             </div>
-
         </div>
+        </div>
+
 
         <div class="container-flex p-1 m-1">
             <div class="row p-2 m-2">
@@ -87,9 +74,9 @@
         </div>
     </form>
     <script>
-        function clickFn(id, value) {
+        function clickFn(id) {
             const checkbox = document.getElementById(id)
-            document.getElementById(value).value = checkbox.checked ?   0 : value;
+            document.getElementById(id).checked = !checkbox.checked;
         }
     </script>
 {% endblock %}

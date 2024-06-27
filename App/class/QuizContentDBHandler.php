@@ -10,7 +10,7 @@ class QuizContentDBHandler extends IdTextDBHandler
     {
         parent::__construct($kindOf);
         $this->setTablename();
-//        $this->createTables();
+//       $this->createTables();
     }
 
     private function setTablename(): void

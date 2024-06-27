@@ -4,7 +4,7 @@
 namespace quiz;
 
 
-class Stats extends Model
+class Stats
 {
     private int $id;
     private int $questionId;
@@ -57,16 +57,31 @@ class Stats extends Model
     public function incrementTimesAsked():void
     {
         $this->timesAsked++;
+        $this->update();
     }
     public function incrementTimesRight():void
     {
         $this->timesRight++;
+        $this->update();
     }
 
     public function reset():void
     {
         $this->timesAsked = 0;
         $this->timesRight = 0;
+        $this->update();
+    }
+
+    public function update():void
+    {
+        $dbHandler = KindOf::STATS->getDBHandler();
+        $dbHandler->update([
+            'id'=>$this->id,
+            'question_id'=>$this->questionId,
+            'user_id'=>$this->userId,
+            'times_asked'=>$this->timesAsked,
+            'times_right'=>$this->timesRight
+            ]);
     }
 
 

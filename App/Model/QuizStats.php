@@ -18,7 +18,7 @@ class QuizStats
         $this->dbHandler = new QuizContentDBHandler(KindOf::QUIZCONTENT);
         $this->getQuestionsFromDB();
         $this->validate();
-        var_dump($this->validatedQuestions);
+//        var_dump($this->questions);
     }
 
 
@@ -33,7 +33,7 @@ class QuizStats
             $question = $this->factory->createQuizQuestionById($questionData['id']);
             $answersData = $this->dbHandler->findById($questionData['id']);
             $answers = [];
-            foreach ($answersData as $answer) $answers[] = $this->factory->findIdTextObjectById($answer['id'], KindOf::ANSWER);
+            foreach ($answersData as $answer) $answers[] = $this->factory->findIdTextObjectById($answer['answer_id'], KindOf::ANSWER);
             $question->setGivenAnswers($answers);
             $this->questions[] = $question;
         }

@@ -43,6 +43,7 @@ class StatsDBHandler extends IdTextDBHandler
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
     public function update(array $args): bool
     {
         if ($this->validateArgsUpdate($args)) {
@@ -62,5 +63,6 @@ class StatsDBHandler extends IdTextDBHandler
             array_key_exists('times_asked', $args) &&
             array_key_exists('times_right', $args);
     }
+
 
 }

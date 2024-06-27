@@ -7,7 +7,8 @@ class QuizQuestionController extends Controller
 
     public function index(array $data = []): void
     {
-        $this->fillTable([1, 2, 3]);
+
+        $this->fillTable([1, 2, 3,1,2,3,1,2,3]);
 
     }
 
@@ -29,7 +30,7 @@ class QuizQuestionController extends Controller
             }
             $question->writeResultDB();
 
-            header("refresh:0.2;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+            header("refresh:0.1;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
         } else {
             $question = $factory->createQuizQuestionById($id);
             if ($question) $this->view('quiz/answerQuestion', ['question' => $question]);
@@ -54,12 +55,12 @@ class QuizQuestionController extends Controller
     public function final(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $dbhandler = KindOf::QUIZCONTENT->getDBHandler();
+            $dbHandler = KindOf::QUIZCONTENT->getDBHandler();
             if (isset ($_POST['confirm'])) {
                 $quizStats = new QuizStats();
                 $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
             } else {
-                $dbhandler->setActualFirst();
+                if (gettype($dbHandler) === gettype(QuizContentDBHandler::class)) $dbHandler->setActualFirst();
             }
         } else {
             $this->view('quiz/final', []);
