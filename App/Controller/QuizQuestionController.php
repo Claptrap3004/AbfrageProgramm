@@ -7,9 +7,10 @@ class QuizQuestionController extends Controller
 
     public function index(array $data = []): void
     {
-        $this->fillTable([1,2,3]);
+        $this->fillTable([1, 2, 3]);
 
     }
+
     public function fillTable(array $data = []): void
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
@@ -41,7 +42,7 @@ class QuizQuestionController extends Controller
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $data = $handler->findAll();
         $id = null;
-        foreach ($data as $item){
+        foreach ($data as $item) {
             if ($item['is_actual']) $id = $item['question_id'];
         }
         if ($id) header("refresh:1;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/answer/$id'");
@@ -50,30 +51,14 @@ class QuizQuestionController extends Controller
 
     // redirects to page where user can decide whether to check all questions from beginning or
     // to get validation of quiz
-    public function final():void
+    public function final(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $dbhandler = KindOf::QUIZCONTENT->getDBHandler();
-            if(isset ($_POST['confirm'])){
-                $factory = Factory::getFactory();
-                $answeredQuestionsData = $dbhandler->findAll();
-                $questionsAsked = count($answeredQuestionsData);
-                $questions = [];
-                foreach ($answeredQuestionsData as $questionData){
-                    $question = $factory->createQuizQuestionById($questionData['id']);
-                    $answersData = $dbhandler->findById($questionData['id']);
-                    $answers = [];
-                    foreach ($answersData as $answer) $answers[] = $factory->findIdTextObjectById($answer['id'], KindOf::ANSWER);
-                    $question->setGivenAnswers($answers);
-                    $questions[] = $question;
-                }
-                $questionsRight = 0;
-                foreach ($questions as $question){
-                    if ($question->validate()) $questionsRight++;
-                }
-                $this->view('quiz/finalStats', ['total'=> $questionsAsked, 'right' => $questionsRight]);
-            }
-            else{
+            if (isset ($_POST['confirm'])) {
+                $quizStats = new QuizStats();
+                $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
+            } else {
                 $dbhandler->setActualFirst();
             }
         } else {

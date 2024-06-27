@@ -1,0 +1,64 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Auswertung Quiz {% endblock %}
+{% block head %}
+
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="container-fluid text-center my-4">
+            <h3 class="text-decoration-underline text-bold">Auswertung Quiz</h3>
+        </div>
+        <div class="col-1">
+        </div>
+        <div class="col-6 w-65 bg-light rounded-3 my-1 mx-5 p-2 align-self-top">
+            <table class="w-75 m-2 p-2">
+                <tr>
+                    {% set counter = 0 %}
+                    {% for key,value in finalStats.validatedQuestions %}
+                    {% if counter % 5 == 4 %}
+                </tr>
+                <tr>
+                    {% endif %}
+                    <td class="w-20">
+                        {% if value == 0 %}
+                            {% set button = "btn-danger" %}
+                        {% else %}
+                            {% set button = "btn-success" %}
+                        {% endif %}
+                        <button class="btn-lg w-75 {{ button }} shadow mx-2">{{ key }}</button>
+                    </td>
+                    {% set counter = counter + 1 %}
+                    {% endfor %}
+                </tr>
+            </table>
+        </div>
+        <div class="col-3 w-20 align-self-right">
+            <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
+                <div class="card-body rounded-3">
+                    <br>
+                    <h5 class="card-title">Statistic Quiz</h5>
+                    <br>
+                    <br>
+                    <p class="card-text">Questions asked: {{ finalStats.questionsAsked }}</p>
+                    <br>
+                    <p class="card-text">Questions answered correct: {{ finalStats.answeredCorrect }}</p>
+                    <br>
+                    <p class="card-text">success rate: {{ finalStats.rate }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-flex p-1 m-1">
+            <div class="row p-2 m-2">
+                <div class="align-items-center text-center">
+                    <label>
+                        <a href="https://abfrageprogramm.ddev.site:8443/">
+                            <button class="btn btn-primary">Zum Hauptmenü</button>
+                        </a>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

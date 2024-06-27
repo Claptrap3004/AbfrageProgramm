@@ -72,7 +72,7 @@ class QuizContentDBHandler extends IdTextDBHandler
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchALl(PDO::FETCH_ASSOC);
     }
 
     // returns question ids (content of quiz)
