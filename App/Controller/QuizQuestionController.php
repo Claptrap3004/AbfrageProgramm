@@ -5,19 +5,30 @@ namespace quiz;
 class QuizQuestionController extends Controller
 {
 
+    // supposed to check whether there is still a quiz configured, if not starts new one
     public function index(array $data = []): void
     {
-
-        $this->fillTable([1, 2, 3,1,2,3,1,2,3]);
+        $handler = KindOf::QUIZCONTENT->getDBHandler();
+        $questions = $handler->findAll();
+        if ($questions == []){
+            $this->fillTable([1, 2, 3,4,5,6,7,8]);
+        }
+        else {
+            header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+        }
 
     }
 
-    public function fillTable(array $data = []): void
+    // populating table quiz_content of user
+    private function fillTable(array $data = []): void
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $handler->create(['question_ids' => $data]);
+        header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+
     }
 
+    // // to answer current (actual) question of running quiz, sets next question as actual after
     public function answer(int $id): void
     {
         $factory = Factory::getFactory();
@@ -30,14 +41,14 @@ class QuizQuestionController extends Controller
             }
             $question->writeResultDB();
 
-            header("refresh:0.1;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+            header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
         } else {
             $question = $factory->createQuizQuestionById($id);
             if ($question) $this->view('quiz/answerQuestion', ['question' => $question]);
         }
     }
 
-    // checks quiz content for actual Question
+    // checks quiz content for actual Question, if actual was last question directs to final page
     public function actual(): void
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
@@ -46,8 +57,8 @@ class QuizQuestionController extends Controller
         foreach ($data as $item) {
             if ($item['is_actual']) $id = $item['question_id'];
         }
-        if ($id) header("refresh:1;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/answer/$id'");
-        else header("refresh:1;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/final'");
+        if ($id) header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/answer/$id'");
+        else header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/final'");
     }
 
     // redirects to page where user can decide whether to check all questions from beginning or

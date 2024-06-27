@@ -12,11 +12,11 @@
         <div class="col-1">
         </div>
         <div class="col-6 w-65 bg-light rounded-3 my-1 mx-5 p-2 align-self-top">
-            <table class="w-75 m-2 p-2">
+            <table class="w-100 m-2 p-2">
                 <tr>
                     {% set counter = 0 %}
                     {% for key,value in finalStats.validatedQuestions %}
-                    {% if counter % 5 == 4 %}
+                    {% if counter % 5 == 0 %}
                 </tr>
                 <tr>
                     {% endif %}
@@ -26,7 +26,7 @@
                         {% else %}
                             {% set button = "btn-success" %}
                         {% endif %}
-                        <button class="btn-lg w-75 {{ button }} shadow mx-2">{{ key }}</button>
+                        <button class="btn-lg w-75 {{ button }} shadow m-2">{{ key }}</button>
                     </td>
                     {% set counter = counter + 1 %}
                     {% endfor %}

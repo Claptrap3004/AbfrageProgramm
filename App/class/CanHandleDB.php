@@ -9,7 +9,7 @@ interface CanHandleDB
 {
     public function create(array $args): int;
 
-    public function findById(int $id): array;
+    public function findById(int $questionId): array;
 
     public function findAll(): array;
 

@@ -31,9 +31,10 @@ class QuizContentDBHandler extends IdTextDBHandler
         $this->createTables();
         $sql = "INSERT INTO $this->tableName (question_id,is_actual) VALUES (:question_id,:is_actual);";
         $stmt = $this->connection->prepare($sql);
-        foreach ($args['question_ids'] as $index => $questionId){
-                $isActual = $index == 0 ? 1 : 0;
-                $stmt->execute([':question_id' => $questionId, ':is_actual' => $isActual]);}
+        foreach ($args['question_ids'] as $index => $questionId) {
+            $isActual = $index == 0 ? 1 : 0;
+            $stmt->execute([':question_id' => $questionId, ':is_actual' => $isActual]);
+        }
         return 1;
     }
 
@@ -41,14 +42,10 @@ class QuizContentDBHandler extends IdTextDBHandler
     {
         $track = $this->getTrackTableName();
         $sqls = [];
-        $sqls[] = "DROP TABLE IF EXISTS $this->tableName;";
-        $sqls[] = "CREATE TABLE $this->tableName (id INT PRIMARY KEY AUTO_INCREMENT,
-        question_id INT, 
-        is_actual BOOL);";
         $sqls[] = "DROP TABLE IF EXISTS $track;";
-        $sqls[] = "CREATE TABLE $track(id INT PRIMARY KEY AUTO_INCREMENT,
-        question_id INT,
-         answer_id INT);";
+        $sqls[] = "DROP TABLE IF EXISTS $this->tableName;";
+        $sqls[] = "CREATE TABLE $this->tableName (id INT PRIMARY KEY AUTO_INCREMENT,question_id INT,is_actual BOOL);";
+        $sqls[] = "CREATE TABLE $track (id INT PRIMARY KEY AUTO_INCREMENT,content_id INT, answer_id INT);";
         foreach ($sqls as $sql) {
             $stmt = $this->connection->prepare($sql);
             $stmt->execute();
@@ -61,15 +58,16 @@ class QuizContentDBHandler extends IdTextDBHandler
     }
 
     // returns given answers to question if in quiz content
-    public function findById(int $id): array
+    public function findById(int $questionId): array
     {
         $data = $this->findAll();
         $questions = [];
         foreach ($data as $item) $questions[] = $item['question_id'];
-        if (!in_array($id, $questions)) return [];
+        if (!in_array($questionId, $questions)) return [];
         $table = $this->getTrackTableName();
-        $sql = "SELECT * FROM $table WHERE question_id = :id;";
+        $sql = "SELECT * FROM $table WHERE content_id = :id;";
         $stmt = $this->connection->prepare($sql);
+        $id = $this->getContentIdByQuestionId($questionId);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetchALl(PDO::FETCH_ASSOC);
@@ -83,38 +81,43 @@ class QuizContentDBHandler extends IdTextDBHandler
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    private function getContentIdByQuestionId(int $questionId):int
+    {   $sql = "SELECT * FROM $this->tableName WHERE question_id = :question_id;";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([':question_id' => $questionId]);
+        return $stmt->fetch(2)['id'];
+    }
+
 
     // expects array ['questionId' = int, 'answers' = [int]]
     public function update(array $args): bool
     {
         if ($this->validateArgsUpdate($args)) {
+            $args['content_id'] = $this->getContentIdByQuestionId($args['question_id']);
             $table = $this->getTrackTableName();
-            $sql = "DELETE FROM $table WHERE question_id = :id";
+            $sql = "DELETE FROM $table WHERE content_id = :id";
             $stmt = $this->connection->prepare($sql);
-            $stmt->execute([':id' => $args['question_id']]);
+            $stmt->execute([':id' => $args['content_id']]);
             foreach ($args['answers'] as $answerId) {
-                $sql = "INSERT INTO $table (question_id,answer_id) VALUES (:question_id,:answer_id)";
+                $sql = "INSERT INTO $table (content_id,answer_id) VALUES (:content_id,:answer_id)";
                 $stmt = $this->connection->prepare($sql);
-                $success = $stmt->execute([':question_id' => $args['question_id'], ':answer_id' => $answerId]);
+                $success = $stmt->execute([':content_id' => $args['content_id'], ':answer_id' => $answerId]);
                 if (!$success) return false;
             }
-            $this->setNextAsActual($args['question_id']);
+            $this->setNextAsActual($args['content_id']);
             return true;
         }
         return false;
     }
 
 
-    private function setNextAsActual(int $questionId): void
+    private function setNextAsActual(int $contentId): void
     {
-        $sql = "SELECT id FROM $this->tableName WHERE question_id = :question_id";
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute(['question_id'=>$questionId]);
-        $id = $stmt->fetch(2)['id'];
+
         $sql = "UPDATE $this->tableName SET is_actual = :is_actual WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
-        $stmt->execute([':id'=>$id, 'is_actual'=>0]);
-        $stmt->execute([':id'=>$id + 1, 'is_actual'=>1]);
+        $stmt->execute([':id' => $contentId, 'is_actual' => 0]);
+        $stmt->execute([':id' => $contentId + 1, 'is_actual' => 1]);
     }
 
     // deletes single question from quiz content (also eventually given answers to that question)
@@ -131,7 +134,7 @@ class QuizContentDBHandler extends IdTextDBHandler
         return true;
     }
 
-    public function setActualFirst():void
+    public function setActualFirst(): void
     {
         $sql = "UPDATE $this->tableName SET is_actual = 1 WHERE id = 1";
         $stmt = $this->connection->prepare($sql);

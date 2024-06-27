@@ -39,11 +39,11 @@ class IdTextDBHandler extends DataBase implements CanHandleDB
         return -1;
     }
 
-    public function findById(int $id): array
+    public function findById(int $questionId): array
     {
         $sql = "SELECT * FROM $this->tableName WHERE id = :id;";
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':id', $questionId);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
