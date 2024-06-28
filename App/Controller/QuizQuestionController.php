@@ -11,7 +11,7 @@ class QuizQuestionController extends Controller
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
         if ($questions == []){
-            $this->fillTable([1, 2, 3,4,5,6,7,8]);
+            $this->fillTable(KindOf::QUESTION->getDBHandler()->findAll());
         }
         else {
             header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
@@ -22,8 +22,10 @@ class QuizQuestionController extends Controller
     // populating table quiz_content of user
     private function fillTable(array $data = []): void
     {
+        $preparedData = [];
+        foreach ($data as $item) $preparedData[] = $item['id'];
         $handler = KindOf::QUIZCONTENT->getDBHandler();
-        $handler->create(['question_ids' => $data]);
+        $handler->create(['question_ids' => $preparedData]);
         header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
 
     }

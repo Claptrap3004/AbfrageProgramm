@@ -21,7 +21,12 @@ class QuestionDBHandler extends IdTextDBHandler
             $stmt->bindParam(':user_id', $args['user_id']);
             $stmt->bindParam(':text', $args['text']);
             $stmt->execute();
-            return $this->connection->lastInsertId();
+            $id = $this->connection->lastInsertId();
+            KindOf::STATS->getDBHandler()->create(['user_id' => 2,'question_id'=> $id,'times_asked' =>0, 'times_right'=>0]);
+            $stmt->bindParam(':question_id', $args['question_id']);
+            $stmt->bindParam(':times_asked', $args['times_asked']);
+            $stmt->bindParam(':times_right', $args['times_right']);
+            return $id;
         }
         return -1;
     }

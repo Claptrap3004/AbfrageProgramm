@@ -14,7 +14,7 @@ class RelationDBHandler extends IdTextDBHandler
     public function create(array $args): int
     {
         if ($this->validateArgsCreate($args)){
-            $sql = "INSERT INTO $this->tableName (question_id, answer_id, isRight) VALUES (:question_id, :answer_id, :isRight);";
+            $sql = "INSERT INTO $this->tableName (question_id, answer_id, is_right) VALUES (:question_id, :answer_id, :is_right);";
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':question_id', $args['question_id']);
             $stmt->bindParam(':answer_id', $args['answer_id']);

@@ -12,13 +12,7 @@ INSERT INTO category (text) VALUES ('PC - Grundlagen'),
 
 INSERT INTO question (category_id, user_id, text) VALUES (1,1,'Welches Bauteil eines Computers führt Berechnungen durch ?'),
                                                          (2,1,'Nennen Sie zwei Transport - Protokolle'),
-                                                         (3,1, 'Welcher SQL - Befehl wird zur Erstelleung neuer Einträge verwendet ?'),
-                                                         (2,1,'Frage4'),
-                                                         (2,1,'Frage5'),
-                                                         (2,1,'Frage6'),
-                                                         (2,1,'Frage7'),
-                                                         (2,1,'Frage8');
-
+                                                         (3,1, 'Welcher SQL - Befehl wird zur Erstelleung neuer Einträge verwendet ?');
 
 INSERT INTO answer (text) VALUES ('CPU'),
                                  ('Northbridge'),
@@ -31,20 +25,11 @@ INSERT INTO answer (text) VALUES ('CPU'),
                                  ('CREATE'),
                                  ('SELECT'),
                                  ('JOIN'),
-                                 ('INSERT INTO'),
-                                 ('Richtig1'),
-                                 ('Falsch1'),
-                                 ('Falsch2'),
-                                 ('Falsch3');
+                                 ('INSERT INTO');
 
 INSERT INTO stats (user_id,question_id, times_asked, times_right) VALUES (2,1,0,0),
                                                                  (2,2,0,0),
-                                                                 (2,3,0,0),
-                                                                 (2,4,0,0),
-                                                                 (2,5,0,0),
-                                                                 (2,6,0,0),
-                                                                 (2,7,0,0),
-                                                                 (2,8,0,0);
+                                                                 (2,3,0,0);
 
 INSERT INTO answerToQuestion (question_id, answer_id, is_right) VALUES (1,1,1),
                                                                       (1,2,0),
@@ -57,26 +42,6 @@ INSERT INTO answerToQuestion (question_id, answer_id, is_right) VALUES (1,1,1),
                                                                       (3,9,0),
                                                                       (3,10,0),
                                                                       (3,11,0),
-                                                                      (3,12,1),
-                                                                      (4,13,1),
-                                                                      (4,14,0),
-                                                                      (4,15,0),
-                                                                      (4,16,0),
-                                                                      (5,13,1),
-                                                                      (5,14,0),
-                                                                      (5,15,0),
-                                                                      (5,16,0),
-                                                                      (6,13,1),
-                                                                      (6,14,0),
-                                                                      (6,15,0),
-                                                                      (6,16,0),
-                                                                      (7,13,1),
-                                                                      (7,14,0),
-                                                                      (7,15,0),
-                                                                      (7,16,0),
-                                                                      (8,13,1),
-                                                                      (8,14,0),
-                                                                      (8,15,0),
-                                                                      (8,16,0);
+                                                                      (3,12,1);
 
 
