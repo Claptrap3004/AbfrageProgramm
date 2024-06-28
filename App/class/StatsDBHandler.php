@@ -31,10 +31,19 @@ class StatsDBHandler extends IdTextDBHandler
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * @param array $args
-     * @return bool
-     */
+    public function update(array $args): bool
+    {
+        if ($this->validateArgsUpdate($args)) {
+            $sql = "UPDATE $this->tableName SET times_asked = :times_asked, times_right = :times_right WHERE id = :id;";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindParam(':id', $args['id']);
+            $stmt->bindParam(':times_asked', $args['times_asked']);
+            $stmt->bindParam(':times_right', $args['times_right']);
+            return $stmt->execute();
+        }
+        return false;
+    }
+
     protected function validateArgsCreate(array $args): bool
     {
         return array_key_exists('question_id', $args) &&

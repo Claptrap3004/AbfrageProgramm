@@ -17,7 +17,7 @@ class QuizQuestionController extends Controller
         $questions = $handler->findAll();
         if (count($questions) == 0){
             $this->select();
-            header("refresh:10;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+            header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
         }
         header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
     }
@@ -25,10 +25,8 @@ class QuizQuestionController extends Controller
     // populating table quiz_content of user
     private function fillTable(array $data = []): void
     {
-        $preparedData = [];
-        foreach ($data as $item) $preparedData[] = $item['id'];
         $handler = KindOf::QUIZCONTENT->getDBHandler();
-        $handler->create(['question_ids' => $preparedData]);
+        $handler->create(['question_ids' => $data]);
         header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
 
     }
@@ -39,8 +37,9 @@ class QuizQuestionController extends Controller
     public function select():void
     {
         $selector = new QuestionSelector();
-
-        $this->fillTable($selector->select(20,['categoryIds'=> [2,3]]));
+        $questions = $selector->select(20);
+var_dump($questions);
+        $this->fillTable($questions);
     }
     // // to answer current (actual) question of running quiz, sets next question as actual after
     public function answer(int $id): void

@@ -15,12 +15,13 @@ class QuestionSelector implements CanSelectQuestions
     public function select(int $numberOfQuestions, array $categoryIds = []): array
     {
         $questions = [];
+        echo 'categoryIds Array : <br>';var_dump($categoryIds);
+
         $this->questionPool = KindOf::QUESTION->getDBHandler()->findAll($categoryIds);
         if ($numberOfQuestions > count($this->questionPool)) return [];
         for ($i = 0; $i < $numberOfQuestions; $i++) {
             $questions[] = $this->pickOne();
         }
-        var_dump($questions);
         return $questions;
     }
 
@@ -30,7 +31,7 @@ class QuestionSelector implements CanSelectQuestions
     private function pickOne() : int
     {
         $index = random_int(0,count($this->questionPool)-1);
-        $id = $this->questionPool[$index];
+        $id = $this->questionPool[$index]['id'];
         unset( $this->questionPool[$index]);
         $this->questionPool = array_values($this->questionPool);
         return $id;
