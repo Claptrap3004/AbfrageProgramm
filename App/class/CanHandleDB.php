@@ -11,7 +11,7 @@ interface CanHandleDB
 
     public function findById(int $questionId): array;
 
-    public function findAll(): array;
+    public function findAll(array $filters = []): array;
 
     public function update(array $args): bool;
     public function deleteAtId(int $id): bool;

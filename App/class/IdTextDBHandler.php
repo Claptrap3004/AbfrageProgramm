@@ -48,12 +48,21 @@ class IdTextDBHandler extends DataBase implements CanHandleDB
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function findAll(): array
-    {
+    public function findAll(array $filters = []): array
+    {   if ($filters  != []) return $this->findFiltered($filters);
         $sql = "SELECT * FROM $this->tableName;";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function findFiltered(array $filters): array
+    {
+        $sql = "SELECT * FROM $this->tableName WHERE category_id in (:categories);";
+        $categories = implode(',', $filters['categoryIds']);
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([':categories' => $categories]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     }
 
     public function update(array $args): bool

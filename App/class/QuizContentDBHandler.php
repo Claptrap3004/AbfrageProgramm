@@ -29,7 +29,6 @@ class QuizContentDBHandler extends IdTextDBHandler
     {
         if (!$this->validateArgsCreate($args)) {
             if ($args === []) $this->createTables();
-            return -1;
         }
         $this->createTables();
         $sql = "INSERT INTO $this->tableName (question_id,is_actual) VALUES (:question_id,:is_actual);";
@@ -77,7 +76,7 @@ class QuizContentDBHandler extends IdTextDBHandler
     }
 
     // returns question ids (content of quiz)
-    public function findAll(): array
+    public function findAll(array $filters = []): array
     {
         $sql = "SELECT * FROM $this->tableName;";
         $stmt = $this->connection->prepare($sql);

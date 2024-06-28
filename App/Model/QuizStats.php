@@ -6,7 +6,7 @@ class QuizStats
 {
     private Factory $factory;
     private QuizContentDBHandler $dbHandler;
-    private array $questions;
+    private array $questions = [];
     private array $validatedQuestions = [];
     private int $questionsAsked = 0;
     private int $answeredCorrect = 0;

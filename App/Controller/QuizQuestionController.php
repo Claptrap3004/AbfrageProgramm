@@ -2,6 +2,8 @@
 
 namespace quiz;
 
+use Random\RandomException;
+
 class QuizQuestionController extends Controller
 {
 
@@ -11,7 +13,11 @@ class QuizQuestionController extends Controller
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
         if ($questions == []){
-            $this->fillTable(KindOf::QUESTION->getDBHandler()->findAll());
+            try {
+                $this->select();
+            } catch (RandomException $e) {
+                $this->fillTable(KindOf::QUESTION->getDBHandler()->findAll());
+            }
         }
         else {
             header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
@@ -30,6 +36,14 @@ class QuizQuestionController extends Controller
 
     }
 
+    /**
+     * @throws RandomException
+     */
+    public function select():void
+    {
+        $selector = new QuestionSelector();
+        $this->fillTable($selector->select(20,['categoryIds'=> [2,3]]));
+    }
     // // to answer current (actual) question of running quiz, sets next question as actual after
     public function answer(int $id): void
     {
