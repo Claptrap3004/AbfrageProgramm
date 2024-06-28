@@ -20,7 +20,7 @@ class QuestionSelector implements CanSelectQuestions
         for ($i = 0; $i < $numberOfQuestions; $i++) {
             $questions[] = $this->pickOne();
         }
-var_dump($questions);
+        var_dump($questions);
         return $questions;
     }
 
