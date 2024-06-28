@@ -3,7 +3,6 @@
 namespace quiz;
 
 
-
 use PDO;
 
 class QuestionDBHandler extends IdTextDBHandler
@@ -14,57 +13,58 @@ class QuestionDBHandler extends IdTextDBHandler
         parent::__construct($kindOf);
     }
 
-    public function create(array $args): int
-    {
-        if ($this->validateArgsCreate($args)){
-            $sql = "INSERT INTO $this->tableName (category_id, user_id, text) VALUES (:category_id, :user_id, :text);";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindParam(':category_id', $args['category_id']);
-            $stmt->bindParam(':user_id', $args['user_id']);
-            $stmt->bindParam(':text', $args['text']);
-            $stmt->execute();
-            $id = $this->connection->lastInsertId();
-            KindOf::STATS->getDBHandler()->create(['user_id' => 2,'question_id'=> $id,'times_asked' =>0, 'times_right'=>0]);
-            $stmt->bindParam(':question_id', $args['question_id']);
-            $stmt->bindParam(':times_asked', $args['times_asked']);
-            $stmt->bindParam(':times_right', $args['times_right']);
-            return $id;
-        }
-        return -1;
-    }
 
+    /**
+     * without param simply calls parent find all method to provide all question data sets including following keys:
+     * 'id', 'category_id', 'user_id' and 'text'
+     * filter array may contain 'categoryIds' and / or 'userIds' key which hold array of appropriate ids
+     * @param array $filters
+     * @return array listed keys
+     */
     public function findAll(array $filters = []): array
     {
-        if ($filters  !== []) return $this->findFiltered($filters);
+        if ($filters !== []) return $this->findFiltered($filters);
         return parent::findAll();
     }
+
     /**
+     * returns question data sets matching filter containing keys listed iin findAll DOC
      * @param array $filters
      * @return array
      */
     private function findFiltered(array $filters): array
     {
-
-        $sql = "SELECT * FROM $this->tableName WHERE category_id in (:categories);";
-        $categories = implode(',', $filters['categoryIds']);
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute([':categories' => $categories]);
+        if (array_key_exists('categoryIds', $filters) && array_key_exists('userIds', $filters)){
+            $sql = "SELECT * FROM $this->tableName WHERE category_id IN (:categoryIds) AND user_id IN (:userIds);";
+            $categoryIds = implode(',', $filters['categoryIds']);
+            $userIds = implode(',', $filters['userIds']);
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute([':categoryIds' => $categoryIds, ':userIds' => $userIds]);
+        }
+        elseif (array_key_exists('categoryIds', $filters)){
+            $sql = "SELECT * FROM $this->tableName WHERE category_id IN (:categoryIds);";
+            $categoryIds = implode(',', $filters['categoryIds']);
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute([':categoryIds' => $categoryIds]);
+        }
+        elseif (array_key_exists('userIds', $filters)){
+            $sql = "SELECT * FROM $this->tableName WHERE user_id IN (:userIds);";
+            $userIds = implode(',', $filters['userIds']);
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute([':userIds' => $userIds]);
+        }
+        else return [];
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     }
-    public function update(array $args): bool
-    {
-        if ($this->validateArgsUpdate($args)) {
-            $sql = "UPDATE $this->tableName SET category_id = :category_id, user_id = :user_id, text = :text WHERE id = :id;";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindParam(':id', $args['id']);
-            $stmt->bindParam(':category_id', $args['category_id']);
-            $stmt->bindParam(':user_id', $args['user_id']);
-            $stmt->bindParam(':text', $args['text']);
-            return $stmt->execute();
-        }
-        return false;
-    }
+
+
+    /**
+     * checks against existence of necessary keys in args.
+     * required keys are 'text','category_id' and 'user_id'
+     * @param array $args
+     * @return bool
+     */
     protected function validateArgsCreate(array $args): bool
     {
         return array_key_exists('text', $args) &&

@@ -16,6 +16,7 @@ class IdTextDBHandler extends DataBase implements CanHandleDB
     protected PDO $connection;
 
     /**
+     * expects enum entry to contain appropriate table name
      * @param KindOf $kindOf
      */
     public function __construct(KindOf $kindOf)
