@@ -5,30 +5,31 @@ namespace quiz;
 class DBHandlerProvider
 {
 
-    private static IdTextDBHandler $answerDBHandler;
-    private static IdTextDBHandler $categoryDBHandler;
-    private static QuestionDBHandler $questionDBHandler;
-    private static RelationDBHandler $relationDBHandler;
-    private static StatsDBHandler $statsDBHandler;
-    private static UserDBHandler $userDBHandler;
-    private static QuizContentDBHandler $quizContentDBHandler;
+    private static ?IdTextDBHandler $answerDBHandler = null;
+    private static ?IdTextDBHandler $categoryDBHandler = null;
+    private static ?QuestionDBHandler $questionDBHandler = null;
+    private static ?RelationDBHandler $relationDBHandler = null;
+    private static ?StatsDBHandler $statsDBHandler = null;
+    private static ?UserDBHandler $userDBHandler = null;
+    private static ?QuizContentDBHandler $quizContentDBHandler = null;
 
     public static function getIdTextDBHandler(KindOf $kindOf): IdTextDBHandler
     {
-        switch($kindOf){
+        switch ($kindOf) {
             case KindOf::ANSWER :
                 if (!self::$answerDBHandler) self::$answerDBHandler = new IdTextDBHandler($kindOf);
                 return self::$answerDBHandler;
             case KindOf::CATEGORY :
                 if (!self::$categoryDBHandler) self::$categoryDBHandler = new IdTextDBHandler($kindOf);
                 return self::$categoryDBHandler;
-            default: return new IdTextDBHandler($kindOf);
+            default:
+                return new IdTextDBHandler($kindOf);
         }
     }
 
     public static function setIdTextDBHandler(IdTextDBHandler $idTextDBHandler, KindOf $kindOf): void
     {
-        switch($kindOf){
+        switch ($kindOf) {
             case KindOf::ANSWER :
                 self::$answerDBHandler = $idTextDBHandler;
                 break;
@@ -53,7 +54,7 @@ class DBHandlerProvider
 
     public static function getRelationDBHandler(): RelationDBHandler
     {
-        if(!self::$relationDBHandler) self::$relationDBHandler = new RelationDBHandler(KindOf::RELATION);
+        if (!self::$relationDBHandler) self::$relationDBHandler = new RelationDBHandler(KindOf::RELATION);
         return self::$relationDBHandler;
     }
 
@@ -64,7 +65,7 @@ class DBHandlerProvider
 
     public static function getStatsDBHandler(): StatsDBHandler
     {
-        if(!self::$statsDBHandler) self::$statsDBHandler = new StatsDBHandler(KindOf::STATS,$_SESSION['UserId']);
+        if (!self::$statsDBHandler) self::$statsDBHandler = new StatsDBHandler(KindOf::STATS, $_SESSION['UserId']);
         return self::$statsDBHandler;
     }
 
@@ -75,7 +76,7 @@ class DBHandlerProvider
 
     public static function getUserDBHandler(): UserDBHandler
     {
-        if(!self::$userDBHandler) self::$userDBHandler = new UserDBHandler(KindOf::STATS);
+        if (!self::$userDBHandler) self::$userDBHandler = new UserDBHandler(KindOf::STATS);
 
         return self::$userDBHandler;
     }
@@ -87,7 +88,7 @@ class DBHandlerProvider
 
     public static function getQuizContentDBHandler(): QuizContentDBHandler
     {
-        if(!self::$quizContentDBHandler) self::$quizContentDBHandler = new QuizContentDBHandler(KindOf::QUIZCONTENT);
+        if (!self::$quizContentDBHandler) self::$quizContentDBHandler = new QuizContentDBHandler(KindOf::QUIZCONTENT);
 
         return self::$quizContentDBHandler;
     }

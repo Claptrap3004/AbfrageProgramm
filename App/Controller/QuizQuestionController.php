@@ -9,7 +9,6 @@ class QuizQuestionController extends Controller
     public function index(array $data = []): void
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
-        $handler->createTables();
         $questions = $handler->findAll();
         if ($questions == []){
             $this->fillTable([1, 2, 3,4,5,6,7,8]);

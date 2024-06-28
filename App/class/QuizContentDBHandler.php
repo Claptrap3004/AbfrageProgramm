@@ -27,7 +27,10 @@ class QuizContentDBHandler extends IdTextDBHandler
     // with list of question-ids setting first to actual
     public function create(array $args): int
     {
-        if (!$this->validateArgsCreate($args)) return -1;
+        if (!$this->validateArgsCreate($args)) {
+            if ($args === []) $this->createTables();
+            return -1;
+        }
         $this->createTables();
         $sql = "INSERT INTO $this->tableName (question_id,is_actual) VALUES (:question_id,:is_actual);";
         $stmt = $this->connection->prepare($sql);
