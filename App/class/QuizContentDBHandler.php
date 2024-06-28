@@ -38,7 +38,7 @@ class QuizContentDBHandler extends IdTextDBHandler
         return 1;
     }
 
-    private function createTables(): void
+    public function createTables(): void
     {
         $track = $this->getTrackTableName();
         $sqls = [];

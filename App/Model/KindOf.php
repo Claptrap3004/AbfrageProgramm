@@ -20,6 +20,8 @@ enum KindOf : string
     case RELATION = 'answerToQuestion';
     case QUIZCONTENT ='quiz_content_';
 
+
+
     /**
      * @return string
      */
@@ -42,15 +44,14 @@ enum KindOf : string
 
     public function getDBHandler(): CanHandleDB
     {
-        $userid = $_SESSION['UserId'] ?? 2;
         $handler = new IdTextDBHandler($this);
         return match ($this->getName()) {
-            'CATEGORY', 'ANSWER' => new IdTextDBHandler($this),
-            'QUESTION' => new QuestionDBHandler($this),
-            'RELATION' => new RelationDBHandler($this),
-            'STATS' => new StatsDBHandler($this,$userid),
-            'USER' => new UserDBHandler($this),
-            'QUIZCONTENT' => new QuizContentDBHandler($this),
+            'CATEGORY', 'ANSWER' => DBHandlerProvider::getIdTextDBHandler($this),
+            'QUESTION' => DBHandlerProvider::getQuestionDBHandler(),
+            'RELATION' => DBHandlerProvider::getRelationDBHandler(),
+            'STATS' => DBHandlerProvider::getStatsDBHandler(),
+            'USER' => DBHandlerProvider::getUserDBHandler(),
+            'QUIZCONTENT' => DBHandlerProvider::getQuizContentDBHandler(),
             default => $handler
         };
     }

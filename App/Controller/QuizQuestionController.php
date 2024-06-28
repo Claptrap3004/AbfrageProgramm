@@ -9,6 +9,7 @@ class QuizQuestionController extends Controller
     public function index(array $data = []): void
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
+        $handler->createTables();
         $questions = $handler->findAll();
         if ($questions == []){
             $this->fillTable([1, 2, 3,4,5,6,7,8]);
@@ -70,6 +71,7 @@ class QuizQuestionController extends Controller
             if (isset ($_POST['confirm'])) {
                 $quizStats = new QuizStats();
                 $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
+                $dbHandler->create([]);
             } else {
                 if (gettype($dbHandler) === gettype(QuizContentDBHandler::class)) $dbHandler->setActualFirst();
             }

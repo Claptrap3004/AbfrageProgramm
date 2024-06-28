@@ -26,7 +26,7 @@ class App
             if (!empty($url[1])) $this->method = method_exists($controller, $url[1]) ? $url[1] : 'index';
             $data = isset($url[2]) ? [$url[2]] : [];
             call_user_func_array([$controller, $this->method], $data);
-        } else $this->pageNotFound();
+        } else header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion'");;
     }
 
     private function pageNotFound()
