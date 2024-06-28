@@ -15,47 +15,26 @@ class StatsDBHandler extends IdTextDBHandler
         $this->userId = $userId;
     }
 
-    public function create(array $args): int
-    {
-        if ($this->validateArgsCreate($args)){
-            $sql = "INSERT INTO $this->tableName (user_id, question_id, times_asked, times_right) 
-                    VALUES (:user_id, :question_id, :times_asked, :times_right);";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindParam(':user_id', $this->userId);
-            $stmt->bindParam(':question_id', $args['question_id']);
-            $stmt->bindParam(':times_asked', $args['times_asked']);
-            $stmt->bindParam(':times_right', $args['times_right']);
-            $stmt->execute();
-            return $this->connection->lastInsertId();
-        }
-        return -1;
-    }
 
-    // since there is no need to create single relation objects this implementation of findById provides an array of
-    // answerIds and the value of isRight of the answerId that refer to a question id instead of providing information
-    // of a single relation by its id
+    /**
+     * $id in this case represents the question id the stats data is related to, provides stats data set for question
+     * depending on actual user
+     * data set contains following keys: 'id', 'user_id', 'question_id', 'times_asked' and 'times_right'
+     * @param int $id
+     * @return array
+     */
     public function findById(int $id): array
     {
         $sql = "SELECT * FROM $this->tableName WHERE question_id = :question_id AND user_id = :user_id;";
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam(':question_id', $id);
-        $stmt->bindParam(':user_id', $this->userId);
-        $stmt->execute();
+        $stmt->execute([':question_id'=> $id,':user_id'=> $this->userId]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function update(array $args): bool
-    {
-        if ($this->validateArgsUpdate($args)) {
-            $sql = "UPDATE $this->tableName SET times_asked = :times_asked, times_right = :times_right WHERE id = :id;";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindParam(':id', $args['id']);
-            $stmt->bindParam(':times_asked', $args['times_asked']);
-            $stmt->bindParam(':times_right', $args['times_right']);
-            return $stmt->execute();
-        }
-        return false;
-    }
+    /**
+     * @param array $args
+     * @return bool
+     */
     protected function validateArgsCreate(array $args): bool
     {
         return array_key_exists('question_id', $args) &&

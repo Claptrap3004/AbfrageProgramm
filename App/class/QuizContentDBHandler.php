@@ -76,14 +76,6 @@ class QuizContentDBHandler extends IdTextDBHandler
         return $stmt->fetchALl(PDO::FETCH_ASSOC);
     }
 
-    // returns question ids (content of quiz)
-    public function findAll(array $filters = []): array
-    {
-        $sql = "SELECT * FROM $this->tableName;";
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
     private function getContentIdByQuestionId(int $questionId):int
     {   $sql = "SELECT * FROM $this->tableName WHERE question_id = :question_id;";
         $stmt = $this->connection->prepare($sql);
