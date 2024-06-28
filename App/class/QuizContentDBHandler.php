@@ -61,16 +61,16 @@ class QuizContentDBHandler extends IdTextDBHandler
     }
 
     // returns given answers to question if in quiz content
-    public function findById(int $questionId): array
+    public function findById(int $id): array
     {
         $data = $this->findAll();
         $questions = [];
         foreach ($data as $item) $questions[] = $item['question_id'];
-        if (!in_array($questionId, $questions)) return [];
+        if (!in_array($id, $questions)) return [];
         $table = $this->getTrackTableName();
         $sql = "SELECT * FROM $table WHERE content_id = :id;";
         $stmt = $this->connection->prepare($sql);
-        $id = $this->getContentIdByQuestionId($questionId);
+        $id = $this->getContentIdByQuestionId($id);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetchALl(PDO::FETCH_ASSOC);

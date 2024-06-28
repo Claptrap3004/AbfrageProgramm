@@ -28,11 +28,11 @@ class RelationDBHandler extends IdTextDBHandler
     // since there is no need to create single relation objects this implementation of findById provides an array of
     // answerIds and the value of isRight of the answerId that refer to a question id instead of providing information
     // of a single relation by its id
-    public function findById(int $questionId): array
+    public function findById(int $id): array
     {
         $sql = "SELECT * FROM $this->tableName WHERE question_id = :id;";
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam(':id', $questionId);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

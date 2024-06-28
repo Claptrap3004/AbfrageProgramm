@@ -4,6 +4,8 @@ namespace quiz;
 
 
 
+use PDO;
+
 class QuestionDBHandler extends IdTextDBHandler
 {
 
@@ -29,6 +31,26 @@ class QuestionDBHandler extends IdTextDBHandler
             return $id;
         }
         return -1;
+    }
+
+    public function findAll(array $filters = []): array
+    {
+        if ($filters  !== []) return $this->findFiltered($filters);
+        return parent::findAll();
+    }
+    /**
+     * @param array $filters
+     * @return array
+     */
+    private function findFiltered(array $filters): array
+    {
+
+        $sql = "SELECT * FROM $this->tableName WHERE category_id in (:categories);";
+        $categories = implode(',', $filters['categoryIds']);
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([':categories' => $categories]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     }
     public function update(array $args): bool
     {
