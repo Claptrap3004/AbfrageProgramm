@@ -13,7 +13,13 @@ class DBHandlerProvider
     private static ?UserDBHandler $userDBHandler = null;
     private static ?QuizContentDBHandler $quizContentDBHandler = null;
 
-    public static function getIdTextDBHandler(KindOf $kindOf): IdTextDBHandler
+    /**
+     * provides appropriate DBHandler depending on KindOf being ANSWER or CATEGORY, if any other KindOF element this
+     * will return null
+     * @param KindOf $kindOf
+     * @return IdTextDBHandler|null
+     */
+    public static function getIdTextDBHandler(KindOf $kindOf): ?IdTextDBHandler
     {
         switch ($kindOf) {
             case KindOf::ANSWER :
@@ -23,10 +29,18 @@ class DBHandlerProvider
                 if (!self::$categoryDBHandler) self::$categoryDBHandler = new IdTextDBHandler($kindOf);
                 return self::$categoryDBHandler;
             default:
-                return new IdTextDBHandler($kindOf);
+                return null;
         }
     }
 
+
+    /**
+     * sets param idTextDBHandler to answer or category db handler depending on KindOf being ANSWER or CATEGORY,
+     * if any other kindOf element is passed nothing changes
+     * @param IdTextDBHandler $idTextDBHandler
+     * @param KindOf $kindOf
+     * @return void
+     */
     public static function setIdTextDBHandler(IdTextDBHandler $idTextDBHandler, KindOf $kindOf): void
     {
         switch ($kindOf) {
@@ -37,7 +51,6 @@ class DBHandlerProvider
                 self::$categoryDBHandler = $idTextDBHandler;
                 break;
             default:
-                throw new \Exception('Unexpected value');
         }
     }
 

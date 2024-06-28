@@ -29,11 +29,5 @@ class App
         } else header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion'");;
     }
 
-    private function pageNotFound()
-    {
-        require '../App/Controller/PageNotFoundController.php';
-        $this->controller = $this->prefix . 'PageNotFoundController';
-
-    }
 
 }
