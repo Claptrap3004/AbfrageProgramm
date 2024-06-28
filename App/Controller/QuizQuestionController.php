@@ -8,21 +8,17 @@ class QuizQuestionController extends Controller
 {
 
     // supposed to check whether there is still a quiz configured, if not starts new one
+    /**
+     * @throws RandomException
+     */
     public function index(array $data = []): void
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
-        if ($questions == []){
-            try {
-                $this->select();
-            } catch (RandomException $e) {
-                $this->fillTable(KindOf::QUESTION->getDBHandler()->findAll());
-            }
+        if ($questions === []){
+            $this->select();
         }
-        else {
-            header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
-        }
-
+        header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
     }
 
     // populating table quiz_content of user

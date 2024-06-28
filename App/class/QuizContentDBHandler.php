@@ -29,6 +29,7 @@ class QuizContentDBHandler extends IdTextDBHandler
     {
         if (!$this->validateArgsCreate($args)) {
             if ($args === []) $this->createTables();
+            return -1;
         }
         $this->createTables();
         $sql = "INSERT INTO $this->tableName (question_id,is_actual) VALUES (:question_id,:is_actual);";
