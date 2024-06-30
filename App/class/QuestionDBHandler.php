@@ -35,28 +35,29 @@ class QuestionDBHandler extends IdTextDBHandler
     private function findFiltered(array $filters): array
     {
         if (array_key_exists('categoryIds', $filters) && array_key_exists('userIds', $filters)){
-            $sql = "SELECT * FROM $this->tableName WHERE category_id IN (:categoryIds) AND user_id IN (:userIds);";
-            $categoryIds = implode(',', $filters['categoryIds']);
-            $userIds = implode(',', $filters['userIds']);
+            $sql = "SELECT * FROM $this->tableName WHERE category_id IN :categoryIds AND user_id IN :userIds;";
+            $categoryIds = "(" . implode(',', $filters['categoryIds']) . ")";
+            $userIds ="(" . implode(',', $filters['userIds']) . ")";
             $stmt = $this->connection->prepare($sql);
             $stmt->execute([':categoryIds' => $categoryIds, ':userIds' => $userIds]);
         }
         elseif (array_key_exists('categoryIds', $filters)){
-            $sql = "SELECT * FROM $this->tableName WHERE category_id IN (:categoryIds);";
-            $categoryIds = implode(',', $filters['categoryIds']);
+            $required = Filters::CATEGORY->createWhereClauseAndBindings($filters['categoryIds']);
+            $sql = "SELECT * FROM $this->tableName" . $required['sql'];
             $stmt = $this->connection->prepare($sql);
-            $stmt->execute([':categoryIds' => $categoryIds]);
+            $stmt->execute($required['binding']);
         }
         elseif (array_key_exists('userIds', $filters)){
-            $sql = "SELECT * FROM $this->tableName WHERE user_id IN (:userIds);";
-            $userIds = implode(',', $filters['userIds']);
+            $required = Filters::USER->createWhereClauseAndBindings($filters['categoryIds']);
+            $sql = "SELECT * FROM $this->tableName" . $required['sql'];
             $stmt = $this->connection->prepare($sql);
-            $stmt->execute([':userIds' => $userIds]);
+            $stmt->execute($required['binding']);
         }
         else return [];
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     }
+
 
 
     /**

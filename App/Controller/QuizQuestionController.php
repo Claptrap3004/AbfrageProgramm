@@ -37,8 +37,7 @@ class QuizQuestionController extends Controller
     public function select():void
     {
         $selector = new QuestionSelector();
-        $questions = $selector->select(20);
-var_dump($questions);
+        $questions = $selector->select(20, [1,2]);
         $this->fillTable($questions);
     }
     // // to answer current (actual) question of running quiz, sets next question as actual after
