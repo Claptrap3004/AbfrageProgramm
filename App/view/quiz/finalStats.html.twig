@@ -4,14 +4,11 @@
 {% block head %}
 
 {% endblock %}
-{% block content %}
-    <div class="row">
-        <div class="container-fluid text-center my-4">
-            <h3 class="text-decoration-underline text-bold">Auswertung Quiz</h3>
-        </div>
-        <div class="col-1">
-        </div>
-        <div class="col-6 w-65 bg-light rounded-3 my-1 mx-5 p-2 align-self-top">
+{% block subtitle %}
+    Auswertung Quiz
+{% endblock %}
+{% block contentleft %}
+
             <table class="w-100 m-2 p-2">
                 <tr>
                     {% set counter = 0 %}
@@ -32,8 +29,8 @@
                     {% endfor %}
                 </tr>
             </table>
-        </div>
-        <div class="col-3 w-20 align-self-right">
+{% endblock %}
+{% block contentright %}
             <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
                 <div class="card-body rounded-3">
                     <br>
@@ -47,10 +44,9 @@
                     <p class="card-text">success rate: {{ finalStats.rate }}</p>
                 </div>
             </div>
-        </div>
 
-        <div class="container-flex p-1 m-1">
-            <div class="row p-2 m-2">
+{% endblock %}
+{% block buttons %}
                 <div class="align-items-center text-center">
                     <label>
                         <a href="https://abfrageprogramm.ddev.site:8443/">
@@ -58,7 +54,4 @@
                         </a>
                     </label>
                 </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}

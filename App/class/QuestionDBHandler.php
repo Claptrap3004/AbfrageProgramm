@@ -17,7 +17,8 @@ class QuestionDBHandler extends IdTextDBHandler
     /**
      * without param simply calls parent find all method to provide all question data sets including following keys:
      * 'id', 'category_id', 'user_id' and 'text'
-     * filter array may contain 'categoryIds' and / or 'userIds' key which hold array of appropriate ids
+     * filter array may contain 'categoryIds' or 'userIds' key which hold array of appropriate ids; use Filters enum
+     * for proper creation
      * @param array $filters
      * @return array listed keys
      */
@@ -28,23 +29,19 @@ class QuestionDBHandler extends IdTextDBHandler
     }
 
     /**
-     * returns question data sets matching filter containing keys listed iin findAll DOC
+     * returns question data sets matching filter containing keys listed in findAll DOC
      * @param array $filters
      * @return array
      */
     private function findFiltered(array $filters): array
     {
-        if (array_key_exists('categoryIds', $filters) && array_key_exists('userIds', $filters)){
-            $sql = "SELECT * FROM $this->tableName WHERE category_id IN :categoryIds AND user_id IN :userIds;";
-            $categoryIds = "(" . implode(',', $filters['categoryIds']) . ")";
-            $userIds ="(" . implode(',', $filters['userIds']) . ")";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->execute([':categoryIds' => $categoryIds, ':userIds' => $userIds]);
-        }
-        elseif (array_key_exists('categoryIds', $filters)){
+
+        if (array_key_exists('categoryIds', $filters)){
             $required = Filters::CATEGORY->createWhereClauseAndBindings($filters['categoryIds']);
             $sql = "SELECT * FROM $this->tableName" . $required['sql'];
             $stmt = $this->connection->prepare($sql);
+            echo $sql;
+            var_dump($required);
             $stmt->execute($required['binding']);
         }
         elseif (array_key_exists('userIds', $filters)){

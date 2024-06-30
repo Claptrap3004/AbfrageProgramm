@@ -17,7 +17,7 @@ class QuestionSelector implements CanSelectQuestions
         $questions = [];
         echo 'categoryIds Array : <br>';var_dump($categoryIds);
 
-        $this->questionPool = KindOf::QUESTION->getDBHandler()->findAll(['categoryIds'=> $categoryIds]);
+        $this->questionPool = KindOf::QUESTION->getDBHandler()->findAll(Filters::CATEGORY->createArray($categoryIds));
         var_dump($this->questionPool);
         if ($numberOfQuestions > count($this->questionPool)) return [];
         for ($i = 0; $i < $numberOfQuestions; $i++) {

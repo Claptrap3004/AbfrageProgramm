@@ -15,11 +15,10 @@ class QuizQuestionController extends Controller
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
-        if (count($questions) == 0){
+        if (count($questions) === 0){
             $this->select();
-            header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
         }
-        header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+        else header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
     }
 
     // populating table quiz_content of user
@@ -37,10 +36,10 @@ class QuizQuestionController extends Controller
     public function select():void
     {
         $selector = new QuestionSelector();
-        $questions = $selector->select(20, [1,2]);
+        $questions = $selector->select(10, [1,2]);
         $this->fillTable($questions);
     }
-    // // to answer current (actual) question of running quiz, sets next question as actual after
+    // to answer current (actual) question of running quiz, sets next question as actual after
     public function answer(int $id): void
     {
         $factory = Factory::getFactory();

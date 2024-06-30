@@ -4,20 +4,16 @@
 {% block head %}
 
 {% endblock %}
-{% block content %}
-    <div class="row">
-        <div class="container-fluid text-center my-4">
-            <h3 class="text-decoration-underline text-bold">Herzlich Willkommen beim Quiz</h3>
-        </div>
-        <div class="col-1">
-        </div>
-        <div class="col-6 w-65 bg-light rounded-3 my-1 mx-5 p-2 align-self-top">
-        </div>
+{% block subtitle %}
+    Herzlich Willkommen beim Quiz
+{% endblock %}
+{% block contentleft %}
+
         <div class="col-3 w-20 align-self-right">
         </div>
 
-        <div class="container-flex p-1 m-1">
-            <div class="row p-2 m-2">
+{% endblock %}
+{% block buttons %}
                 <div class="align-items-center text-center">
                     <label>
                         <a href="https://abfrageprogramm.ddev.site:8443/QuizQuestion">
@@ -25,7 +21,4 @@
                         </a>
                     </label>
                 </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}

@@ -19,14 +19,14 @@ enum Filters
     public function createWhereClauseAndBindings(array $ids): array
     {
         $binding = [];
-        $sql = "WHERE " . match ($this->name){
+        $sql = " WHERE " . match ($this->name){
                 'CATEGORY' => 'category_id',
                 'USER' => 'user_id',
                 default => ''
             };
         $sql  .= ' IN (';
         foreach ($ids as $index=>$value) {
-            $binding["id$index"] = $value;
+            $binding[":id$index"] = $value;
             $sql .= ":id$index, ";
         }
         $sql = rtrim($sql,', ');

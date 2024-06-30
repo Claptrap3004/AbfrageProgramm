@@ -18,7 +18,6 @@ class QuizStats
         $this->dbHandler = new QuizContentDBHandler(KindOf::QUIZCONTENT);
         $this->getQuestionsFromDB();
         $this->validate();
-//        var_dump($this->questions);
     }
 
 
