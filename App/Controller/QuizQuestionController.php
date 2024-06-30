@@ -81,6 +81,7 @@ class QuizQuestionController extends Controller
             if (isset ($_POST['confirm'])) {
                 $quizStats = new QuizStats();
                 $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
+                sleep(5);
                 $dbHandler->create([]);
             } else {
                 if (gettype($dbHandler) === gettype(QuizContentDBHandler::class)) $dbHandler->setActualFirst();

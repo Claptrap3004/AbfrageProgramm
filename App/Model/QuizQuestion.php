@@ -27,6 +27,9 @@ class QuizQuestion extends Question
         usort($this->givenAnswers, fn($a, $b) => strcmp($a->getId(), $b->getId()));
         usort($this->rightAnswers, fn($a, $b) => strcmp($a->getId(), $b->getId()));
         $this->stats->incrementTimesAsked();
+        var_dump($this->givenAnswers);
+        echo '<br>';
+        var_dump($this->rightAnswers);
         if ($this->givenAnswers == $this->rightAnswers){
             $this->stats->incrementTimesRight();
             return true;

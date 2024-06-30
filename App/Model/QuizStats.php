@@ -29,8 +29,8 @@ class QuizStats
         $answeredQuestionsData = $this->dbHandler->findAll();
         $this->questionsAsked = count($answeredQuestionsData);
         foreach ($answeredQuestionsData as $questionData) {
-            $question = $this->factory->createQuizQuestionById($questionData['id']);
-            $answersData = $this->dbHandler->findById($questionData['id']);
+            $question = $this->factory->createQuizQuestionById($questionData['question_id']);
+            $answersData = $this->dbHandler->findById($questionData['question_id']);
             $answers = [];
             foreach ($answersData as $answer) $answers[] = $this->factory->findIdTextObjectById($answer['answer_id'], KindOf::ANSWER);
             $question->setGivenAnswers($answers);
@@ -52,8 +52,7 @@ class QuizStats
             }
             $this->validatedQuestions["$key"] = $value;
         }
-
-    }
+     }
 
     // provides the success rate of the quiz
 
