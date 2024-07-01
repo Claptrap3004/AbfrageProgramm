@@ -38,8 +38,9 @@ class CSVImporter
     }
 
 
-    private function proceedData(array $data, bool $categoryId): void
+    private function proceedData(array $data, int $categoryId): void
     {
+
         $question = $data[1];
         $answers = [];
         for ($i = 2; $i <= 5 ; $i++) {

@@ -40,8 +40,6 @@ class QuestionDBHandler extends IdTextDBHandler
             $required = Filters::CATEGORY->createWhereClauseAndBindings($filters['categoryIds']);
             $sql = "SELECT * FROM $this->tableName" . $required['sql'];
             $stmt = $this->connection->prepare($sql);
-            echo $sql;
-            var_dump($required);
             $stmt->execute($required['binding']);
         }
         elseif (array_key_exists('userIds', $filters)){
@@ -53,7 +51,7 @@ class QuestionDBHandler extends IdTextDBHandler
         elseif (array_key_exists('question_by_category', $filters)){
             $sql = "SELECT c.id,c.Name, COUNT(q) AS number FROM $this->tableName q JOIN test.category c ON q.category_id = c.id GROUP BY c.id" ;
             $stmt = $this->connection->prepare($sql);
-            $stmt->execute($required['binding']);
+            $stmt->execute();
         }
         else return [];
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
