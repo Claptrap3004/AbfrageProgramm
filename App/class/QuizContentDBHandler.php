@@ -98,21 +98,12 @@ class QuizContentDBHandler extends IdTextDBHandler
                 $success = $stmt->execute([':content_id' => $args['content_id'], ':answer_id' => $answerId]);
                 if (!$success) return false;
             }
-            $this->setNextAsActual($args['content_id']);
             return true;
         }
         return false;
     }
 
 
-    private function setNextAsActual(int $contentId): void
-    {
-
-        $sql = "UPDATE $this->tableName SET is_actual = :is_actual WHERE id = :id";
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute([':id' => $contentId, 'is_actual' => 0]);
-        $stmt->execute([':id' => $contentId + 1, 'is_actual' => 1]);
-    }
 
     // deletes single question from quiz content (also eventually given answers to that question)
     public function deleteAtId(int $id): bool
@@ -128,15 +119,36 @@ class QuizContentDBHandler extends IdTextDBHandler
         return true;
     }
 
-    public function setActualFirst(): void
+
+    private function getActual():int
     {
-        $sql = "UPDATE $this->tableName SET is_actual = 1 WHERE id = 1";
+        $sql = "SELECT id FROM $this->tableName WHERE is_actual = 1";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
-        $sql = "UPDATE $this->tableName SET is_actual = 0 WHERE id NOT 1";
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
+        $id = $stmt->fetch(2);
+        return $id['id'];
     }
+    public function setActual(SetActual $setActual): void
+    {
+        $numberOfQuestions = count($this->findAll());
+        $actual = $this->getActual();
+        $newActual = match($setActual){
+            SetActual::PREVIUOS => $actual > 1 ? $actual - 1 : 1,
+            SetActual::NEXT => $actual < $numberOfQuestions ? $actual + 1 : $numberOfQuestions,
+            SetActual::FIRST => 1,
+            SetActual::LAST => $numberOfQuestions,
+            SetActual::NONE => $numberOfQuestions + 1
+        };
+
+        $sql = "UPDATE $this->tableName SET is_actual = 1 WHERE id = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([':id'=>$newActual]);
+        $sql = "UPDATE $this->tableName SET is_actual = 0 WHERE id NOT :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([':id'=>$newActual]);
+
+    }
+
 
     protected function validateArgsCreate(array $args): bool
     {

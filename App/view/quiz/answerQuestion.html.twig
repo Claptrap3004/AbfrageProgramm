@@ -14,7 +14,7 @@
         </label>
     </div>
     {% for answer in question.answers %}
-        {% set b_id = 1000 + answer.id %}
+{#        {% set b_id = 1000 + answer.id %}#}
         <div class="row align-self-center mx-5 pb-2">
             <label class="col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-2 my-2 p-2 w-100"
                    data-bs-toggle='button' onclick="clickFn({{ answer.id }})">{{ answer.text }}
@@ -41,20 +41,20 @@
 
     <div class="col-lg-4 text-center">
         <label>
-            <input type="submit" name="reset" class="align-self-center btn-lg btn-info shadow-sm"
-                   value="zurücksetzen">
+            <input type="submit" name="setActual" class="align-self-center btn-lg btn-info shadow-sm"
+                   value="previous question">
         </label>
     </div>
     <div class="col-lg-2 text-center">
         <label>
-            <input type="submit" name="skip" class="align-self-center btn-lg btn-info shadow-sm"
-                   value="Frage überspringen">
+            <input type="reset" name="skip" class="align-self-center btn-lg btn-info shadow-sm"
+                   value="reset answers">
         </label>
     </div>
     <div class="col-lg-3 text-center">
         <label>
-            <input type="submit" name="confirm" class="align-self-center btn-lg btn-info shadow-sm"
-                   value="Antwort abgeben">
+            <input type="submit" name="setActual" class="align-self-center btn-lg btn-info shadow-sm"
+                   value="next question">
         </label>
     </div>
 

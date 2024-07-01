@@ -15,10 +15,9 @@ class QuizQuestionController extends Controller
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
-        if (count($questions) === 0){
-            $this->select();
-        }
-        else header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+        if (count($questions) === 0) {
+            header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/select'");
+        } else header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
     }
 
     // populating table quiz_content of user
@@ -33,25 +32,31 @@ class QuizQuestionController extends Controller
     /**
      * @throws RandomException
      */
-    public function select():void
+    public function select(): void
     {
         $selector = new QuestionSelector();
-        $questions = $selector->select(10, [1,2]);
+        $questions = $selector->select(10, [1, 2]);
         $this->fillTable($questions);
     }
+
     // to answer current (actual) question of running quiz, sets next question as actual after
     public function answer(int $id): void
     {
         $factory = Factory::getFactory();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $answers = $_POST['answers'] ?? [];
-            $questionId = $_POST['questionId'] ?? $id;
-            $question = $factory->createQuizQuestionById($questionId);
-            foreach ($answers as $answer) {
-                if ((int)$answer > 0) $question->addGivenAnswer($factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
+            if ($_SESSION['finish']) {
+                KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::NONE);
+            } else {
+                $answers = $_POST['answers'] ?? [];
+                $questionId = $_POST['questionId'] ?? $id;
+                $question = $factory->createQuizQuestionById($questionId);
+                foreach ($answers as $answer) {
+                    if ((int)$answer > 0) $question->addGivenAnswer($factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
+                }
+                $question->writeResultDB();
+                $whichActual = $_SESSION['setActual'] = 'next Question' ? SetActual::NEXT : SetActual::PREVIUOS;
+                KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
             }
-            $question->writeResultDB();
-
             header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
         } else {
             $question = $factory->createQuizQuestionById($id);
@@ -69,25 +74,27 @@ class QuizQuestionController extends Controller
             if ($item['is_actual']) $id = $item['question_id'];
         }
         if ($id) header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/answer/$id'");
-        else header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/final'");
+        else {
+
+            $quizStats = new QuizStats();
+            $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
+            KindOf::QUIZCONTENT->getDBHandler()->create([]);
+            header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/final'");
+        }
     }
 
     // redirects to page where user can decide whether to check all questions from beginning or
     // to get validation of quiz
     public function final(): void
     {
+        $quizStats = new QuizStats();
+        $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $dbHandler = KindOf::QUIZCONTENT->getDBHandler();
             if (isset ($_POST['confirm'])) {
-                $quizStats = new QuizStats();
-                $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
-                sleep(5);
-                $dbHandler->create([]);
-            } else {
-                if (gettype($dbHandler) === gettype(QuizContentDBHandler::class)) $dbHandler->setActualFirst();
+                KindOf::QUIZCONTENT->getDBHandler()->create([]);
+                header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/index'");
             }
-        } else {
-            $this->view('quiz/final', []);
+
         }
     }
 }
