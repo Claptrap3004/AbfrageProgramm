@@ -33,7 +33,7 @@
             </div>
             <div class="col-lg-1 align-items-right">
                 <div class="form-check form-switch align-middle">
-                    <input class="form-check-input" type="checkbox" role="switch" name="category[]"
+                    <input class="form-check-input" type="checkbox" role="switch" name="categories[]"
                            value="{{ category.id }}" id="flexSwitchCheckChecked[{{ category.id }}]" checked>
                     <label class="form-check-label" for="flexSwitchCheckChecked[{{ category.id }}]"></label>
                 </div>
@@ -61,15 +61,21 @@
     </div>
     <div class="row text-white p-2 m-2">
         <div class="col-lg-3 text-end">
-            1
+            <script>let min = document.getElementById('customRange').min</script>
+            {{ min }}
         </div>
         <div class="col-lg-6 text-center">
             <label for="customRange">Anzahl Fragen</label>
-            <input type="range" name="range" class="form-range" min="1" max="{{ all }}" step="1"
-                   id="customRange">
+            <input type="range" name="range" class="form-range" min="1" max="{{ all }}" step="1" value="1"
+                   id="customRange" oninput=" this.nextElementSibling.value = this.value">
+            <div class="row">
+                <script>let current = document.getElementById('customRange').value</script>
+                {{ current }}
+            </div>
         </div>
         <div class="col-lg-3 text-start">
-            {{ all }}
+            <script>let max = document.getElementById('customRange').max</script>
+            {{ max }}
         </div>
     </div>
     {% endblock %}

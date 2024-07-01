@@ -5,7 +5,7 @@ use PDO;
 
 abstract class DataBase
 {
-    protected string $tablename = 'user';
+
     static protected ?PDO $conn = null;
     static protected ?CanConnectDB $connector = null;
     protected function connect():PDO|null

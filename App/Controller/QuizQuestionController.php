@@ -34,9 +34,18 @@ class QuizQuestionController extends Controller
      */
     public function select(): void
     {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $categories = $_POST['categories'] ?? [];
+            $numberOfQuestions = $_POST['numberOfQuestions'] ?? 0;
         $selector = new QuestionSelector();
-        $questions = $selector->select(10, [1, 2]);
-        $this->fillTable($questions);
+        $questions = $selector->select($numberOfQuestions, $categories);
+        $this->fillTable($questions);}
+        else{
+
+            $this->view('quiz/selectQuestions',[]);
+
+        }
+
     }
 
     // to answer current (actual) question of running quiz, sets next question as actual after

@@ -6,6 +6,7 @@ enum Filters
 {
     case CATEGORY;
     case USER;
+    case QUESTION_BY_CATEGORY;
 
     public function createArray(array $ids): array
     {

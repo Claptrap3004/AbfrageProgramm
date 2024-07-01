@@ -13,7 +13,6 @@ enum KindOf : string
 {
     case CATEGORY = 'category';
     case ANSWER = 'answer';
-
     case QUESTION = 'question';
     case STATS = 'stats';
     case USER = 'user';
@@ -44,7 +43,7 @@ enum KindOf : string
 
     public function getDBHandler(): CanHandleDB
     {
-        $handler = new IdTextDBHandler($this);
+
         return match ($this->getName()) {
             'CATEGORY', 'ANSWER' => DBHandlerProvider::getIdTextDBHandler($this),
             'QUESTION' => DBHandlerProvider::getQuestionDBHandler(),
@@ -52,7 +51,7 @@ enum KindOf : string
             'STATS' => DBHandlerProvider::getStatsDBHandler(),
             'USER' => DBHandlerProvider::getUserDBHandler(),
             'QUIZCONTENT' => DBHandlerProvider::getQuizContentDBHandler(),
-            default => $handler
+            default => null
         };
     }
 }

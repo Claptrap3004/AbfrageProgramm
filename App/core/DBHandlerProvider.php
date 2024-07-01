@@ -89,7 +89,7 @@ class DBHandlerProvider
 
     public static function getUserDBHandler(): UserDBHandler
     {
-        if (!self::$userDBHandler) self::$userDBHandler = new UserDBHandler(KindOf::STATS);
+        if (!self::$userDBHandler) self::$userDBHandler = new UserDBHandler(KindOf::USER);
 
         return self::$userDBHandler;
     }

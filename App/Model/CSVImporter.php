@@ -12,7 +12,6 @@ class CSVImporter
     public function readCSV(string $fileName): void
     {
         $categoryHandler = KindOf::CATEGORY->getDBHandler();
-        $existingCategories = Factory::getFactory()->findAllIdTextObject(KindOf::CATEGORY);
         $category = null;
         $categoryId = 0;
         $row = 0;
@@ -24,6 +23,7 @@ class CSVImporter
                 if ($data[0] !== $category)  {
                     $categoryId = 0;
                     $category = $data[0];
+                    $existingCategories = Factory::getFactory()->findAllIdTextObject(KindOf::CATEGORY);
                     foreach ($existingCategories as $existingCategory){
                         if ($existingCategory->getText() == $category) $categoryId = $existingCategory->getId();
                     }
