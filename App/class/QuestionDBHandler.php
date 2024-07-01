@@ -49,7 +49,7 @@ class QuestionDBHandler extends IdTextDBHandler
             $stmt->execute($required['binding']);
         }
         elseif (array_key_exists('question_by_category', $filters)){
-            $sql = "SELECT c.id,c.Name, COUNT(q) AS number FROM $this->tableName q JOIN test.category c ON q.category_id = c.id GROUP BY c.id" ;
+            $sql = "SELECT c.id,c.text, COUNT(q.category_id) AS number FROM question q LEFT JOIN category c ON q.category_id = c.id GROUP BY q.category_id ;" ;
             $stmt = $this->connection->prepare($sql);
             $stmt->execute();
         }

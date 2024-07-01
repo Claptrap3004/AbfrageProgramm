@@ -41,8 +41,8 @@ class QuizQuestionController extends Controller
         $questions = $selector->select($numberOfQuestions, $categories);
         $this->fillTable($questions);}
         else{
-
-            $this->view('quiz/selectQuestions',[]);
+            $questionsByCategories = KindOf::QUESTION->getDBHandler()->findAll(['question_by_category'=> null]);
+            $this->view('quiz/selectQuestions',['categories'=>$questionsByCategories]);
 
         }
 
