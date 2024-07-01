@@ -54,7 +54,7 @@ class QuizQuestionController extends Controller
                     if ((int)$answer > 0) $question->addGivenAnswer($factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
                 }
                 $question->writeResultDB();
-                $whichActual = $_SESSION['setActual'] = 'next Question' ? SetActual::NEXT : SetActual::PREVIUOS;
+                $whichActual = $_SESSION['setActual'] = 'next question' ? SetActual::NEXT : SetActual::PREVIUOS;
                 KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
             }
             header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
@@ -75,10 +75,6 @@ class QuizQuestionController extends Controller
         }
         if ($id) header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/answer/$id'");
         else {
-
-            $quizStats = new QuizStats();
-            $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
-            KindOf::QUIZCONTENT->getDBHandler()->create([]);
             header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/final'");
         }
     }
@@ -87,14 +83,17 @@ class QuizQuestionController extends Controller
     // to get validation of quiz
     public function final(): void
     {
-        $quizStats = new QuizStats();
-        $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
+
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if (isset ($_POST['confirm'])) {
                 KindOf::QUIZCONTENT->getDBHandler()->create([]);
                 header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/index'");
             }
 
+        }
+        else {
+            $quizStats = new QuizStats();
+            $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
         }
     }
 }

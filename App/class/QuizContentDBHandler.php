@@ -134,7 +134,7 @@ class QuizContentDBHandler extends IdTextDBHandler
         $actual = $this->getActual();
         $newActual = match($setActual){
             SetActual::PREVIUOS => $actual > 1 ? $actual - 1 : 1,
-            SetActual::NEXT => $actual < $numberOfQuestions ? $actual + 1 : $numberOfQuestions,
+            SetActual::NEXT => $actual <= $numberOfQuestions ? $actual + 1 : $numberOfQuestions,
             SetActual::FIRST => 1,
             SetActual::LAST => $numberOfQuestions,
             SetActual::NONE => $numberOfQuestions + 1

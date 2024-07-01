@@ -1,8 +1,9 @@
 <?php
 namespace quiz;
+require '../App/core/init.php';
+
 session_start();
 $_SESSION['UserId'] = 2;
-require '../App/core/init.php';
 
 $router = new App();
 $router->loadController();
