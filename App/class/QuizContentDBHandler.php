@@ -143,7 +143,7 @@ class QuizContentDBHandler extends IdTextDBHandler
         $sql = "UPDATE $this->tableName SET is_actual = 1 WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([':id'=>$newActual]);
-        $sql = "UPDATE $this->tableName SET is_actual = 0 WHERE id NOT :id";
+        $sql = "UPDATE $this->tableName SET is_actual = 0 WHERE NOT id = :id";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([':id'=>$newActual]);
 

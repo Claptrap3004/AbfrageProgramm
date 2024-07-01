@@ -44,7 +44,7 @@ class QuizQuestionController extends Controller
     {
         $factory = Factory::getFactory();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            if ($_SESSION['finish']) {
+            if (isset($_SESSION['finish'])) {
                 KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::NONE);
             } else {
                 $answers = $_POST['answers'] ?? [];
