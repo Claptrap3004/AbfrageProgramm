@@ -9,43 +9,47 @@
 {% endblock %}
 {% block contentleft %}
 
-    <div class="row text-white p-2 m-2">
-        <div class="col-lg-1 text-left">
-            All
-        </div>
-        <div class="col-lg-1 align-items-right">
+    <div class="row p-2 m-2">
+        <div class="col-lg-1 align-items-right text-right">
             <div class="form-check form-switch align-items-middle">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                <input class="form-check-input" type="checkbox" role="switch" id="categoryAll" checked
+                       onclick="changeAllCategories()">
+                <label class="form-check-label" for="categoryAll"></label>
             </div>
         </div>
-        <div class="col-lg-8 text-center">
+        <div class="col-lg-2 text-start">
+            <p>Select / Unselect All</p>
+        </div>
+        <div class="col-lg-6 text-center">
             <p> Category </p>
         </div>
-        <div class="col-lg-2 text-end">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-2 text-start">
             <p>Fragen in Category</p>
         </div>
+
     </div>
     {% set all = 0 %}
     {% for category in categories %}
         <div class="row  p-2 m-2">
-            <div class="col-lg-1 text-left">
-            </div>
             <div class="col-lg-1 align-items-right">
                 <div class="form-check form-switch align-middle">
-                    <label class="form-check-label" for="flexSwitchCheckChecked[{{ category.id }}]"
-                           data-bs-toggle='button' onclick="clickFn('flexSwitchCheckChecked[{{ category.id }}]')">
-                        <input type="checkbox" role="switch" name="categories[]" id="flexSwitchCheckChecked[{{ category.id }}]" value="{{ category.id }}"
-                               hidden="hidden">
+                    <label class="form-check-label" for="categorySwitch{{ category.id }}">
+                        <input type="hidden" id="maxQuestions{{ category.id }}" value="{{ category.number }}">
+                        <input class="categories form-check-input" id="categorySwitch{{ category.id }}"
+                               name="categories[]" type="checkbox" role="switch" value="{{ category.id }}"
+                               onchange="clickCategory({{ category.id }})" checked>
                     </label>
                 </div>
             </div>
-            <div class="col-lg-8 bg-info rounded-3 text-left">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-7 bg-info rounded-3 text-left">
                 {{ category.text }}
             </div>
             <div class="col-lg-1"></div>
-            <div class="col-lg-1 bg-info rounded-3 text-end">
-                {{ category.number }}
+            <div class="col-lg-2 bg-info rounded-3 text-end">
+                <p><span id="numberOfQuestions{{ category.id }}">{{ category.number }} </span> / {{ category.number }}
+                </p>
             </div>
         </div>
         {% set all = all + category.number %}
@@ -55,7 +59,7 @@
             <p>Fragen gesamt:</p>
         </div>
         <div class="col-lg-2 text-end">
-            <p id="totalQuestions"> {{ all }} </p>
+            <p><span id="maxQuestions">{{ all }}</span> / {{ all }} </p>
         </div>
     </div>
     <div class="row text-black p-2 m-2">
@@ -67,31 +71,24 @@
             <input type="range" name="range" class="form-range" min="1" max="{{ all }}" step="1" value="1"
                    id="customRange" oninput=" trackVal(this)">
             <div class="row">
-                 <span id="currentVal">1</span>
+                <span id="currentVal">1</span>
             </div>
         </div>
         <div class="col-lg-3 text-start">
-
             <span id="maxVal">{{ all }}</span>
         </div>
     </div>
-    {% endblock %}
+{% endblock %}
 {% block buttons %}
 
-            <div class="col-lg-6 align-items-center text-center">
-                <a href="http://abfrageprogramm.ddev.site:8443/">
-                    <button class="btn btn-primary">Zurück</button>
-                </a>
-            </div>
-            <div class="col-lg-6 align-items-center text-center">
-                <a href="http://abfrageprogramm.ddev.site:8443/select?categories=category[]&range=range">
-                    <button class="btn btn-primary">Select Categories</button>
-                </a>
-            </div>
-<script>
-    function trackVal(element){
-        element.nextElementSibling.value = element.value;
-        document.getElementById('currentVal').innerHTML = element.value;
-    }
-</script>
+    <div class="col-lg-6 align-items-center text-center">
+        <a href="http://abfrageprogramm.ddev.site:8443/">
+            <button class="btn btn-primary">Zurück</button>
+        </a>
+    </div>
+    <div class="col-lg-6 align-items-center text-center">
+        <a href="http://abfrageprogramm.ddev.site:8443/select?categories=category[]&range=range">
+            <button class="btn btn-primary">Select Categories</button>
+        </a>
+    </div>
 {% endblock %}

@@ -32,6 +32,7 @@ enum Filters
         }
         $sql = rtrim($sql,', ');
         $sql .= ');';
+        if ($ids == []) {$sql = '';$binding = [];}
         return ['sql'=>$sql,'binding' => $binding];
     }
 

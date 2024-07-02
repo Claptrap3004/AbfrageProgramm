@@ -37,8 +37,10 @@ class QuestionDBHandler extends IdTextDBHandler
     {
 
         if (array_key_exists('categoryIds', $filters)){
+
             $required = Filters::CATEGORY->createWhereClauseAndBindings($filters['categoryIds']);
             $sql = "SELECT * FROM $this->tableName" . $required['sql'];
+            echo $sql;
             $stmt = $this->connection->prepare($sql);
             $stmt->execute($required['binding']);
         }
