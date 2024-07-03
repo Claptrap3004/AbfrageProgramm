@@ -18,10 +18,10 @@
                 <tr>
                     {% endif %}
                     <td class="w-20">
-                        {% if value === 0 %}
-                            {% set button = "btn-danger" %}
-                        {% else %}
                             {% set button = "btn-success" %}
+
+                        {% if value == 0 %}
+                            {% set button = "btn-danger" %}
                         {% endif %}
                         <button class="btn-lg w-75 {{ button }} shadow m-2">{{ key }}</button>
                     </td>
