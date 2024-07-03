@@ -13,12 +13,14 @@
             {{ question.text }}
         </label>
     </div>
+
     {% for answer in question.answers %}
-        {% set b_id = 'a_id' + answer.id %}
+
+        {% set b_id = "a_id" %}
         <div class="row align-self-center mx-5 pb-2">
             <label class="col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-2 my-2 p-2 w-100"
                    data-bs-toggle='button' onclick="clickFn({{ answer.id }})">{{ answer.text }}
-                <input type="checkbox" name="answers[]" id="{{ b_id }}" value="{{ answer.id }}"
+                <input type="checkbox" name="answers[]" id="{{ b_id }}{{ answer.id }}" value="{{ answer.id }}"
                        hidden="hidden">
             </label>
         </div>

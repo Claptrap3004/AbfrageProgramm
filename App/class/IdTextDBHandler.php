@@ -47,7 +47,6 @@ class IdTextDBHandler extends DataBase implements CanHandleDB
         $items = rtrim($items, ', ');
         $values = rtrim($values, ', ');
         $sql = "INSERT INTO $this->tableName (" . $items . ") VALUES (" . $values . ")";
-        echo $sql;
         $stmt = $this->connection->prepare($sql);
         $stmt->execute($args);
         return $this->connection->lastInsertId();

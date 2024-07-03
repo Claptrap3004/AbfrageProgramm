@@ -104,4 +104,10 @@ class QuizQuestionController extends Controller
             $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
         }
     }
+
+    public function test():void
+    {
+        $question = Factory::getFactory()->createQuizQuestionById(1);
+        $this->view('quiz/answerQuestion', ['question' => $question]);
+    }
 }
