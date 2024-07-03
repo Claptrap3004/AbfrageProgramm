@@ -36,16 +36,15 @@ class QuizQuestionController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $categories = $_POST['categories'] ?? [];
-            $numberOfQuestions = $_POST['numberOfQuestions'] ?? 0;
-        $selector = new QuestionSelector();
-        $questions = $selector->select($numberOfQuestions, $categories);
-        $this->fillTable($questions);}
+            $numberOfQuestions = $_POST['range'] ?? 0;
+            $selector = new QuestionSelector();
+            $questions = $selector->select($numberOfQuestions, $categories);
+            $this->fillTable($questions);
+        }
         else{
             $questionsByCategories = KindOf::QUESTION->getDBHandler()->findAll(['question_by_category'=> null]);
             $this->view('quiz/selectQuestions',['categories'=>$questionsByCategories]);
-
         }
-
     }
 
     // to answer current (actual) question of running quiz, sets next question as actual after

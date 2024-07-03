@@ -27,12 +27,11 @@ enum Filters
             };
         $sql  .= ' IN (';
         foreach ($ids as $index=>$value) {
-            $binding[":id$index"] = $value;
+            $binding[":id$index"] = (int)$value;
             $sql .= ":id$index, ";
         }
-        $sql = rtrim($sql,', ');
-        $sql .= ');';
-        if ($ids == []) {$sql = '';$binding = [];}
+        $sql = rtrim($sql,', '). ');';
+        if ($ids === []) {$sql = '';$binding = [];}
         return ['sql'=>$sql,'binding' => $binding];
     }
 

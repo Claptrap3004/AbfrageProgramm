@@ -69,8 +69,9 @@
         crossorigin="anonymous"></script>
 <script>
     function clickFn(id) {
-        const checkbox = document.querySelector('#id')
-        document.querySelector('#id').checked = !checkbox.checked;
+        let idStr = `a_id${id}`;
+        const checkbox = document.querySelector(idStr)
+        document.querySelector(idStr).checked = !checkbox.checked;
     }
 
     function clickCategory(categoryId) {

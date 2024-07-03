@@ -40,15 +40,16 @@ class QuestionDBHandler extends IdTextDBHandler
 
             $required = Filters::CATEGORY->createWhereClauseAndBindings($filters['categoryIds']);
             $sql = "SELECT * FROM $this->tableName" . $required['sql'];
-            echo $sql;
             $stmt = $this->connection->prepare($sql);
-            $stmt->execute($required['binding']);
+            foreach ($required['binding'] as $key => $value) $stmt->bindParam("$key", $value);
+            $stmt->execute();
         }
         elseif (array_key_exists('userIds', $filters)){
-            $required = Filters::USER->createWhereClauseAndBindings($filters['categoryIds']);
+            $required = Filters::USER->createWhereClauseAndBindings($filters['userIds']);
             $sql = "SELECT * FROM $this->tableName" . $required['sql'];
             $stmt = $this->connection->prepare($sql);
-            $stmt->execute($required['binding']);
+            foreach ($required['binding'] as $key => $value) $stmt->bindParam("$key", $value);
+            $stmt->execute();
         }
         elseif (array_key_exists('question_by_category', $filters)){
             $sql = "SELECT c.id,c.text, COUNT(q.category_id) AS number FROM question q LEFT JOIN category c ON q.category_id = c.id GROUP BY q.category_id ;" ;

@@ -28,7 +28,9 @@ class StatsDBHandler extends IdTextDBHandler
         $sql = "SELECT * FROM $this->tableName WHERE question_id = :question_id AND user_id = :user_id;";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([':question_id'=> $id,':user_id'=> $this->userId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$result) $result = $this->findById($this->create(['question_id'=> $id, 'user_id' => $_SESSION['UserId'],'times_asked'=>0,'times_right' =>0]));
+        return $result;
     }
 
     public function update(array $args): bool
