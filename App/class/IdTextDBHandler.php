@@ -99,7 +99,7 @@ class IdTextDBHandler extends DataBase implements CanHandleDB
             $items .= $key . '=:' . $key . ', ';
             }
             $items = rtrim($items, ', ');
-            $sql = "UPDATE $this->tablename SET " . $items . " WHERE id = :id;";
+            $sql = "UPDATE $this->tableName SET " . $items . " WHERE id = :id;";
             $stmt = $this->connection->prepare($sql);
             return $stmt->execute($args);
         }
