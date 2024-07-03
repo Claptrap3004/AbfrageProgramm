@@ -50,6 +50,7 @@ class QuizQuestionController extends Controller
     // to answer current (actual) question of running quiz, sets next question as actual after
     public function answer(int $id): void
     {
+        var_dump($_POST);
         $factory = Factory::getFactory();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if (isset($_SESSION['finish'])) {

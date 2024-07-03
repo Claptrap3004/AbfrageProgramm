@@ -64,13 +64,10 @@
         &copy; Copyright 2024 by René.
     {% endblock %}
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
 <script>
     function clickFn(id) {
-        let idStr = `a_id${id}`;
-        const checkbox = document.querySelector(idStr)
+        let idStr = "#a_id" + id;
+        let checkbox = document.querySelector(idStr).checked;
         document.querySelector(idStr).checked = !checkbox.checked;
     }
 
@@ -106,6 +103,9 @@
         document.getElementById('currentVal').innerHTML = element.value;
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 </html>
 
