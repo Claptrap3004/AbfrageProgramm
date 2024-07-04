@@ -9,7 +9,8 @@ class UserController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $email = $_POST['email'] ?? '';           
             $password = $_POST['password'] ?? '';
-            if (isset($_POST['userLogin'])){
+            if (isset($_POST['loginUser'])){
+                echo "userLogin";
                 if ($this->checkCorrectEmail($email) && $this->checkCorrectPassword($email,$password)) {
                     $userData = DBHandlerProvider::getUserDBHandler()->findAll(['userEmail' => $email]);
                     $user = Factory::getFactory()->createUser($userData['id']);
@@ -17,7 +18,8 @@ class UserController extends Controller
                     $this->view('welcome',['user' => $user]);
                 }
             }
-            elseif (isset($_POST['registerLogin'])) {
+            elseif (isset($_POST['registerUser'])) {
+                echo "userRegister";
                 $emailValidate = $_POST['emailValidate'] ?? '';
                 $passwordValidate = $_POST['passwordValidate'] ?? '';
                 $userName = $_POST['userName'] ?? '';
@@ -26,8 +28,9 @@ class UserController extends Controller
                 elseif (!$this->validateEqual($email,$emailValidate)) $errorMessage = 'die eingegebenen E-Mail-Adressen stimmen nicht überein';
                 elseif (!$this->validatePassword($password)) $errorMessage = 'Das Passwort muss mindestens 8 Zeichen lang sein';
                 elseif (!$this->validateEqual($password, $passwordValidate)) $errorMessage = 'Die eingegebenen Passwörter stimmen nicht überein';
-                if ($errorMessage !== '') $this->view('login', ['error'=> $errorMessage, 'username' => $userName]);
+                if ($errorMessage !== '') $this->view('login/login', ['error'=> $errorMessage, 'username' => $userName]);
                 else {
+                    echo '<br>versuche User zu erstellen';
                     $pwhash = password_hash($password, PASSWORD_BCRYPT);
                     $id = KindOf::USER->getDBHandler()->create(['username'=>$userName,'email'=> $email,'password' => $pwhash]);
                     $user =  Factory::getFactory()->createUser($id);
@@ -39,7 +42,7 @@ class UserController extends Controller
             }
             else {
                 $errorMessage = 'Irgendwas ist schief gelaufen';
-                $this->view('login', ['error'=> $errorMessage]);
+                $this->view('login/login', ['error'=> $errorMessage]);
             }
         }
         else{
