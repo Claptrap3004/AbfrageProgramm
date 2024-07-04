@@ -16,7 +16,8 @@ class App
 
     public function loadController(): void
     {
-        $url = $this->urlExplode();
+        $helper = []; $helper[] = 'user';$helper[] = 'login';
+        $url = isset($_SESSION['UserId']) ? $this->urlExplode() :$helper;
         $file = '../App/Controller/' . ucfirst($url[0]) . 'Controller.php';
         if (file_exists($file)) {
             require $file;

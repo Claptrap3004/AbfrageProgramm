@@ -3,10 +3,11 @@ namespace quiz;
 require '../App/core/init.php';
 
 session_start();
-$_SESSION['UserId'] = 2;
-
 $router = new App();
 $router->loadController();
+
+
+
 
 
 //$conn = new MariaDBConnector();

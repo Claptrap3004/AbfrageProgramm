@@ -4,7 +4,7 @@ namespace quiz;
 
 class UserController extends Controller
 {
-    public function login()
+    public function login(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $email = $_POST['email'] ?? '';           
@@ -13,7 +13,7 @@ class UserController extends Controller
                 if ($this->checkCorrectEmail($email) && $this->checkCorrectPassword($email,$password)) {
                     $userData = DBHandlerProvider::getUserDBHandler()->findAll(['userEmail' => $email]);
                     $user = Factory::getFactory()->createUser($userData['id']);
-                    $_SESSION['userId'] = $user->getId();
+                    $_SESSION['UserId'] = $user->getId();
                     $this->view('welcome',['user' => $user]);
                 }
             }
@@ -31,7 +31,7 @@ class UserController extends Controller
                     $pwhash = password_hash($password, PASSWORD_BCRYPT);
                     $id = KindOf::USER->getDBHandler()->create(['username'=>$userName,'email'=> $email,'password' => $pwhash]);
                     $user =  Factory::getFactory()->createUser($id);
-                    $_SESSION['userId'] = $user->getId();
+                    $_SESSION['UserId'] = $user->getId();
                     $this->view('welcome',['user' => $user]);
                 }
 

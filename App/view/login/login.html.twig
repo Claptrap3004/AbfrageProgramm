@@ -8,11 +8,21 @@
     Herzlich Willkommen beim Quiz
 {% endblock %}
 {% block contentleft %}
-{#    <div class="row align-self-center mx-5 pb-2">#}
         <div class="row mb-3">
+            <label for="inputUsername" class="col-sm-2 col-form-label" id="labelInputUsername" hidden="hidden">Username</label>
+            <div class="col-sm-10">
+                <input type="hidden" name='userName' class="form-control" id="inputUsername" placeholder="Username eingeben" >
+            </div>
+        </div>        <div class="row mb-3">
             <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
-                <input type="email" name='email' class="form-control" id="inputEmail" placeholder="Email">
+                <input type="email" name='email' class="form-control" id="inputEmail" placeholder="Email eingeben">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="inputEmailValidate" class="col-sm-2 col-form-label" id="labelInputEmailValidate" hidden="hidden">Email</label>
+            <div class="col-sm-10">
+                <input type="hidden" name='emailValidate' class="form-control" id="inputEmailValidate" placeholder="Email wiederholen">
             </div>
         </div>
         <div class="row mb-3">
@@ -21,24 +31,25 @@
                 <input type="password" name='password' class="form-control" id="inputPassword" placeholder="Password">
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-sm-10 offset-sm-2">
-                <button type="submit" id="loginUser" name="loginUser" class="btn btn-primary">Sign in</button>
-                <button type="submit" id="registerUser" name="registerUser" class="btn btn-primary">Register</button>
+        <div class="row mb-3">
+            <label for="inputPasswordValidate" class="col-sm-2 col-form-label" id="labelInputPasswordValidate" hidden="hidden">Password wiederholen</label>
+            <div class="col-sm-10">
+                <input type="hidden" name='passwordValidate' class="form-control" id="inputPasswordValidate" placeholder="Password">
             </div>
         </div>
 
-{#    </div>#}
+
+
 
 {% endblock %}
 {% block buttons %}
     <div class="align-items-center text-center">
-        <label>
-            <a href="https://abfrageprogramm.ddev.site:8443/QuizQuestion">
-                <button class="btn btn-primary">Schnellstart</button>
-            </a>
-        </label>
+        <div class="row">
+            <div class="col-sm-10 offset-sm-2">
+                <button type="submit" id="confirm" name="loginUser" class="btn btn-primary">Sign in</button>
+                <button type="Button" id="registerUser" name="registerUser" class="btn btn-primary" onclick="toggleLoginRegister(this)">go to Register</button>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
