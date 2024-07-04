@@ -29,7 +29,11 @@ class StatsDBHandler extends IdTextDBHandler
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([':question_id'=> $id,':user_id'=> $this->userId]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$result) $result = $this->findById($this->create(['question_id'=> $id, 'user_id' => $_SESSION['UserId'],'times_asked'=>0,'times_right' =>0]));
+        if (!$result) {
+            $id = $this->create(['question_id'=> $id, 'user_id' => $_SESSION['UserId'],'times_asked'=>0,'times_right' =>0]);
+            usleep(200);
+            $result = $this->findById($id);
+        }
         return $result;
     }
 

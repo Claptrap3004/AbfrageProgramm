@@ -13,7 +13,7 @@ class UserController extends Controller
                 echo "userLogin";
                 if ($this->checkCorrectEmail($email) && $this->checkCorrectPassword($email,$password)) {
                     $userData = DBHandlerProvider::getUserDBHandler()->findAll(['userEmail' => $email]);
-                    $user = Factory::getFactory()->createUser($userData['id']);
+                    $user = Factory::getFactory()->createUser($userData[0]['id']);
                     $_SESSION['UserId'] = $user->getId();
                     $this->view('welcome',['user' => $user]);
                 }
@@ -68,6 +68,6 @@ class UserController extends Controller
     private function checkCorrectPassword(string $email,string $password):bool{
         $possibleUser = DBHandlerProvider::getUserDBHandler()->findAll(['userEmail' => $email]);
         if ($possibleUser === []) return false;
-        return password_verify($password,$possibleUser['password']);
+        return password_verify($password,$possibleUser[0]['password']);
     }
 }

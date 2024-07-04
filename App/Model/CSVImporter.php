@@ -50,7 +50,7 @@ class CSVImporter
         $description = $data[7];
 
         $questionDBHandler = KindOf::QUESTION->getDBHandler();
-        $questionId = $questionDBHandler->create(['category_id'=> $categoryId,'user_id'=>2,'text' => $question]);
+        $questionId = $questionDBHandler->create(['category_id'=> $categoryId,'user_id'=>$_SESSION['UserId'],'text' => $question]);
         $answerDBHandler = KindOf::ANSWER->getDBHandler();
         $relationDBHandler = KindOf::RELATION->getDBHandler();
         foreach ($answers as $answer){
