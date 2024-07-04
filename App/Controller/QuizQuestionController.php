@@ -101,7 +101,7 @@ class QuizQuestionController extends Controller
         }
         else {
             $quizStats = new QuizStats();
-            $this->view('quiz/finalStats', ['finalStats' => $quizStats]);
+            $this->view('quiz/finalStats', $quizStats->getFormatted() );
         }
     }
 

@@ -12,7 +12,7 @@
             <table class="w-100 m-2 p-2">
                 <tr>
                     {% set counter = 0 %}
-                    {% for key,value in finalStats.validatedQuestions %}
+                    {% for key,value in questions %}
                     {% if counter % 5 == 0 %}
                 </tr>
                 <tr>
@@ -20,15 +20,34 @@
                     <td class="w-20">
                             {% set button = "btn-success" %}
 
-                        {% if value == 0 %}
+                        {% if value.isCorrect == 0 %}
                             {% set button = "btn-danger" %}
                         {% endif %}
-                        <button class="btn-lg w-75 {{ button }} shadow m-2">{{ key }}</button>
+                        <button type="button" class="btn-lg w-75 {{ button }} shadow m-2" data-bs-toggle="collapse" data-bs-target="#details"
+                                aria-expanded="false" aria-controls="details"
+                                onclick="showDetails(this, {{ value }})">{{ key }}</button>
                     </td>
                     {% set counter = counter + 1 %}
                     {% endfor %}
                 </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="collapse multi-collapse card align-self-center bg-light rounded-3 mx-4 my-5 py-3" id="details">
+                            <div class="card-body rounded-3">
+                                <br>
+                                <h5 id="detailsQuestion" class="card-title">Question</h5>
+                                <br>
+                                <br>
+                                <p id="detailsAnswers" class="card-text">Answers: </p>
+                                <br>
+                                <p id="detailsDescription" class="card-text">Your Answers: </p>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
             </table>
+
 {% endblock %}
 {% block contentright %}
             <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
@@ -37,20 +56,20 @@
                     <h5 class="card-title">Statistic Quiz</h5>
                     <br>
                     <br>
-                    <p class="card-text">Questions asked: {{ finalStats.questionsAsked }}</p>
+                    <p class="card-text">Questions asked: {{ asked }}</p>
                     <br>
-                    <p class="card-text">Questions answered correct: {{ finalStats.answeredCorrect }}</p>
+                    <p class="card-text">Questions answered correct: {{ correct }}</p>
                     <br>
-                    <p class="card-text">success rate: {{ finalStats.rate }}</p>
+                    <p class="card-text">success rate: {{ rate }}</p>
                 </div>
             </div>
 
+    <div class="align-items-center text-center">
+        <label>
+            <input type="submit" name="confirm" class="align-self-center btn-lg btn-info shadow-sm"
+                   value="zurück zum Hauptmenü">
+        </label>
+    </div>
 {% endblock %}
 {% block buttons %}
-                <div class="align-items-center text-center">
-                    <label>
-                        <input type="submit" name="confirm" class="align-self-center btn-lg btn-info shadow-sm"
-                               value="zurück zum Hauptmenü">
-                    </label>
-                </div>
 {% endblock %}

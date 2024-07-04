@@ -62,7 +62,7 @@ class QuizQuestion extends Question
         }
     }
 
-    private function existsInGivenAnswers(IdText $answer): bool
+    public function existsInGivenAnswers(IdText $answer): bool
     {
         foreach ($this->givenAnswers as $givenAnswer)
             if ($givenAnswer->equals($answer)) return true;

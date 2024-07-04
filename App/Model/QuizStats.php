@@ -10,6 +10,8 @@ class QuizStats
     private array $validatedQuestions = [];
     private int $questionsAsked = 0;
     private int $answeredCorrect = 0;
+    private array $questionData = [];
+
 
 
     public function __construct()
@@ -51,8 +53,27 @@ class QuizStats
                 $value = 1;
             }
             $this->validatedQuestions["$key"] = $value;
+            $this->extractData($question);
         }
      }
+     private function extractData(QuizQuestion $question):void
+     {
+         $key = $question->getId();
+         $text = $question->getText();
+         $explanation = '';
+         $answers = [];
+         foreach ($question->getRightAnswers() as $answer){
+             $isSelected = ($question->existsInGivenAnswers($answer)) ? 'true' : 'false';
+             $answers[$answer->getId()] = ['text' => $answer->getText(), 'isRight' => 'true', 'isSelected' => $isSelected];
+         }
+         $this->questionData["$key"] = ['isCorrect'=>$this->validatedQuestions["$key"], 'text' => $text, 'explanation' => $explanation, 'answers' => $answers, 'answerCount' => count($answers)];
+
+     }
+
+    public function getQuestionData(): array
+    {
+        return $this->questionData;
+    }
 
     // provides the success rate of the quiz
 
@@ -82,5 +103,11 @@ class QuizStats
         return $this->answeredCorrect;
     }
 
+    public function getFormatted(): array
+    {
+
+        return ['asked' => $this->questionsAsked, 'correct' => $this->answeredCorrect, 'rate' => $this->getRate(),
+            'questions' => $this->questionData];
+    }
 
 }
