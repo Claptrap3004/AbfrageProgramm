@@ -35,6 +35,7 @@ class UserController extends Controller
                     $id = KindOf::USER->getDBHandler()->create(['username'=>$userName,'email'=> $email,'password' => $pwhash]);
                     $user =  Factory::getFactory()->createUser($id);
                     $_SESSION['UserId'] = $user->getId();
+                    KindOf::QUIZCONTENT->getDBHandler()->createTables();
                     $this->view('welcome',['user' => $user]);
                 }
 

@@ -1,7 +1,7 @@
 USE abfrageprogramm;
-INSERT INTO user (username, email, password) VALUES ('admin', 'admin@mail.org','hallo'),
-                                                    ('rene', 'rene@mail.org','hallo'),
-                                                    ('fremder', 'fremder@mail.org','hallo');
+INSERT INTO user (username, email, password) VALUES ('admin', 'admin@mail.org','hallo');
+#                                                     ('rene', 'rene@mail.org','hallo'),
+#                                                     ('fremder', 'fremder@mail.org','hallo');
 
 # INSERT INTO category (text) VALUES ('PC - Grundlagen'),
 #                                    ('Netzwerk'),
