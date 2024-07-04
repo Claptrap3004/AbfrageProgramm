@@ -64,9 +64,26 @@ class QuizStats
          $answers = [];
          foreach ($question->getRightAnswers() as $answer){
              $isSelected = ($question->existsInGivenAnswers($answer)) ? 'true' : 'false';
-             $answers[$answer->getId()] = ['text' => $answer->getText(), 'isRight' => 'true', 'isSelected' => $isSelected];
+             $answerId = $answer->getId();
+             $answers["$answerId"] =
+                 ['text' => $answer->getText(),
+                     'isRight' => 'true',
+                     'isSelected' => $isSelected];
          }
-         $this->questionData["$key"] = ['isCorrect'=>$this->validatedQuestions["$key"], 'text' => $text, 'explanation' => $explanation, 'answers' => $answers, 'answerCount' => count($answers)];
+         foreach ($question->getWrongAnswers() as $answer){
+             $isSelected = ($question->existsInGivenAnswers($answer)) ? 'true' : 'false';
+             $answerId = $answer->getId();
+             $answers["$answerId"] =
+                 ['text' => $answer->getText(),
+                     'isRight' => 'false',
+                     'isSelected' => $isSelected];
+         }
+         $this->questionData["$key"] =
+             ['isCorrect'=>$this->validatedQuestions["$key"],
+             'text' => $text,
+             'explanation' => $explanation,
+             'answers' => json_encode($answers)
+             ];
 
      }
 
@@ -106,7 +123,10 @@ class QuizStats
     public function getFormatted(): array
     {
 
-        return ['asked' => $this->questionsAsked, 'correct' => $this->answeredCorrect, 'rate' => $this->getRate(),
+
+        return ['asked' => $this->questionsAsked,
+            'correct' => $this->answeredCorrect,
+            'rate' => $this->getRate(),
             'questions' => $this->questionData];
     }
 

@@ -9,60 +9,61 @@
 {% endblock %}
 {% block contentleft %}
 
-            <table class="w-100 m-2 p-2">
-                <tr>
-                    {% set counter = 0 %}
-                    {% for key,value in questions %}
-                    {% if counter % 5 == 0 %}
-                </tr>
-                <tr>
-                    {% endif %}
-                    <td class="w-20">
-                            {% set button = "btn-success" %}
+    <table class="w-100 m-2 p-2">
+        <tr>
+            {% set counter = 0 %}
+            {% for key,value in questions %}
+            {% if counter % 5 == 0 %}
+        </tr>
+        <tr>
+            {% endif %}
+            <td class="w-20">
+                {% set button = "btn-success" %}
 
-                        {% if value.isCorrect == 0 %}
-                            {% set button = "btn-danger" %}
-                        {% endif %}
-                        <button type="button" class="btn-lg w-75 {{ button }} shadow m-2" data-bs-toggle="collapse" data-bs-target="#details"
-                                aria-expanded="false" aria-controls="details"
-                                onclick="showDetails(this, {{ value }})">{{ key }}</button>
-                    </td>
-                    {% set counter = counter + 1 %}
-                    {% endfor %}
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <div class="collapse multi-collapse card align-self-center bg-light rounded-3 mx-4 my-5 py-3" id="details">
-                            <div class="card-body rounded-3">
-                                <br>
-                                <h5 id="detailsQuestion" class="card-title">Question</h5>
-                                <br>
-                                <br>
-                                <p id="detailsAnswers" class="card-text">Answers: </p>
-                                <br>
-                                <p id="detailsDescription" class="card-text">Your Answers: </p>
-                            </div>
+                {% if value.isCorrect == 0 %}
+                    {% set button = "btn-danger" %}
+                {% endif %}
+                <button type="button" class="btn-lg w-75 {{ button }} shadow m-2" data-bs-toggle="collapse"
+                        data-bs-target="#details"
+                        aria-expanded="false" aria-controls="details"
+                        onclick="showDetails(this,'{{ value.text }}','{{ value.explanation }}', {{ value.answers }})">{{ key }}</button>
+            </td>
+            {% set counter = counter + 1 %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="collapse multi-collapse card align-self-center bg-light rounded-3 mx-4 my-5 py-3"
+                     id="details">
+                    <div class="card-body rounded-3">
+                        <h5 id="detailsQuestion" class="card-title">Question</h5>
+                        <div id="detailsAnswers" class="card-text">
+                        <p>Answers:</p>
                         </div>
-                    </td>
+                        <p id="detailsDescription" class="card-text">Explanation: </p>
+                        <p id="legende" class="card-footer">Richtige Antworten zu der Frage sind grün, falsche rot. Gewählte sind gelb hinterlegt</p>
+                    </div>
+                </div>
+            </td>
 
-                </tr>
-            </table>
+        </tr>
+    </table>
 
 {% endblock %}
 {% block contentright %}
-            <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
-                <div class="card-body rounded-3">
-                    <br>
-                    <h5 class="card-title">Statistic Quiz</h5>
-                    <br>
-                    <br>
-                    <p class="card-text">Questions asked: {{ asked }}</p>
-                    <br>
-                    <p class="card-text">Questions answered correct: {{ correct }}</p>
-                    <br>
-                    <p class="card-text">success rate: {{ rate }}</p>
-                </div>
-            </div>
+    <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
+        <div class="card-body rounded-3">
+            <br>
+            <h5 class="card-title">Statistic Quiz</h5>
+            <br>
+            <br>
+            <p class="card-text">Questions asked: {{ asked }}</p>
+            <br>
+            <p class="card-text">Questions answered correct: {{ correct }}</p>
+            <br>
+            <p class="card-text">success rate: {{ rate }}</p>
+        </div>
+    </div>
 
     <div class="align-items-center text-center">
         <label>
