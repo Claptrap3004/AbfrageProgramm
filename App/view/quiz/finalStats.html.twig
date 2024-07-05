@@ -31,22 +31,7 @@
             {% set counter = counter + 1 %}
             {% endfor %}
         </tr>
-        <tr>
-            <td colspan="3">
-                <div class="collapse multi-collapse card align-self-center bg-light rounded-3 mx-4 my-5 py-3"
-                     id="details">
-                    <div class="card-body rounded-3">
-                        <h5 id="detailsQuestion" class="card-title">Question</h5>
-                        <div id="detailsAnswers" class="card-text">
-                        <p>Answers:</p>
-                        </div>
-                        <p id="detailsDescription" class="card-text">Explanation: </p>
-                        <p id="legende" class="card-footer">Richtige Antworten zu der Frage sind grün, falsche rot. Gewählte sind gelb hinterlegt</p>
-                    </div>
-                </div>
-            </td>
 
-        </tr>
     </table>
 
 {% endblock %}
@@ -73,4 +58,18 @@
     </div>
 {% endblock %}
 {% block buttons %}
+    <div class="col-lg-4 text-center"></div>
+    <div class="col-lg-4  collapse multi-collapse card text-center bg-light rounded-3 mx-1 my-1 py-1" id="details">
+        <div class="card-body rounded-3">
+            <h5 id="detailsQuestion" class="card-title">Question</h5>
+            <div id="detailsAnswers" class="card-text">
+                <p>Answers:</p>
+                <p></p>
+            </div>
+            <p id="detailsDescription" class="card-text">Explanation: </p>
+            <p id="legende" class="card-footer">Richtige Antworten zu der Frage sind grün, falsche rot. Gewählte sind
+                gelb hinterlegt</p>
+        </div>
+    </div>
+    <div class="col-lg-4 text-center"></div>
 {% endblock %}
