@@ -16,7 +16,9 @@ class QuizQuestionController extends Controller
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
         if (count($questions) === 0) {
-            header("refresh:0.01;url='". HOST ."QuizQuestion/select'");
+            $user = Factory::getFactory()->createUser($_SESSION['UserId']);
+            $stats = new UserStats($user);
+            $this->view('welcome', ['user' => $user, 'stats' => $stats]);
         } else header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
     }
 
