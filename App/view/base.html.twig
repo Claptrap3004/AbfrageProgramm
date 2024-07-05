@@ -38,21 +38,21 @@
 </div>
 <div id="content position-relative">
     <form method="post">
-        <div class="row">
+        <div class="row ">
             <div class="container-fluid text-center my-4">
                 <h3 class="text-decoration-underline text-bold">{% block subtitle %}{% endblock %}</h3>
             </div>
             <div class="col-1">
 
             </div>
-            <div class="col-8 w-60 bg-light rounded-3 my-1 mx-5 p-2 align-self-center">
+            <div class="col-8 w-60 h-50 bg-light rounded-3 my-1 mx-5 p-2 align-self-center overflow-x-auto">
                 {% block contentleft %}{% endblock %}
             </div>
-            <div class="col-2 w-20 align-self-right">
+            <div class="col-2 w-20 h-30 align-self-right overflow-x-auto">
                 {% block contentright %}{% endblock %}
             </div>
         </div>
-        <div class="container-flex p-1 m-1">
+        <div class="container-flex h-20 p-1 m-1 overflow-x-auto">
             <div class="row p-2 m-2">
                 {% block buttons %}{% endblock %}
             </div>
@@ -67,8 +67,7 @@
 <script>
     function clickFn(id) {
         let idStr = "#a_id" + id;
-        let checkbox = document.querySelector(idStr).checked;
-        document.querySelector(idStr).checked = !checkbox.checked;
+        document.querySelector(idStr).checked = !document.querySelector(idStr).checked
     }
 
     function clickCategory(categoryId) {
