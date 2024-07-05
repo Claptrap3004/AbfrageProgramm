@@ -8,61 +8,56 @@
     Hallo {{ user.username }}, herzlich Willlkommen zum Quiz
 {% endblock %}
 {% block contentleft %}
-    <div class="row">
-        <div class="col-6 align-items-center text-center">
-            <label>
-                <a href="User/account/">
-                    <button class="btn btn-primary">Account</button>
-                </a>
-            </label>
-        </div>
-        <div class="col-6 h-50 align-items-center text-center">
-            <label>
-                <a href="Stats/userdetail">
-                    <button class="btn btn-primary">Detailansicht Statistik</button>
-                </a>
-            </label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6 align-items-center text-center">
-            <label>
-                <a href="edit/">
-                    <button class="btn btn-primary">Fragen verwalten</button>
-                </a>
-            </label>
-        </div>
-        <div class="col-6 align-items-center text-center">
-            <label>
-                <a href="QuizQuestion/quickstart">
-                    <button class="btn btn-primary">Schnellstart 50 Fragen alle Kategorien</button>
-                </a>
-            </label>
+    <div class="container">
+        <div class="row g-2">
+
+            <div class="col-6">
+                <label>
+                    <a class="p-3 w-100" href="User/account/">
+                        <button class="btn btn-primary">Account</button>
+                    </a>
+                </label>
+            </div>
+            <div class="col-6">
+                <label>
+                    <a class="p-3 w-100" href="Stats/userdetail">
+                        <button class="btn btn-primary">Detailansicht Statistik</button>
+                    </a>
+                </label>
+            </div>
+            <div class="col-6">
+                <label>
+                    <a class="p-3 w-100" href="edit/">
+                        <button class="btn btn-primary">Fragen verwalten</button>
+                    </a>
+                </label>
+            </div>
+            <div class="col-6">
+                <label>
+                    <a class="p-3 w-100" href="QuizQuestion/quickstart">
+                        <button class="btn btn-primary">Schnellstart 50 Fragen alle Kategorien</button>
+                    </a>
+                </label>
+            </div>
         </div>
     </div>
 {% endblock %}
-{% block contentright %}
-    <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
-        <div class="card-body rounded-3">
-            <br>
-            <h5 class="card-title">Statistik von #{{ user.username }}</h5>
-            <br>
-            <br>
-            <p class="card-text">{{ stats.timesAsked }} Fragen beantwortet</p>
-            <br>
-            <p class="card-text">{{ stats.timesRight }} davon korrekt</p>
-            <br>
-            <p class="card-text">{{ stats.rate }} % Erfolgsquote</p>
+    {% block contentright %}
+        <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
+            <div class="card-body rounded-3">
+                <br>
+                <h5 class="card-title">Statistik von #{{ user.username }}</h5>
+                <br>
+                <br>
+                <p class="card-text">{{ stats.timesAsked }} Fragen beantwortet</p>
+                <br>
+                <p class="card-text">{{ stats.timesRight }} davon korrekt</p>
+                <br>
+                <p class="card-text">{{ stats.rate }} % Erfolgsquote</p>
+            </div>
         </div>
-    </div>
-    </div>
-{% endblock %}
+
+    {% endblock %}
 {% block buttons %}
-    <div class="align-items-center text-center">
-        <label>
-            <a href="https://abfrageprogramm.ddev.site:8443/QuizQuestion">
-                <button class="btn btn-primary">Schnellstart</button>
-            </a>
-        </label>
-    </div>
+
 {% endblock %}

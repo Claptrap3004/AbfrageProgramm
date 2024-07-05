@@ -10,30 +10,32 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
-        .scrollable-contentleft{
+        .scrollable-contentleft {
             max-width: 80%;
             max-height: 50%;
             overflow: hidden;
             scrollbar-gutter: stable both-edges;
         }
-        .scrollable-contentbuttons{
+
+        .scrollable-contentbuttons {
             max-width: 100%;
             max-height: 20%;
             overflow: hidden;
             scrollbar-gutter: stable both-edges;
 
         }
-        body,html,head,
+
+        body, html, head,
         .scrollable-contentleft:hover,
         .scrollable-contentbuttons:hover,
         .scrollable-contentleft:active,
         .scrollable-contentbuttons:active,
         .scrollable-contentleft:focus,
-        .scrollable-contentbuttons:focus{
+        .scrollable-contentbuttons:focus {
             overflow-y: auto;
         }
 
-        body{
+        body {
             overflow: hidden;
         }
 
@@ -43,7 +45,7 @@
     {% endblock %}
     <title>Quiz {% block title %}{% endblock %}</title>
 </head>
-<body class="overflow-x-hidden">
+<body>
 <div id="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary text-white mb-5 sticky-top">
         <div class="container-fluid">
@@ -66,7 +68,7 @@
         </div>
     </nav>
 </div>
-<div id="content position-relative">
+<div id="content">
     <form method="post">
         <div class="row ">
             <div class="container-fluid text-center my-4">
