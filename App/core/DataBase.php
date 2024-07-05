@@ -17,23 +17,23 @@ abstract class DataBase
         }
         return self::$conn;
     }
-
-    /**
-     * @param string $sql
-     * @param array $data
-     * @return DataBase[]|false
-     */
-    protected function query(string $sql, array $data = []): array|bool
-    {
-        $conn = $this->connect();
-        $stmt = $conn->prepare($sql);
-        $check = $stmt->execute($data);
-        if ($check){
-            $result = $stmt->fetchAll(PDO::FETCH_CLASS,$this->tablename);
-            return count($result) > 0 ? $result : true;
-        }
-        return false;
-    }
+//
+//    /**
+//     * @param string $sql
+//     * @param array $data
+//     * @return DataBase[]|false
+//     */
+//    protected function query(string $sql, array $data = []): array|bool
+//    {
+//        $conn = $this->connect();
+//        $stmt = $conn->prepare($sql);
+//        $check = $stmt->execute($data);
+//        if ($check){
+//            $result = $stmt->fetchAll(PDO::FETCH_CLASS,$this->tablename);
+//            return count($result) > 0 ? $result : true;
+//        }
+//        return false;
+//    }
     public function getLastInsertedId():int
     {
         return self::$conn !== null ? self::$conn->lastInsertId() : -1;

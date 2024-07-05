@@ -14,7 +14,29 @@ class StatsDBHandler extends IdTextDBHandler
         parent::__construct($kindOf);
         $this->userId = $userId;
     }
+    public function findAll(array $filters = []): array
+    {
+        if ($filters !== []) return $this->findFiltered($filters);
+        return parent::findAll();
+    }
 
+    /**
+     * returns question data sets matching filter containing keys listed in findAll DOC
+     * @param array $filters
+     * @return array
+     */
+    private function findFiltered(array $filters): array
+    {
+
+        if (array_key_exists('userId', $filters)){
+            $sql = "SELECT * FROM $this->tableName WHERE user_id = :user_id";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute([':user_id' => $filters['userId']]);
+        }
+        else return [];
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    }
 
     /**
      * $id in this case represents the question id the stats data is related to, provides stats data set for question

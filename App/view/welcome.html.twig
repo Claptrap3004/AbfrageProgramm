@@ -1,17 +1,29 @@
 {% extends "base.html.twig" %}
 
-{% block title %} Auswertung Quiz {% endblock %}
+{% block title %} Herzlich Willkommen {% endblock %}
 {% block head %}
 
 {% endblock %}
 {% block subtitle %}
-    Herzlich Willkommen beim Quiz
+    Hallo {{ user.username }}, herzlich Willlkommen zum Quiz
 {% endblock %}
 {% block contentleft %}
 
-        <div class="col-3 w-20 align-self-right">
+{% endblock %}
+{% block contentright %}
+    <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
+        <div class="card-body rounded-3">
+            <br>
+            <h5 class="card-title">Statistik von #{{ user.username }}</h5>
+            <br>
+            <br>
+            <p class="card-text">{{ stats.timesAsked }} Fragen beantwortet</p>
+            <br>
+            <p class="card-text">{{ stats.timesRight }} davon korrekt</p>
+            <br>
+            <p class="card-text">{{ stats.rate }} % Erfolgsquote</p>
         </div>
-
+    </div>
 {% endblock %}
 {% block buttons %}
                 <div class="align-items-center text-center">

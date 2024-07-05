@@ -16,8 +16,8 @@ class QuizQuestionController extends Controller
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
         if (count($questions) === 0) {
-            header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/select'");
-        } else header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+            header("refresh:0.01;url='". HOST ."QuizQuestion/select'");
+        } else header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
     }
 
     // populating table quiz_content of user
@@ -25,7 +25,7 @@ class QuizQuestionController extends Controller
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $handler->create(['question_ids' => $data]);
-        header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+        header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
 
     }
 
@@ -65,7 +65,7 @@ class QuizQuestionController extends Controller
                 $whichActual = $_SESSION['setActual'] = 'next question' ? SetActual::NEXT : SetActual::PREVIUOS;
                 KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
             }
-            header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/actual'");
+            header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
         } else {
             $question = $factory->createQuizQuestionById($id);
             if ($question) $this->view('quiz/answerQuestion', ['question' => $question]);
@@ -81,9 +81,9 @@ class QuizQuestionController extends Controller
         foreach ($data as $item) {
             if ($item['is_actual']) $id = $item['question_id'];
         }
-        if ($id) header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/answer/$id'");
+        if ($id) header("refresh:0.01;url='". HOST ."QuizQuestion/answer/$id'");
         else {
-            header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/final'");
+            header("refresh:0.01;url='". HOST ."QuizQuestion/final'");
         }
     }
 
@@ -95,7 +95,7 @@ class QuizQuestionController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if (isset ($_POST['confirm'])) {
                 KindOf::QUIZCONTENT->getDBHandler()->create([]);
-                header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion/index'");
+                header("refresh:0.01;url='". HOST ."QuizQuestion/index'");
             }
 
         }

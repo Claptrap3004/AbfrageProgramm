@@ -5,6 +5,7 @@
 //require 'DataBase.php';
 //require 'Model.php';
 require '../vendor/autoload.php';
+require '../App/core/config.php';
 //
 //spl_autoload_register(function ($class) {
 //    require $filename = dirname(__FILE__) . '\..\Model\\' . $class . '.php';

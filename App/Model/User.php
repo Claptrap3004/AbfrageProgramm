@@ -3,7 +3,7 @@
 
 namespace quiz;
 
-class User extends Model
+class User
 {
     private int $id;
     private string $username;
