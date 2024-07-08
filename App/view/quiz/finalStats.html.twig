@@ -9,7 +9,7 @@
 {% endblock %}
 {% block contentleft %}
 
-    <table class="w-100 m-2 p-2">
+    <table class="w-100 h-100 m-2 p-2">
         <tr>
             {% set counter = 0 %}
             {% for key,value in questions %}
@@ -58,17 +58,19 @@
     </div>
 {% endblock %}
 {% block buttons %}
-    <div class="col-lg-4 text-center"></div>
-    <div class="col-lg-4  collapse multi-collapse card text-center bg-light rounded-3 mx-1 my-1 py-1" id="details">
-        <div class="card-body rounded-3">
-            <h5 id="detailsQuestion" class="card-title">Question</h5>
-            <div id="detailsAnswers" class="card-text">
-                <p>Answers:</p>
+    <div class="col-lg-1 text-center"></div>
+    <div class="col-lg-7  collapse multi-collapse card text-center bg-light rounded-3 mx-1 my-1 py-1" id="details">
+        <h5 id="detailsQuestion" class="col card-title">Question</h5>
+        <div class="card-body row row-cols-2 gx-2 rounded-3">
+            <div id="detailsAnswers" class="col card-text">
                 <p></p>
             </div>
-            <p id="detailsDescription" class="card-text">Explanation: </p>
-            <p id="legende" class="card-footer">Richtige Antworten zu der Frage sind grün, falsche rot. Gewählte sind
-                gelb hinterlegt</p>
+            <div class="col card-text">
+                <p class="btn-outline-info" id="legende">Richtige Antworten zu der Frage sind grün, falsche rot.<br> Gewählte sind gelb
+                    hinterlegt</p>
+                <p></p>
+                <p id="detailsDescription"></p>
+            </div>
         </div>
     </div>
     <div class="col-lg-4 text-center"></div>

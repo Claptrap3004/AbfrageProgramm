@@ -121,7 +121,7 @@
             <div class="col"></div>
         </div>
         <div class="container-flex scrollable-contentbuttons" id="buttons">
-            <div class="row p-5 m-2 gx-2">
+            <div class="row px-1 m-1 gx-1">
                 {% block buttons %}{% endblock %}
             </div>
         </div>
@@ -207,7 +207,7 @@
         document.querySelector('#detailsQuestion').innerHTML = text;
         document.querySelector('#detailsDescription').innerHTML = explanation;
         let detailsAnswers = document.querySelector('#detailsAnswers');
-        detailsAnswers.innerHTML = document.createElement("p").innerHTML = 'Answers :';
+        detailsAnswers.innerHTML = document.createElement("p").innerHTML = '';
         for (let answersKey in answers) {
             let nextNode = document.createElement("p");
             nextNode.innerHTML = answers[answersKey].text;

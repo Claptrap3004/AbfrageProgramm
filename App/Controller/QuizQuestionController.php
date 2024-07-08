@@ -23,7 +23,7 @@ class QuizQuestionController extends Controller
     }
 
     // populating table quiz_content of user
-    private function fillTable(array $data = []): void
+    private function fillTableAndStartActual(array $data = []): void
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $handler->create(['question_ids' => $data]);
@@ -41,7 +41,7 @@ class QuizQuestionController extends Controller
             $numberOfQuestions = $_POST['range'] ?? 0;
             $selector = new QuestionSelector();
             $questions = $selector->select($numberOfQuestions, $categories);
-            $this->fillTable($questions);
+            $this->fillTableAndStartActual($questions);
         }
         else{
             $questionsByCategories = KindOf::QUESTION->getDBHandler()->findAll(['question_by_category'=> null]);
@@ -107,11 +107,11 @@ class QuizQuestionController extends Controller
         }
     }
 
-    public function quickStart()
+    public function quickStart($numberOfQuestions = 20)
     {
         $selector = new QuestionSelector();
-        $questions = $selector->select(50);
-        $this->fillTable($questions);
+        $questions = $selector->select($numberOfQuestions);
+        $this->fillTableAndStartActual($questions);
     }
 
     public function test():void
