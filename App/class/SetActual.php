@@ -1,5 +1,6 @@
 <?php
 
+// options to change the pointer to actual question
 namespace quiz;
 
 enum SetActual

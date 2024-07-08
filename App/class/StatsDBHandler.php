@@ -59,6 +59,12 @@ class StatsDBHandler extends IdTextDBHandler
         return $result;
     }
 
+    /**
+     * expects array containing 'id', 'times_asked' and 'times_right'. 'user_id' and 'question_id' cannot be changed
+     * through this update method
+     * @param array $args
+     * @return bool
+     */
     public function update(array $args): bool
     {
         if ($this->validateArgsUpdate($args)) {

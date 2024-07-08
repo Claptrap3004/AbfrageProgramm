@@ -7,9 +7,11 @@ use Random\RandomException;
 class QuizQuestionController extends Controller
 {
 
-    // supposed to check whether there is still a quiz configured, if not starts new one
     /**
-     * @throws RandomException
+     * checks whether there is still an unfinished quiz. In case unfinished quiz exists user is directed to actual
+     * question of quiz, else user is directed to welcome screen
+     * @param array $data
+     * @return void
      */
     public function index(array $data = []): void
     {
@@ -22,7 +24,12 @@ class QuizQuestionController extends Controller
         } else header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
     }
 
-    // populating table quiz_content of user
+    /**
+     * expects key 'question_ids' which holds int[] storing selected question_ids that will be asked in the quiz.
+     * populates quiz_content table of actual user and directs to answer options of the first question
+     * @param array $data
+     * @return void
+     */
     private function fillTableAndStartActual(array $data = []): void
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
@@ -32,6 +39,8 @@ class QuizQuestionController extends Controller
     }
 
     /**
+     * directs to category selection page, after categories and number of questions are selected QuestionSelector object
+     * is created and random selection of question ids is sent to according method to create the content
      * @throws RandomException
      */
     public function select(): void
@@ -50,6 +59,15 @@ class QuizQuestionController extends Controller
     }
 
     // to answer current (actual) question of running quiz, sets next question as actual after
+
+    /**
+     * loads question for given id with possible answers and displays it. On post request of page it sets actual attribute
+     * in quiz_content table after storing given answer(s) in track_quiz_content table. If post request is set next question
+     * as actual while actual question was last one is_actual is set to false for all questions to trigger validation of
+     * quiz.
+     * @param int $id
+     * @return void
+     */
     public function answer(int $id): void
     {
         $factory = Factory::getFactory();
@@ -74,7 +92,11 @@ class QuizQuestionController extends Controller
         }
     }
 
-    // checks quiz content for actual Question, if actual was last question directs to final page
+
+    /** checks for actual question in quiz_content and calls answer method for given question id. if no item is set to
+     * actual in quiz_content validation and stats are triggered.
+     * @return void
+     */
     public function actual(): void
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
