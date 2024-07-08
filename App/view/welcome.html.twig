@@ -10,25 +10,33 @@
 {% block contentleft %}
     <div class="row row-cols-2 py-4 g-4 welcomeButtonDiv">
         <div class="col welcomeButton">
-            <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
-                <a href="User/account/"></a>Account
-            </label>
+            <a id="quickstart" href="quizquestion/quickstart/">
+                <label for="quickstart" class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
+                    Schnellstart 50 Fragen alle Kategorien
+                </label>
+            </a>
         </div>
         <div class="col welcomeButton">
-            <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
-                <a href="Stats/userdetail"></a>Detailansicht Statistik
-            </label>
+            <a href="User/account/">
+                <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
+                    Account
+                </label>
+            </a>
+        </div>
+        <div class="col welcomeButton">
+            <a href="Stats/userdetail/">
+                <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
+                    Detailansicht Statistik
+                </label>
+            </a>
         </div>
 
         <div class="col welcomeButton">
-            <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
-                <a href="edit/"></a>Fragen verwalten
-            </label>
-        </div>
-        <div class="col welcomeButton">
-            <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
-                <a href="QuizQuestion/quickstart"></a>Schnellstart 50 Fragen alle Kategorien
-            </label>
+            <a href="edit/">
+                <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
+                    Fragen verwalten
+                </label>
+            </a>
         </div>
     </div>
 {% endblock %}
