@@ -1,8 +1,8 @@
 <?php
 namespace quiz;
-//include_once 'Question.php';
-use quiz\CanConnectDB;
-use quiz\CanHandleDB;
+include_once 'Question.php';
+use Exception;
+
 
 class EditQuestion extends Question
 {
@@ -104,7 +104,7 @@ class EditQuestion extends Question
     // uodated or created
     protected function update(): void
     {
-        $handler = $this->kindOf->getDBHandler($this->connector);
+        $handler = $this->kindOf->getDBHandler();
         $handler->update(['id' => $this->id,
             'text' => $this->text,
             'category_id' => $this->category->getId()]);

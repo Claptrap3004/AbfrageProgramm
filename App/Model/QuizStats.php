@@ -13,7 +13,6 @@ class QuizStats
     private array $questionData = [];
 
 
-
     public function __construct()
     {
         $this->factory = Factory::getFactory();
@@ -23,10 +22,12 @@ class QuizStats
     }
 
 
-    // loads Questions from actual users quiz_content table in db, as well as the given answers
-    // stored in track_quiz_content table in db
-
-    private function getQuestionsFromDB():void
+    /**
+     * loads questions from actual users quiz_content table in db, as well as the given answers stores in
+     * track_quiz_content table in db
+     * @return void
+     */
+    private function getQuestionsFromDB(): void
     {
         $answeredQuestionsData = $this->dbHandler->findAll();
         $this->questionsAsked = count($answeredQuestionsData);
@@ -40,52 +41,71 @@ class QuizStats
         }
     }
 
-    // calls validation method inside QuizQuestion and maps each question id to bool value in validatedQuestions array
-    // as well as to increment counter for tracking the number of correctly answered questions
-
+    /**
+     * calls validation method inside QuizQuestion and maps each question id to bool value in validatedQuestions array
+     * as well as to increment counter for tracking the number of correctly answered questions
+     * @return void
+     */
     private function validate(): void
     {
         foreach ($this->questions as $question) {
             $key = $question->getId();
             $value = 0;
-            if ($question->validate()){
+            if ($question->validate()) {
                 $this->answeredCorrect++;
                 $value = 1;
             }
             $this->validatedQuestions["$key"] = $value;
             $this->extractData($question);
         }
-     }
-     private function extractData(QuizQuestion $question):void
-     {
-         $key = $question->getId();
-         $text = $question->getText();
-         $explanation = '';
-         $answers = [];
-         foreach ($question->getRightAnswers() as $answer){
-             $isSelected = ($question->existsInGivenAnswers($answer)) ? 'true' : 'false';
-             $answerId = $answer->getId();
-             $answers["$answerId"] =
-                 ['text' => $answer->getText(),
-                     'isRight' => 'true',
-                     'isSelected' => $isSelected];
-         }
-         foreach ($question->getWrongAnswers() as $answer){
-             $isSelected = ($question->existsInGivenAnswers($answer)) ? 'true' : 'false';
-             $answerId = $answer->getId();
-             $answers["$answerId"] =
-                 ['text' => $answer->getText(),
-                     'isRight' => 'false',
-                     'isSelected' => $isSelected];
-         }
-         $this->questionData["$key"] =
-             ['isCorrect'=>$this->validatedQuestions["$key"],
-             'text' => $text,
-             'explanation' => $explanation,
-             'answers' => json_encode($answers)
-             ];
+    }
 
-     }
+
+    /**
+     * populates questionData array with necessary infos stored in associative arrays as well as prepares json string
+     * to be able to provide extra infos on finalStats page for each question
+     * @param QuizQuestion $question
+     * @return void
+     */
+    private function extractData(QuizQuestion $question): void
+    {
+        $key = $question->getId();
+        $text = $question->getText();
+        $explanation = '';
+        $answers = [];
+        foreach ($question->getRightAnswers() as $answer) {
+            $answerId = $answer->getId();
+            $answers["$answerId"] = $this->createAssocArray($question,$answer,true);
+        }
+        foreach ($question->getWrongAnswers() as $answer) {
+            $answerId = $answer->getId();
+            $answers["$answerId"] = $this->createAssocArray($question,$answer,false);
+        }
+        $this->questionData["$key"] =
+            ['isCorrect' => $this->validatedQuestions["$key"],
+                'text' => $text,
+                'explanation' => $explanation,
+                'answers' => json_encode($answers)
+            ];
+
+    }
+
+    /**
+     * provides associative arrays for each question in quiz containing info about answer text, if answer is correct
+     * answer for given question and if the user selected the question to provide info on finalStats page
+     * @param QuizQuestion $question
+     * @param IdText $answer
+     * @param bool $setTo
+     * @return array
+     */
+    private function createAssocArray(QuizQuestion $question, IdText $answer, bool $setTo): array
+    {
+        $isSelected = ($question->existsInGivenAnswers($answer)) ? 'true' : 'false';
+        return ['text' => $answer->getText(),
+            'isRight' => ($setTo) ? 'true' : 'false',
+            'isSelected' => $isSelected];
+
+    }
 
     public function getQuestionData(): array
     {
@@ -94,10 +114,10 @@ class QuizStats
 
     // provides the success rate of the quiz
 
-    public function getRate():float
+    public function getRate(): float
     {
         $percentage = $this->questionsAsked != 0 ? $this->answeredCorrect * 100 / $this->questionsAsked : 0;
-        return round($percentage,2);
+        return round($percentage, 2);
     }
 
     public function getQuestions(): array
@@ -120,6 +140,10 @@ class QuizStats
         return $this->answeredCorrect;
     }
 
+    /**
+     * prepares all collected stats necessary for output on finalStats page
+     * @return array
+     */
     public function getFormatted(): array
     {
 

@@ -22,6 +22,11 @@ class QuizQuestion extends Question
         $this->givenAnswers = [];
     }
 
+    /**
+     * checks given answers against right answers, only if both (sorted) arrays match the result is true, if only some
+     * answers are correct the result will be false
+     * @return bool
+     */
     public function validate(): bool
     {
         usort($this->givenAnswers, fn($a, $b) => strcmp($a->getId(), $b->getId()));
