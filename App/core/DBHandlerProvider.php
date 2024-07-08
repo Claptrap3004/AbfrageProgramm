@@ -5,21 +5,19 @@ namespace quiz;
 class DBHandlerProvider
 {
 
-    private static ?IdTextDBHandler $answerDBHandler = null;
-    private static ?IdTextDBHandler $categoryDBHandler = null;
-    private static ?QuestionDBHandler $questionDBHandler = null;
-    private static ?RelationDBHandler $relationDBHandler = null;
-    private static ?StatsDBHandler $statsDBHandler = null;
-    private static ?UserDBHandler $userDBHandler = null;
-    private static ?QuizContentDBHandler $quizContentDBHandler = null;
+    private static ?CanHandleDB $answerDBHandler = null;
+    private static ?CanHandleDB $categoryDBHandler = null;
+    private static ?CanHandleDB $questionDBHandler = null;
+    private static ?CanHandleDB $relationDBHandler = null;
+    private static ?CanHandleDB $statsDBHandler = null;
+    private static ?CanHandleDB $userDBHandler = null;
+    private static ?CanHandleDB $quizContentDBHandler = null;
 
     /**
      * provides appropriate DBHandler depending on KindOf being ANSWER or CATEGORY, if any other KindOF element this
      * will return null
-     * @param KindOf $kindOf
-     * @return IdTextDBHandler|null
      */
-    public static function getIdTextDBHandler(KindOf $kindOf): ?IdTextDBHandler
+    public static function getIdTextDBHandler(KindOf $kindOf): ?CanHandleDB
     {
         switch ($kindOf) {
             case KindOf::ANSWER :
@@ -37,11 +35,8 @@ class DBHandlerProvider
     /**
      * sets param idTextDBHandler to answer or category db handler depending on KindOf being ANSWER or CATEGORY,
      * if any other kindOf element is passed nothing changes
-     * @param IdTextDBHandler $idTextDBHandler
-     * @param KindOf $kindOf
-     * @return void
      */
-    public static function setIdTextDBHandler(IdTextDBHandler $idTextDBHandler, KindOf $kindOf): void
+    public static function setIdTextDBHandler(CanHandleDB $idTextDBHandler, KindOf $kindOf): void
     {
         switch ($kindOf) {
             case KindOf::ANSWER :
@@ -54,59 +49,59 @@ class DBHandlerProvider
         }
     }
 
-    public static function getQuestionDBHandler(): QuestionDBHandler
+    public static function getQuestionDBHandler(): ?CanHandleDB
     {
         if (!self::$questionDBHandler) self::$questionDBHandler = new QuestionDBHandler(KindOf::QUESTION);
         return self::$questionDBHandler;
     }
 
-    public static function setQuestionDBHandler(QuestionDBHandler $questionDBHandler): void
+    public static function setQuestionDBHandler(CanHandleDB $questionDBHandler): void
     {
         self::$questionDBHandler = $questionDBHandler;
     }
 
-    public static function getRelationDBHandler(): RelationDBHandler
+    public static function getRelationDBHandler(): ?CanHandleDB
     {
         if (!self::$relationDBHandler) self::$relationDBHandler = new RelationDBHandler(KindOf::RELATION);
         return self::$relationDBHandler;
     }
 
-    public static function setRelationDBHandler(RelationDBHandler $relationDBHandler): void
+    public static function setRelationDBHandler(CanHandleDB $relationDBHandler): void
     {
         self::$relationDBHandler = $relationDBHandler;
     }
 
-    public static function getStatsDBHandler(): StatsDBHandler
+    public static function getStatsDBHandler(): ?CanHandleDB
     {
         if (!self::$statsDBHandler) self::$statsDBHandler = new StatsDBHandler(KindOf::STATS, $_SESSION['UserId']);
         return self::$statsDBHandler;
     }
 
-    public static function setStatsDBHandler(StatsDBHandler $statsDBHandler): void
+    public static function setStatsDBHandler(CanHandleDB $statsDBHandler): void
     {
         self::$statsDBHandler = $statsDBHandler;
     }
 
-    public static function getUserDBHandler(): UserDBHandler
+    public static function getUserDBHandler(): ?CanHandleDB
     {
         if (!self::$userDBHandler) self::$userDBHandler = new UserDBHandler(KindOf::USER);
 
         return self::$userDBHandler;
     }
 
-    public static function setUserDBHandler(UserDBHandler $userDBHandler): void
+    public static function setUserDBHandler(CanHandleDB $userDBHandler): void
     {
         self::$userDBHandler = $userDBHandler;
     }
 
-    public static function getQuizContentDBHandler(): QuizContentDBHandler
+    public static function getQuizContentDBHandler(): ?CanHandleDB
     {
         if (!self::$quizContentDBHandler) self::$quizContentDBHandler = new QuizContentDBHandler(KindOf::QUIZCONTENT);
 
         return self::$quizContentDBHandler;
     }
 
-    public static function setQuizContentDBHandler(QuizContentDBHandler $quizContentDBHandler): void
+    public static function setQuizContentDBHandler(CanHandleDB $quizContentDBHandler): void
     {
         self::$quizContentDBHandler = $quizContentDBHandler;
     }

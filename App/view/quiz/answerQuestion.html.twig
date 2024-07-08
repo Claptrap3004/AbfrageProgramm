@@ -33,9 +33,13 @@
             <h5 class="card-title">Statistic Question #{{ question.id }}</h5>
             <br>
             <br>
-            <p class="card-text">{{ question.stats.timesAsked }} times asked</p>
+            <p id="statsTimesAsked" class="card-text">{{ question.stats.timesAsked }} times asked</p>
             <br>
-            <p class="card-text">{{ question.stats.timesRight }} times answered correct</p>
+            <p id="statsTimesRight" class="card-text">{{ question.stats.timesRight }} times answered correct</p>
+
+            <label class="btn btn-warning rounded-3 shadow-sm w-100" onclick="clearStatsOfQuestion({{ question.stats.timesAsked }},{{ question.stats.timesRight }})"><span id="labelClearStats"> clear Stats</span>
+                <input id="clearStatsOfQuestion" type="checkbox" name="clearStats" value="{{ question.id }}" hidden>
+            </label>
         </div>
     </div>
 {% endblock %}

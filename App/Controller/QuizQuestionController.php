@@ -74,9 +74,11 @@ class QuizQuestionController extends Controller
             if (isset($_SESSION['finish'])) {
                 KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::NONE);
             } else {
+                $clearStats = $_POST['clearStats'] ?? '';
                 $answers = $_POST['answers'] ?? [];
                 $questionId = $_POST['questionId'] ?? $id;
                 $question = $factory->createQuizQuestionById($questionId);
+                if ($clearStats) $question->getStats()->reset();
                 foreach ($answers as $answer) {
                     if ((int)$answer > 0) $question->addGivenAnswer($factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
                 }
