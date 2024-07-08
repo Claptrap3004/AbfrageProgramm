@@ -107,6 +107,13 @@ class QuizQuestionController extends Controller
         }
     }
 
+    public function quickStart()
+    {
+        $selector = new QuestionSelector();
+        $questions = $selector->select(50);
+        $this->fillTable($questions);
+    }
+
     public function test():void
     {
         $question = Factory::getFactory()->createQuizQuestionById(1);

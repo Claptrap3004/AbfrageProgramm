@@ -8,37 +8,27 @@
     Hallo {{ user.username }}, herzlich Willlkommen zum Quiz
 {% endblock %}
 {% block contentleft %}
-    <div class="container">
-        <div class="row g-2">
+    <div class="row row-cols-2 py-4 g-4 welcomeButtonDiv">
+        <div class="col welcomeButton">
+            <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
+                <a href="User/account/"></a>Account
+            </label>
+        </div>
+        <div class="col welcomeButton">
+            <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
+                <a href="Stats/userdetail"></a>Detailansicht Statistik
+            </label>
+        </div>
 
-            <div class="col-6">
-                <label>
-                    <a class="p-3 w-100" href="User/account/">
-                        <button class="btn btn-primary">Account</button>
-                    </a>
-                </label>
-            </div>
-            <div class="col-6">
-                <label>
-                    <a class="p-3 w-100" href="Stats/userdetail">
-                        <button class="btn btn-primary">Detailansicht Statistik</button>
-                    </a>
-                </label>
-            </div>
-            <div class="col-6">
-                <label>
-                    <a class="p-3 w-100" href="edit/">
-                        <button class="btn btn-primary">Fragen verwalten</button>
-                    </a>
-                </label>
-            </div>
-            <div class="col-6">
-                <label>
-                    <a class="p-3 w-100" href="QuizQuestion/quickstart">
-                        <button class="btn btn-primary">Schnellstart 50 Fragen alle Kategorien</button>
-                    </a>
-                </label>
-            </div>
+        <div class="col welcomeButton">
+            <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
+                <a href="edit/"></a>Fragen verwalten
+            </label>
+        </div>
+        <div class="col welcomeButton">
+            <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">
+                <a href="QuizQuestion/quickstart"></a>Schnellstart 50 Fragen alle Kategorien
+            </label>
         </div>
     </div>
 {% endblock %}
