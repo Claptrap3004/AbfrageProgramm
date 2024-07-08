@@ -115,6 +115,7 @@ class QuizQuestionController extends Controller
     public function final(): void
     {
             $quizStats = new QuizStats();
+            KindOf::QUIZCONTENT->getDBHandler()->createTables();
             $this->view('quiz/finalStats', $quizStats->getFormatted() );
     }
 

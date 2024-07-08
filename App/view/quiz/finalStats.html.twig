@@ -51,10 +51,10 @@
     </div>
 
     <div class="align-items-center text-center">
-        <label>
-            <input type="submit" name="confirm" class="align-self-center btn-lg btn-info shadow-sm"
-                   value="zurück zum Hauptmenü">
-        </label>
+        <a href="quizquestion/">
+            <label class="align-self-center btn-lg btn-info shadow-sm">zurück zum Hauptmenü
+            </label>
+        </a>
     </div>
 {% endblock %}
 {% block buttons %}
@@ -66,7 +66,8 @@
                 <p></p>
             </div>
             <div class="col card-text">
-                <p class="btn-outline-info" id="legende">Richtige Antworten zu der Frage sind grün, falsche rot.<br> Gewählte sind gelb
+                <p class="btn-outline-info" id="legende">Richtige Antworten zu der Frage sind grün, falsche rot.<br>
+                    Gewählte sind gelb
                     hinterlegt</p>
                 <p></p>
                 <p id="detailsDescription"></p>

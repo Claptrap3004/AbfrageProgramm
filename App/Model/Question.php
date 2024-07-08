@@ -42,7 +42,9 @@ abstract class Question extends IdText
 
     public function getAnswers():array
     {
-        return array_merge($this->rightAnswers,$this->wrongAnswers);
+        $answers = array_merge($this->rightAnswers,$this->wrongAnswers);
+        shuffle($answers);
+        return $answers;
     }
 
 }
