@@ -58,7 +58,6 @@ class QuizQuestionController extends Controller
         }
     }
 
-    // to answer current (actual) question of running quiz, sets next question as actual after
 
     /**
      * loads question for given id with possible answers and displays it. On post request of page it sets actual attribute
@@ -111,22 +110,10 @@ class QuizQuestionController extends Controller
         }
     }
 
-    // redirects to page where user can decide whether to check all questions from beginning or
-    // to get validation of quiz
     public function final(): void
     {
-
-        if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            if (isset ($_POST['confirm'])) {
-                KindOf::QUIZCONTENT->getDBHandler()->create([]);
-                header("refresh:0.01;url='". HOST ."QuizQuestion/index'");
-            }
-
-        }
-        else {
             $quizStats = new QuizStats();
             $this->view('quiz/finalStats', $quizStats->getFormatted() );
-        }
     }
 
     public function quickStart($numberOfQuestions = 20)

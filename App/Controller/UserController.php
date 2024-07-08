@@ -16,11 +16,17 @@ class UserController extends Controller
         $this->index();
     }
 
+    /**
+     * deals with both login and register, on correct login or new successful registration user is redirected to
+     * welcome page, else encountered errors are reported on login page
+     * @return void
+     */
     public function login(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
+
             if (isset($_POST['loginUser'])) {
                 if ($this->checkCorrectEmail($email) && $this->checkCorrectPassword($email, $password)) {
                     $userData = DBHandlerProvider::getUserDBHandler()->findAll(['userEmail' => $email]);
@@ -34,10 +40,12 @@ class UserController extends Controller
                 $passwordValidate = $_POST['passwordValidate'] ?? '';
                 $userName = $_POST['userName'] ?? '';
                 $errorMessage = '';
+
                 if (!$this->checkCorrectEmail($email)) $errorMessage = 'es ist keine gültige E-Mail eingegeben worden';
                 elseif (!$this->validateEqual($email, $emailValidate)) $errorMessage = 'die eingegebenen E-Mail-Adressen stimmen nicht überein';
                 elseif (!$this->validatePassword($password)) $errorMessage = 'Das Passwort muss mindestens 8 Zeichen lang sein';
                 elseif (!$this->validateEqual($password, $passwordValidate)) $errorMessage = 'Die eingegebenen Passwörter stimmen nicht überein';
+
                 if ($errorMessage !== '') $this->view('login/login', ['error' => $errorMessage, 'username' => $userName]);
                 else {
                     $pwhash = password_hash($password, PASSWORD_BCRYPT);

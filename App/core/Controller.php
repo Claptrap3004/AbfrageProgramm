@@ -19,11 +19,8 @@ abstract class Controller
         if (file_exists($viewFile)) {
             try {
                 echo $twig->render("$viewname.html.twig", $data);
-            } catch (LoaderError $e) {
-            } catch (RuntimeError $e) {
-            } catch (SyntaxError $e) {
+            } catch (LoaderError|RuntimeError|SyntaxError $e) {
             }
-//            require $viewFile;
         }
         else require '../App/View/PageNotFoundController.php';
     }
