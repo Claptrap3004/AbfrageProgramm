@@ -9,7 +9,7 @@
 {% endblock %}
 {% block contentleft %}
 
-    <table class="w-100 h-100 m-2 p-2">
+    <table class="w-100 h-100 m-1 p-1">
         <tr>
             {% set counter = 0 %}
             {% for key,value in questions %}
@@ -23,7 +23,7 @@
                 {% if value.isCorrect == 0 %}
                     {% set button = "btn-danger" %}
                 {% endif %}
-                <button type="button" class="btn-lg w-75 {{ button }} shadow m-2" data-bs-toggle="collapse"
+                <button type="button" class="btn-lg w-75 {{ button }} shadow " data-bs-toggle="collapse"
                         data-bs-target="#details"
                         aria-expanded="false" aria-controls="details"
                         onclick="showDetails(this,'{{ value.text }}','{{ value.explanation }}', {{ value.answers }})">{{ key }}</button>
@@ -36,23 +36,18 @@
 
 {% endblock %}
 {% block contentright %}
-    <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
+    <div class="card align-self-center bg-light rounded-3 m-1 my-5 py-3">
         <div class="card-body rounded-3">
-            <br>
             <h5 class="card-title">Statistic Quiz</h5>
             <br>
-            <br>
             <p class="card-text">Questions asked: {{ asked }}</p>
-            <br>
             <p class="card-text">Questions answered correct: {{ correct }}</p>
-            <br>
             <p class="card-text">success rate: {{ rate }}</p>
         </div>
     </div>
-
     <div class="align-items-center text-center">
         <a href="quizquestion/">
-            <label class="align-self-center btn-lg btn-info shadow-sm">zurück zum Hauptmenü
+            <label class="align-self-center btn btn-info shadow-sm">zurück zum Hauptmenü
             </label>
         </a>
     </div>
