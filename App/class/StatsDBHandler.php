@@ -7,12 +7,10 @@ use PDO;
 
 class StatsDBHandler extends IdTextDBHandler
 {
-    private int $userId;
 
-    public function __construct(KindOf $kindOf, int $userId)
+    public function __construct(KindOf $kindOf)
     {
         parent::__construct($kindOf);
-        $this->userId = $userId;
     }
     public function findAll(array $filters = []): array
     {
