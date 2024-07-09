@@ -196,9 +196,9 @@
             buttonUserName.type = 'text';
             buttonEmailValidate.type = 'email';
             buttonPasswordValidate.type = 'password';
-            labelUserName.hidden = "";
-            labelEmailValidate.hidden = "";
-            labelPasswordValidate.hidden = "";
+            labelUserName.style.visibility = "visible";
+            labelEmailValidate.style.visibility = "visible";
+            labelPasswordValidate.style.visibility = "visible";
             buttonConfirm.name = 'registerUser';
             buttonConfirm.innerHTML = 'Sign Up';
             toggleButton.innerHTML = 'go to Login';
@@ -206,9 +206,9 @@
             buttonUserName.type = 'hidden';
             buttonEmailValidate.type = 'hidden';
             buttonPasswordValidate.type = 'hidden';
-            labelUserName.hidden = "hidden";
-            labelEmailValidate.hidden = "hidden";
-            labelPasswordValidate.hidden = "hidden";
+            labelUserName.style.visibility = "hidden";
+            labelEmailValidate.style.visibility = "hidden";
+            labelPasswordValidate.style.visibility = "hidden";
             buttonConfirm.name = 'loginUser';
             buttonConfirm.innerHTML = 'Sign In';
             toggleButton.innerHTML = 'go to Register';
