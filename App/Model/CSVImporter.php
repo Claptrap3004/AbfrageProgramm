@@ -17,9 +17,9 @@ class CSVImporter
         $row = 0;
         if (($handle = fopen($fileName, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                $num = count($data);
                 $row++;
                 if ($row === 1) continue;
+
                 if ($data[0] !== $category)  {
                     $categoryId = 0;
                     $category = $data[0];
@@ -29,9 +29,8 @@ class CSVImporter
                     }
                     $categoryId = $categoryId == 0 ? $categoryHandler->create(['text' => $category]) : $categoryId;
                 }
-                $this->proceedData($data, $categoryId);
-                echo "Line $num proceeded";
 
+                $this->proceedData($data, $categoryId);
             }
         }
         fclose($handle);
@@ -53,6 +52,7 @@ class CSVImporter
         $questionId = $questionDBHandler->create(['category_id'=> $categoryId,'user_id'=>$_SESSION['UserId'],'text' => $question]);
         $answerDBHandler = KindOf::ANSWER->getDBHandler();
         $relationDBHandler = KindOf::RELATION->getDBHandler();
+
         foreach ($answers as $answer){
             $isRight = $answer == $rightAnswer ? 1 : 0;
             $answerId = $answerDBHandler->create(['text' => $answer]);

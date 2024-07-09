@@ -112,7 +112,6 @@ class QuizStats
         return $this->questionData;
     }
 
-    // provides the success rate of the quiz
 
     public function getRate(): float
     {

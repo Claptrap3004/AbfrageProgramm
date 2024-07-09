@@ -71,6 +71,10 @@
             overflow-y: auto;
         }
 
+        .login-contentRight {
+            display: none;
+        }
+
         body {
             overflow: hidden;
         }
@@ -105,11 +109,11 @@
 </div>
 <div id="content">
     <form method="post">
-        <div class="container text-center py-5 my-4">
+        <div id="subtitle" class="container text-center py-5 my-4">
             <h3 class="text-decoration-underline text-bold">{% block subtitle %}{% endblock %}</h3>
         </div>
         <div class="row row-cols-7 gx-5">
-            <div class="col"></div>
+            <div id="spacerContentLeft" class="col"></div>
             <div class="col-2 bg-light rounded-5 my-2 py-2 align-self-left scrollable-contentleft"
                  id="contentLeft">
                 {% block contentleft %}{% endblock %}
@@ -133,6 +137,15 @@
     {% endblock %}
 </div>
 <script>
+    function setLoginScreen(){
+        let newContentLeft = document.createElement('div');
+        newContentLeft.className = "col-4 bg-light rounded-5 my-2 py-2 align-self-left scrollable-contentleft";
+        document.querySelector('#spacerContentLeft').className = "col-3";
+        document.querySelector('#contentRight').hidden = 'hidden';
+        document.querySelector('#contentLeft').replaceWith(newContentLeft);
+        console.log(document.querySelector('#contentLeft').className);
+    }
+
     function clickFn(id) {
         let idStr = "#a_id" + id;
         document.querySelector(idStr).checked = !document.querySelector(idStr).checked

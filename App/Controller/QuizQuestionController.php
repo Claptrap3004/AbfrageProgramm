@@ -77,11 +77,13 @@ class QuizQuestionController extends Controller
                 $clearStats = $_POST['clearStats'] ?? '';
                 $answers = $_POST['answers'] ?? [];
                 $questionId = $_POST['questionId'] ?? $id;
+
                 $question = $factory->createQuizQuestionById($questionId);
                 if ($clearStats) $question->getStats()->reset();
                 foreach ($answers as $answer) {
                     if ((int)$answer > 0) $question->addGivenAnswer($factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
                 }
+
                 $question->writeResultDB();
                 $whichActual = $_SESSION['setActual'] = 'next question' ? SetActual::NEXT : SetActual::PREVIUOS;
                 KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);

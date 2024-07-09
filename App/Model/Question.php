@@ -40,6 +40,9 @@ abstract class Question extends IdText
         return $this->wrongAnswers;
     }
 
+    /** returns shuffled merge of right and wrong answer arrays
+     * @return array
+     */
     public function getAnswers():array
     {
         $answers = array_merge($this->rightAnswers,$this->wrongAnswers);
