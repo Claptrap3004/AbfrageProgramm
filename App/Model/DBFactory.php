@@ -61,9 +61,22 @@ class DBFactory
         return $id;
     }
 
+    /**
+     * @throws Exception
+     */
+
     public function createUser(string $username, string $email, string $password): int
     {
-
+        $userData = KindOf::USER->getDBHandler()->findAll();
+        foreach ($userData as $user) {
+            if ($user['email'] === trim($email)) throw new Exception('User exists for this email already');
+        }
+        $pwHash = password_hash($password,PASSWORD_BCRYPT);
+        return KindOf::USER->getDBHandler()->create([
+            'username' => $username,
+            'email' => $email,
+            'password' => $pwHash
+        ]);
     }
 
     public function createCategory(string $text): int
