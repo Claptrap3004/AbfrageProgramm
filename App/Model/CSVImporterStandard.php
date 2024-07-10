@@ -16,7 +16,7 @@ class CSVImporterStandard implements CanHandleCSV
         $this->categoryDBHandler = KindOf::CATEGORY->getDBHandler();
         $this->questionDBHandler = KindOf::QUESTION->getDBHandler();
         $this->relationDBHandler = KindOf::RELATION->getDBHandler();
-        $this->factory = new Factory();
+        $this->factory = Factory::getFactory();
     }
 
 
@@ -30,11 +30,11 @@ class CSVImporterStandard implements CanHandleCSV
                 $row++;
                 if ($row === 1) continue;
 
-                if ($data[0] !== $category)  {
+                if ($data[0] !== $category) {
                     $categoryId = 0;
                     $category = $data[0];
                     $existingCategories = $this->factory->findAllIdTextObject(KindOf::CATEGORY);
-                    foreach ($existingCategories as $existingCategory){
+                    foreach ($existingCategories as $existingCategory) {
                         if ($existingCategory->getText() == $category) $categoryId = $existingCategory->getId();
                     }
                     $categoryId = $categoryId == 0 ? $this->categoryDBHandler->create(['text' => $category]) : $categoryId;
@@ -45,45 +45,46 @@ class CSVImporterStandard implements CanHandleCSV
         }
         fclose($handle);
     }
+
     private function proceedData(array $data, int $categoryId): void
     {
 
         $question = $data[1];
         $explanation = $data[2];
         $answers = [];
-        for ($i = 3; $i < count($data) ; $i+=2) {
-            $answers[$data[$i]] = (int)$data[$i+1];
+        for ($i = 3; $i < count($data); $i += 2) {
+            $answers[$data[$i]] = (int)$data[$i + 1];
         }
-        $questionId = $this->questionDBHandler->create(['category_id'=> $categoryId,
-                                                        'user_id'=>$_SESSION['UserId'],
-                                                        'text' => $question]);
+        $questionId = $this->questionDBHandler->create(['category_id' => $categoryId,
+            'user_id' => $_SESSION['UserId'],
+            'text' => $question]);
 
-        foreach ($answers as $key => $answer){
+        foreach ($answers as $key => $answer) {
             $answerId = $this->answerDBHandler->create(['text' => $key]);
-            $this->relationDBHandler->create(['question_id' => $questionId,'answer_id' => $answerId,'is_right'=>$answer]);
+            $this->relationDBHandler->create(['question_id' => $questionId, 'answer_id' => $answerId, 'is_right' => $answer]);
         }
     }
 
     function writeCSV(string $fileName, array $questionIds): void
     {
         header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename='.$fileName);
+        header('Content-Disposition: attachment; filename=' . $fileName);
 
-        $description='Category,Question,Explanation,Answer,isRight,Answer,isRight,...';
+        $description = 'Category,Question,Explanation,Answer,isRight,Answer,isRight,...';
 
         $fp = fopen($fileName, 'wb');
         $val = explode(",", $description);
         fputcsv($fp, $val);
 
-        foreach ($questionIds as $questionId ) {
+        foreach ($questionIds as $questionId) {
             $questionData = $this->factory->createQuizQuestionById($questionId);
             $preparedData = [];
             $preparedData[] = $questionData->getCategory()->getText();
             $preparedData[] = $questionData->getText();
             $preparedData[] = ' ';
             $relationData = $this->relationDBHandler->findById($questionData->getId());
-            foreach ($relationData as $relation){
-                $preparedData[] = $this->factory->findIdTextObjectById((int) $relation['answer_id'],KindOf::ANSWER)->getText();
+            foreach ($relationData as $relation) {
+                $preparedData[] = $this->factory->findIdTextObjectById((int)$relation['answer_id'], KindOf::ANSWER)->getText();
                 $preparedData[] = $relation['is_right'];
             }
             fputcsv($fp, $preparedData);
