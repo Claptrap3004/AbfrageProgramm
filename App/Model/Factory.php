@@ -8,6 +8,11 @@ class Factory
 {
     private static ?Factory $factory = null;
 
+    private function __construct()
+    {
+
+    }
+
     public static function getFactory(): Factory
     {
         if (self::$factory === null) self::$factory = new Factory();

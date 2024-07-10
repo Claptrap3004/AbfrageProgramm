@@ -2,9 +2,10 @@
 
 namespace quiz;
 
+use Exception;
+
 class UserController extends Controller
 {
-
     public function index(): void
     {
         header("refresh:0.2;url='" . HOST . "index'");
@@ -30,7 +31,7 @@ class UserController extends Controller
             if (isset($_POST['loginUser'])) {
                 if ($this->checkCorrectEmail($email) && $this->checkCorrectPassword($email, $password)) {
                     $userData = KindOf::USER->getDBHandler()->findAll(['userEmail' => $email]);
-                    $user = Factory::getFactory()->createUser($userData[0]['id']);
+                    $user = $this->factory->createUser($userData[0]['id']);
                     $_SESSION['UserId'] = $user->getId();
                     $stats = new UserStats($user);
                     $this->view('welcome', ['user' => $user, 'stats' => $stats]);
@@ -45,11 +46,14 @@ class UserController extends Controller
                 elseif (!$this->validateEqual($email, $emailValidate)) $errorMessage = 'die eingegebenen E-Mail-Adressen stimmen nicht überein';
                 elseif (!$this->validatePassword($password)) $errorMessage = 'Das Passwort muss mindestens 8 Zeichen lang sein';
                 elseif (!$this->validateEqual($password, $passwordValidate)) $errorMessage = 'Die eingegebenen Passwörter stimmen nicht überein';
-
                 if ($errorMessage !== '') $this->view('login/login', ['error' => $errorMessage, 'username' => $userName]);
                 else {
-                    $pwhash = password_hash($password, PASSWORD_BCRYPT);
-                    $id = KindOf::USER->getDBHandler()->create(['username' => $userName, 'email' => $email, 'password' => $pwhash]);
+
+                    try {
+                        $id = $this->dbFactory->createUser($userName, $email, $password);
+                    } catch (Exception $e) {
+                        $this->view('login/login', ['error' => $e, 'username' => $userName]);
+                    }
                     $user = Factory::getFactory()->createUser($id);
                     $_SESSION['UserId'] = $user->getId();
                     KindOf::QUIZCONTENT->getDBHandler()->createTables();

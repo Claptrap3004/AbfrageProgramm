@@ -18,7 +18,7 @@ class QuizQuestionController extends Controller
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
         if (count($questions) === 0) {
-            $user = Factory::getFactory()->createUser($_SESSION['UserId']);
+            $user = $this->factory->createUser($_SESSION['UserId']);
             $stats = new UserStats($user);
             $this->view('welcome', ['user' => $user, 'stats' => $stats]);
         } else header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
@@ -69,7 +69,6 @@ class QuizQuestionController extends Controller
      */
     public function answer(int $id): void
     {
-        $factory = Factory::getFactory();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if (isset($_SESSION['finish'])) {
                 KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::NONE);
@@ -78,20 +77,37 @@ class QuizQuestionController extends Controller
                 $answers = $_POST['answers'] ?? [];
                 $questionId = $_POST['questionId'] ?? $id;
 
-                $question = $factory->createQuizQuestionById($questionId);
-                if ($clearStats) $question->getStats()->reset();
+
+                try {
+                    $question = $this->factory->createQuizQuestionById($questionId);
+                } catch (\Exception $e) {
+                    $this->view('quiz/answerQuestion', ['errorMessage' => $e]);
+                }
+                if ($clearStats) if (!empty($question)) {
+                    $question->getStats()->reset();
+                }
                 foreach ($answers as $answer) {
-                    if ((int)$answer > 0) $question->addGivenAnswer($factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
+                    if ((int)$answer > 0) if (!empty($question)) {
+                        $question->addGivenAnswer($this->factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
+                    }
                 }
 
-                $question->writeResultDB();
+                if (!empty($question)) {
+                    $question->writeResultDB();
+                }
                 $whichActual = $_SESSION['setActual'] = 'next question' ? SetActual::NEXT : SetActual::PREVIUOS;
                 KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
             }
             header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
         } else {
-            $question = $factory->createQuizQuestionById($id);
-            if ($question) $this->view('quiz/answerQuestion', ['question' => $question]);
+            try {
+                $question = $this->factory->createQuizQuestionById($id);
+            } catch (\Exception $e) {
+                $this->view('quiz/answerQuestion', ['errorMessage' => $e]);
+            }
+            if (isset($question)) {
+                if ($question) $this->view('quiz/answerQuestion', ['question' => $question]);
+            }
         }
     }
 

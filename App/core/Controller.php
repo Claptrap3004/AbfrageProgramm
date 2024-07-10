@@ -7,8 +7,17 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
-abstract class Controller
+class Controller
 {
+    protected Factory $factory;
+    protected DBFactory $dbFactory;
+
+    public function __construct()
+    {
+        $this->factory = Factory::getFactory();
+        $this->dbFactory = DBFactory::getFactory();
+    }
+
     public function view(string $viewname, array $data): void
     {
         $loader = new FilesystemLoader('../App/View');
