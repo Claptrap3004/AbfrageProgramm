@@ -11,7 +11,7 @@ class EditController
 
     public function import(): void
     {
-        $importer = new CSVImporter();
+        $importer = new CSVImporterNiklas();
         $importer->readCSV('../Files/quiz1.csv');
     }
 

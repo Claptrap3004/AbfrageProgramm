@@ -2,7 +2,7 @@
 
 namespace quiz;
 
-class CSVImporter
+class CSVImporterNiklas implements CanHandleCSV
 {
     public function __construct()
     {
@@ -58,6 +58,11 @@ class CSVImporter
             $answerId = $answerDBHandler->create(['text' => $answer]);
             $relationDBHandler->create(['question_id' => $questionId,'answer_id' => $answerId,'is_right'=>$isRight]);
         }
+    }
+
+    function writeCSV(string $fileName, array $questionIds)
+    {
+
     }
 }
 
