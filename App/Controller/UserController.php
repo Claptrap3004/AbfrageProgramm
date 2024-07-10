@@ -29,7 +29,7 @@ class UserController extends Controller
 
             if (isset($_POST['loginUser'])) {
                 if ($this->checkCorrectEmail($email) && $this->checkCorrectPassword($email, $password)) {
-                    $userData = DBHandlerProvider::getUserDBHandler()->findAll(['userEmail' => $email]);
+                    $userData = KindOf::USER->getDBHandler()->findAll(['userEmail' => $email]);
                     $user = Factory::getFactory()->createUser($userData[0]['id']);
                     $_SESSION['UserId'] = $user->getId();
                     $stats = new UserStats($user);

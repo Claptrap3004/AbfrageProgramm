@@ -2,7 +2,7 @@
 // responsible for creating objects of classes IdText, QuizQuestion, EditQuestion, Stats and so on
 // DBHandler is provided through KindOf enum
 namespace quiz;
-class Factory extends DataBase
+class Factory
 {
     private CanHandleDB $dbHandler;
     private static ?Factory $factory = null;
@@ -110,7 +110,7 @@ class Factory extends DataBase
 
     public function createUser(int $id):?User
     {
-        $this->dbHandler = new UserDBHandler(KindOf::USER);
+        $this->dbHandler = KindOf::USER->getDBHandler();
         $userData = $this->dbHandler->findById($id);
         return $userData ? new User($userData['id'], $userData['username'], $userData['email'], $userData['password']) : null;
     }
