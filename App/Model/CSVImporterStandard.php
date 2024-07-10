@@ -2,66 +2,50 @@
 
 namespace quiz;
 
+use Exception;
+
 class CSVImporterStandard implements CanHandleCSV
 {
-    private CanHandleDB $questionDBHandler;
-    private CanHandleDB $answerDBHandler;
-    private CanHandleDB $categoryDBHandler;
+    private DBFactory $dbFactory;
+
     private CanHandleDB $relationDBHandler;
     private Factory $factory;
 
     public function __construct()
     {
-        $this->answerDBHandler = KindOf::ANSWER->getDBHandler();
-        $this->categoryDBHandler = KindOf::CATEGORY->getDBHandler();
-        $this->questionDBHandler = KindOf::QUESTION->getDBHandler();
         $this->relationDBHandler = KindOf::RELATION->getDBHandler();
         $this->factory = Factory::getFactory();
+        $this->dbFactory = DBFactory::getFactory();
     }
 
 
-    function readCSV(string $fileName)
+    function readCSV(string $fileName): void
     {
-        $category = null;
-        $categoryId = 0;
         $row = 0;
         if (($handle = fopen($fileName, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 $row++;
                 if ($row === 1) continue;
 
-                if ($data[0] !== $category) {
-                    $categoryId = 0;
-                    $category = $data[0];
-                    $existingCategories = $this->factory->findAllIdTextObject(KindOf::CATEGORY);
-                    foreach ($existingCategories as $existingCategory) {
-                        if ($existingCategory->getText() == $category) $categoryId = $existingCategory->getId();
-                    }
-                    $categoryId = $categoryId == 0 ? $this->categoryDBHandler->create(['text' => $category]) : $categoryId;
-                }
-
-                $this->proceedData($data, $categoryId);
+                $this->proceedData($data);
             }
         }
         fclose($handle);
     }
 
-    private function proceedData(array $data, int $categoryId): void
+    private function proceedData(array $data): void
     {
-
+        $category = $data[0];
         $question = $data[1];
         $explanation = $data[2];
         $answers = [];
         for ($i = 3; $i < count($data); $i += 2) {
             $answers[$data[$i]] = (int)$data[$i + 1];
         }
-        $questionId = $this->questionDBHandler->create(['category_id' => $categoryId,
-            'user_id' => $_SESSION['UserId'],
-            'text' => $question]);
-
-        foreach ($answers as $key => $answer) {
-            $answerId = $this->answerDBHandler->create(['text' => $key]);
-            $this->relationDBHandler->create(['question_id' => $questionId, 'answer_id' => $answerId, 'is_right' => $answer]);
+        try {
+            $this->dbFactory->createQuizQuestion($question, $category, $answers);
+        } catch (Exception $e) {
+            return;
         }
     }
 
@@ -77,7 +61,11 @@ class CSVImporterStandard implements CanHandleCSV
         fputcsv($fp, $val);
 
         foreach ($questionIds as $questionId) {
-            $questionData = $this->factory->createQuizQuestionById($questionId);
+            try {
+                $questionData = $this->factory->createQuizQuestionById($questionId);
+            } catch (Exception $e) {
+                continue;
+            }
             $preparedData = [];
             $preparedData[] = $questionData->getCategory()->getText();
             $preparedData[] = $questionData->getText();
