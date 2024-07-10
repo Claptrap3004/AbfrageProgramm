@@ -4,7 +4,7 @@
 {% block head %}
 
 {% endblock %}
-            {% block subtitle %}Frage Nr {{ question.id }}{% endblock %}
+            {% block subtitle %}Frage {{ contentInfo.actual }} / {{ contentInfo.totalQuestions }}{% endblock %}
 {% block contentleft %}
 
     <div class="row align-self-center mx-5 pb-2">
@@ -48,10 +48,10 @@
     <div class="col-lg-3 text-center">
         <label>
             <input type="submit" name="setActual" class="align-self-flex-start btn-lg btn-info shadow-sm"
-                   value="previous question">
+                   value="previous question" id="prev">
         </label>
     </div>
-    <div class="col-lg-3 text-center">
+    <div class="col-lg-2 text-center">
         <label>
             <input type="reset" name="skip" class="align-self-flex-center btn-lg btn-info shadow-sm"
                    value="reset answers">
@@ -60,8 +60,11 @@
     <div class="col-lg-2 text-center">
         <label>
             <input type="submit" name="setActual" class="align-self-flex-end btn-lg btn-info shadow-sm"
-                   value="next question">
+                   value="next question" id="next">
         </label>
     </div>
-
+<script>
+    document.querySelector('#prev').disabled = Number({{ contentInfo.actual }}) === 1;
+    document.querySelector('#next').disabled = {{ contentInfo.totalQuestions }} === {{ contentInfo.actual }}
+</script>
 {% endblock %}

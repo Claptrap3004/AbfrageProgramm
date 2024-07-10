@@ -69,6 +69,7 @@ class QuizQuestionController extends Controller
      */
     public function answer(int $id): void
     {
+
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if (isset($_SESSION['finish'])) {
                 KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::NONE);
@@ -77,41 +78,35 @@ class QuizQuestionController extends Controller
                 $answers = $_POST['answers'] ?? [];
                 $questionId = $_POST['questionId'] ?? $id;
 
-
-                try {
-                    $question = $this->factory->createQuizQuestionById($questionId);
-                } catch (\Exception $e) {
-                    $this->view('quiz/answerQuestion', ['errorMessage' => $e]);
-                }
-                if ($clearStats) if (!empty($question)) {
-                    $question->getStats()->reset();
-                }
+                $question = $this->factory->createQuizQuestionById($questionId);
+                if ($clearStats) $question->getStats()->reset();
                 foreach ($answers as $answer) {
-                    if ((int)$answer > 0) if (!empty($question)) {
-                        $question->addGivenAnswer($this->factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
-                    }
+                    if ((int)$answer > 0) $question->addGivenAnswer($this->factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
                 }
 
-                if (!empty($question)) {
-                    $question->writeResultDB();
-                }
+                $question->writeResultDB();
                 $whichActual = $_SESSION['setActual'] = 'next question' ? SetActual::NEXT : SetActual::PREVIUOS;
                 KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
             }
+
             header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
         } else {
-            try {
-                $question = $this->factory->createQuizQuestionById($id);
-            } catch (\Exception $e) {
-                $this->view('quiz/answerQuestion', ['errorMessage' => $e]);
-            }
-            if (isset($question)) {
-                if ($question) $this->view('quiz/answerQuestion', ['question' => $question]);
-            }
+            $question = $this->factory->createQuizQuestionById($id);
+            $content = $this->getContentInfos();
+            if ($question) $this->view('quiz/answerQuestion', ['question' => $question, 'contentInfo' => $content]);
         }
     }
 
-
+    private function getContentInfos():array
+    {
+        $handler = KindOf::QUIZCONTENT->getDBHandler();
+        $data = $handler->findAll();
+        $id = null;
+        foreach ($data as $item) {
+            if ($item['is_actual']) $id = $item['id'];
+        }
+        return ['totalQuestions'=>count($data),'actual'=> $id];
+    }
     /** checks for actual question in quiz_content and calls answer method for given question id. if no item is set to
      * actual in quiz_content validation and stats are triggered.
      * @return void
