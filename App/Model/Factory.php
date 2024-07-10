@@ -2,12 +2,13 @@
 // responsible for creating objects of classes IdText, QuizQuestion, EditQuestion, Stats and so on
 // DBHandler is provided through KindOf enum
 namespace quiz;
+use Exception;
+
 class Factory
 {
-    private CanHandleDB $dbHandler;
     private static ?Factory $factory = null;
 
-    public static function getFactory(): ?Factory
+    public static function getFactory(): Factory
     {
         if (self::$factory === null) self::$factory = new Factory();
         return self::$factory;
@@ -15,8 +16,7 @@ class Factory
 
     public function createIdTextObject(string $text, KindOf $kindOf): ?IdText
     {
-        $this->dbHandler = $kindOf->getDBHandler();
-        $id = $this->dbHandler->create(['text' => $text]);
+        $id = $kindOf->getDBHandler()->create(['text' => $text]);
         return $id > 0 ? new IdText($id,
                                     $text,
                                     $kindOf)
@@ -24,8 +24,7 @@ class Factory
     }
     public function findIdTextObjectById(int $id, KindOf $kindOf): ?IdText
     {
-        $this->dbHandler = $kindOf->getDBHandler();
-        $infos = $this->dbHandler->findById($id);
+        $infos = $kindOf->getDBHandler()->findById($id);
         return $id > 0 ? new IdText($id,
                                     $infos['text'],
                                     $kindOf
@@ -36,8 +35,7 @@ class Factory
     public function findAllIdTextObject(KindOf $kindOf): array
     {
         $answers = [];
-        $this->dbHandler = $kindOf->getDBHandler();
-        $answerInfos = $this->dbHandler->findAll();
+        $answerInfos = $kindOf->getDBHandler()->findAll();
         foreach ($answerInfos as $answerInfo)
             $answers[] = new IdText($answerInfo['id'],
                                     $answerInfo['text'],
@@ -45,54 +43,18 @@ class Factory
         return $answers;
     }
 
-    public function createQuizQuestionById(int $id): ?QuizQuestion
+    /**
+     * @throws Exception
+     */
+    private function prepareQuestionData(int $questionId):?array
     {
-        $this->dbHandler = KindOf::QUESTION->getDBHandler();
-        $questionAttributes = $this->dbHandler->findById($id);
-        if ($questionAttributes === null) return null;
-        $category = $this->findIdTextObjectById($questionAttributes['category_id'],
-                                        KindOf::CATEGORY);
+        $questionAttributes = KindOf::QUESTION->getDBHandler()->findById($questionId);
+        if ($questionAttributes === []) throw new Exception('Question does not exist');
 
-        $this->dbHandler = KindOf::RELATION->getDBHandler();
-        $relations = $this->dbHandler->findById($id);
-        $rightAnswers = [];
-        $wrongAnswers = [];
-        foreach ($relations as $relation){
-            $answer = $this->findIdTextObjectById($relation['answer_id'],
-                                        KindOf::ANSWER);
-            if ($relation['is_right']) $rightAnswers[] = $answer;
-            else $wrongAnswers[] = $answer;
-        }
-
-        $stats = $this->createStatsByQuestionId($id);
-        return new QuizQuestion($id,
-                                $questionAttributes['text'],
-                                $category,
-                                $rightAnswers,
-                                $wrongAnswers,
-                                $stats);
-    }
-
-    public function createStatsByQuestionId(int $questionId): Stats
-    {
-        $this->dbHandler = KindOf::STATS->getDBHandler();
-        $statsAttributes = $this->dbHandler->findById($questionId);
-        return new Stats($statsAttributes['id'],
-                        $statsAttributes['user_id'],
-                        $statsAttributes['question_id'],
-                        $statsAttributes['times_asked'],
-                        $statsAttributes['times_right']);
-    }
-
-    public function createEditQuestionById(int $id):EditQuestion
-    {
-        $this->dbHandler = KindOf::QUESTION->getDBHandler();
-        $questionAttributes = $this->dbHandler->findById($id);
         $category = $this->findIdTextObjectById($questionAttributes['category_id'],
             KindOf::CATEGORY);
-        $this->dbHandler = KindOf::RELATION->getDBHandler();
-        $relations = $this->dbHandler->findById($id);
 
+        $relations = KindOf::RELATION->getDBHandler()->findById($questionId);
         $rightAnswers = [];
         $wrongAnswers = [];
         foreach ($relations as $relation){
@@ -101,17 +63,60 @@ class Factory
             if ($relation['is_right']) $rightAnswers[] = $answer;
             else $wrongAnswers[] = $answer;
         }
-        return new EditQuestion($id,
-            $questionAttributes['text'],
-            $category,
-            $rightAnswers,
-            $wrongAnswers);
+        return [
+            'text' => $questionAttributes['text'],
+            'category' => $category,
+            'rightAnswers' => $rightAnswers,
+            'wrongAnswers' => $wrongAnswers
+        ];
     }
+
+    /**
+     * @throws Exception
+     */
+    public function createEditQuestionById(int $id):EditQuestion
+    {
+        $data = $this->prepareQuestionData($id);
+        return new EditQuestion(
+            $id,
+            $data['text'],
+            $data['category'],
+            $data['rightAnswers'],
+            $data['wrongAnswers']
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function createQuizQuestionById(int $id): ?QuizQuestion
+    {
+        $data = $this->prepareQuestionData($id);
+        $stats = $this->createStatsByQuestionId($id);
+        return new QuizQuestion(
+            $id,
+            $data['text'],
+            $data['category'],
+            $data['rightAnswers'],
+            $data['wrongAnswers'],
+            $stats
+        );
+    }
+
+    public function createStatsByQuestionId(int $questionId): Stats
+    {
+        $statsAttributes = KindOf::STATS->getDBHandler()->findById($questionId);
+        return new Stats($statsAttributes['id'],
+                        $statsAttributes['user_id'],
+                        $statsAttributes['question_id'],
+                        $statsAttributes['times_asked'],
+                        $statsAttributes['times_right']);
+    }
+
 
     public function createUser(int $id):?User
     {
-        $this->dbHandler = KindOf::USER->getDBHandler();
-        $userData = $this->dbHandler->findById($id);
+        $userData = KindOf::USER->getDBHandler()->findById($id);
         return $userData ? new User($userData['id'], $userData['username'], $userData['email'], $userData['password']) : null;
     }
 

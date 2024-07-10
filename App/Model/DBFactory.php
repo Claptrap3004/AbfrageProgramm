@@ -6,6 +6,17 @@ use Exception;
 
 class DBFactory
 {
+    private static ?DBFactory $factory = null;
+
+    private function __construct()
+    {
+
+    }
+    public static function getFactory(): DBFactory
+    {
+        if (self::$factory === null) self::$factory = new DBFactory();
+        return self::$factory;
+    }
 
     /**
      * @throws Exception
