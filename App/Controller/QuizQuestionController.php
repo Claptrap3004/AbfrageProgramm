@@ -128,15 +128,5 @@ class QuizQuestionController extends Controller
         $this->fillTableAndStartActual($questions);
     }
 
-    public function test():void
-    {
-        $questiondata = KindOf::QUESTION->getDBHandler()->findAll();
-        $questions = [];
-        foreach ($questiondata as $data) $questions[] = Factory::getFactory()->createQuizQuestionById($data['id']);
-        $invalidQuestions = [];
-        foreach ($questions as $question){ if ($question->getRightAnswers() == []) $invalidQuestions[] = $question->getId();
-        }
-        var_dump($invalidQuestions);
 
-    }
 }
