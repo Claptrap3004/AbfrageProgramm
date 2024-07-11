@@ -69,7 +69,7 @@ class CSVImporterStandard implements CanHandleCSV
             $preparedData = [];
             $preparedData[] = $questionData->getCategory()->getText();
             $preparedData[] = $questionData->getText();
-            $preparedData[] = ' ';
+            $preparedData[] = $questionData->getExplanation();
             $relationData = $this->relationDBHandler->findById($questionData->getId());
             foreach ($relationData as $relation) {
                 $preparedData[] = $this->factory->findIdTextObjectById((int)$relation['answer_id'], KindOf::ANSWER)->getText();

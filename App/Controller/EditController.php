@@ -17,9 +17,14 @@ class EditController
         $this->deleteDuplicates();
     }
 
-    public function export()
+    public function export(): void
     {
-
+        $exporter = new CSVImporterStandard();
+        $all = KindOf::QUESTION->getDBHandler()->findAll();
+        $questionIds = [];
+        foreach ($all as $item) $questionIds[] = $item['id'];
+        var_dump($questionIds);
+        $exporter->writeCSV('export.csv',$questionIds );
     }
 
     public function editQuestion()
