@@ -85,15 +85,19 @@ class QuizQuestionController extends Controller
                 }
 
                 $question->writeResultDB();
-                $whichActual = $_SESSION['setActual'] = 'next question' ? SetActual::NEXT : SetActual::PREVIUOS;
+
+                $whichActual = isset($_POST['setNext']) ? SetActual::NEXT : SetActual::PREVIUOS;
                 KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
             }
 
             header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
         } else {
             $question = $this->factory->createQuizQuestionById($id);
+            $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
+            $answers = [];
+            foreach ($trackContent as $item) $answers[] = $item['answer_id'];
             $content = $this->getContentInfos();
-            if ($question) $this->view('quiz/answerQuestion', ['question' => $question, 'contentInfo' => $content]);
+            if ($question) $this->view('quiz/answerQuestion', ['question' => $question,'answers'=> $answers, 'contentInfo' => $content]);
         }
     }
 

@@ -13,17 +13,24 @@
             {{ question.text }}
         </label>
     </div>
-
+<script>
+    let givenAnswers = [];
+</script>
     {% for answer in question.answers %}
 
         <div class="row align-self-center mx-5 pb-2">
             <label class="col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-2 my-2 p-2 w-100"
-                   data-bs-toggle='button' onclick="clickFn({{ answer.id }})">{{ answer.text }}
+                   data-bs-toggle='button' onclick="clickFn({{ answer.id }})" id="l_id{{ answer.id }}">{{ answer.text }}
 
                 <input type="checkbox" name="answers[]" id="a_id{{ answer.id }}" value="{{ answer.id }}"
                        hidden="hidden">
             </label>
         </div>
+        {% if answer.id in answers %}
+            <script>
+                givenAnswers.push({{ answer.id }});
+            </script>
+        {% endif %}
     {% endfor %}
 {% endblock %}
 {% block contentright %}
@@ -47,7 +54,7 @@
 
     <div class="col-lg-3 text-center">
         <label>
-            <input type="submit" name="setActual" class="align-self-flex-start btn-lg btn-info shadow-sm"
+            <input type="submit" name="setPrev" class="align-self-flex-start btn-lg btn-info shadow-sm"
                    value="previous question" id="prev">
         </label>
     </div>
@@ -59,11 +66,26 @@
     </div>
     <div class="col-lg-2 text-center">
         <label>
-            <input type="submit" name="setActual" class="align-self-flex-end btn-lg btn-info shadow-sm"
+            <input type="submit" name="setNext" class="align-self-flex-end btn-lg btn-info shadow-sm"
                    value="next question" id="next">
         </label>
     </div>
 <script>
+
+    function clickFn(id) {
+        let idStr = "#a_id" + id;
+        document.querySelector(idStr).checked = !document.querySelector(idStr).checked
+    }
+
+    let idString = '';
+    for (const givenAnswer of givenAnswers) {
+        idString = '#l_id' + givenAnswer;
+        let element = document.querySelector(idString);
+        element.ariaPressed = 'true';
+        element.className += ' active';
+        console.log()
+        clickFn(givenAnswer);
+    }
     document.querySelector('#prev').disabled = Number({{ contentInfo.actual }}) === 1;
     document.querySelector('#next').disabled = {{ contentInfo.totalQuestions }} === {{ contentInfo.actual }}
 </script>
