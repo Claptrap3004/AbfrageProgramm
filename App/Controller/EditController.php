@@ -13,6 +13,8 @@ class EditController
     {
         $importer = new CSVImporterNiklas();
         $importer->readCSV('../Files/quiz1.csv');
+        $this->deleteInvalidQuestions();
+        $this->deleteDuplicates();
     }
 
     public function export()
@@ -30,7 +32,7 @@ class EditController
 
     }
 
-    public function deleteDuplicates()
+    public function deleteDuplicates(): void
     {
         $questiondata = KindOf::QUESTION->getDBHandler()->findAll();
         $texts = [];
@@ -48,7 +50,11 @@ class EditController
     {
         $questiondata = KindOf::QUESTION->getDBHandler()->findAll();
         $questions = [];
-        foreach ($questiondata as $data) $questions[] = Factory::getFactory()->createQuizQuestionById($data['id']);
+        foreach ($questiondata as $data) try {
+            $questions[] = Factory::getFactory()->createQuizQuestionById($data['id']);
+        } catch (\Exception $e) {
+            continue;
+        }
         $invalidQuestions = [];
         foreach ($questions as $question){ if ($question->getRightAnswers() == []) $invalidQuestions[] = $question->getId();
         }

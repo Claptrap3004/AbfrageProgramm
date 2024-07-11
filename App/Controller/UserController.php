@@ -31,10 +31,14 @@ class UserController extends Controller
             if (isset($_POST['loginUser'])) {
                 if ($this->checkCorrectEmail($email) && $this->checkCorrectPassword($email, $password)) {
                     $userData = KindOf::USER->getDBHandler()->findAll(['userEmail' => $email]);
-                    $user = $this->factory->createUser($userData[0]['id']);
-                    $_SESSION['UserId'] = $user->getId();
-                    $stats = new UserStats($user);
-                    $this->view('welcome', ['user' => $user, 'stats' => $stats]);
+                    if ($userData !== []){
+                        $user = $this->factory->createUser($userData[0]['id']);
+                        $_SESSION['UserId'] = $user->getId();
+                        header("refresh:0.01;url='" . HOST . "QuizQuestion/'");
+                    }
+                    else{
+                        $this->view('login/login', ['error' => 'User existiert nicht', 'username' => $email]);
+                    }
                 }
             } elseif (isset($_POST['registerUser'])) {
                 $emailValidate = $_POST['emailValidate'] ?? '';
