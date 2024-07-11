@@ -4,11 +4,20 @@ namespace quiz;
 
 use PDO;
 
-class QuizContentDBHandler extends IdTextDBHandler
+class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
 {
+    protected string $tableName;
+    protected PDO $connection;
+
+    /**
+     * expects enum entry to contain appropriate table name
+     * @param KindOf $kindOf
+     */
     public function __construct(KindOf $kindOf)
     {
-        parent::__construct($kindOf);
+
+        $this->tableName = $kindOf->getTableName();
+        $this->connection = $this->connect();
         $this->setTablename();
     }
 
@@ -39,6 +48,21 @@ class QuizContentDBHandler extends IdTextDBHandler
         }
         return 1;
     }
+    /**
+     * provides data for all TextId objects or child class objects stored in db
+     * filters array may include keys categoryIds or userIds storing int[] with appropriate ids but filtering only takes
+     * place in certain child classes
+     * @param array $filters
+     * @return array
+     */
+    public function findAll(array $filters = []): array
+    {
+        $sql = "SELECT * FROM $this->tableName;";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     public function createTables(): void
     {

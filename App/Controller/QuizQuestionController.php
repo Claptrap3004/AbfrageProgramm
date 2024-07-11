@@ -71,9 +71,7 @@ class QuizQuestionController extends Controller
     {
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            if (isset($_SESSION['finish'])) {
-                KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::NONE);
-            } else {
+
                 $clearStats = $_POST['clearStats'] ?? '';
                 $answers = $_POST['answers'] ?? [];
                 $questionId = $_POST['questionId'] ?? $id;
@@ -86,9 +84,10 @@ class QuizQuestionController extends Controller
 
                 $question->writeResultDB();
 
-                $whichActual = isset($_POST['setNext']) ? SetActual::NEXT : SetActual::PREVIUOS;
+                if (isset($_POST['finish'])) $whichActual = SetActual::NONE;
+                else $whichActual = isset($_POST['setNext']) ? SetActual::NEXT : SetActual::PREVIUOS;
+
                 KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
-            }
 
             header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
         } else {

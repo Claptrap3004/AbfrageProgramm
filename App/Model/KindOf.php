@@ -41,7 +41,7 @@ enum KindOf : string
 
     // handler provider
 
-    public function getDBHandler(): CanHandleDB
+    public function getDBHandler(): CanHandleDB|CanHandleQuizContent
     {
 
         return match ($this->getName()) {

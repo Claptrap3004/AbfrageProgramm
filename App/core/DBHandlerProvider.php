@@ -11,7 +11,7 @@ class DBHandlerProvider
     private static ?CanHandleDB $relationDBHandler = null;
     private static ?CanHandleDB $statsDBHandler = null;
     private static ?CanHandleDB $userDBHandler = null;
-    private static ?CanHandleDB $quizContentDBHandler = null;
+    private static ?CanHandleQuizContent $quizContentDBHandler = null;
 
     /**
      * provides appropriate DBHandler depending on KindOf being ANSWER or CATEGORY, if any other KindOF element this
@@ -94,14 +94,14 @@ class DBHandlerProvider
         self::$userDBHandler = $userDBHandler;
     }
 
-    public static function getQuizContentDBHandler(): ?CanHandleDB
+    public static function getQuizContentDBHandler(): CanHandleQuizContent|QuizContentDBHandler
     {
         if (!self::$quizContentDBHandler) self::$quizContentDBHandler = new QuizContentDBHandler(KindOf::QUIZCONTENT);
 
         return self::$quizContentDBHandler;
     }
 
-    public static function setQuizContentDBHandler(CanHandleDB $quizContentDBHandler): void
+    public static function setQuizContentDBHandler(CanHandleQuizContent $quizContentDBHandler): void
     {
         self::$quizContentDBHandler = $quizContentDBHandler;
     }

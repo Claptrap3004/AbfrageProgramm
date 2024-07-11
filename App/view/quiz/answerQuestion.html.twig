@@ -52,22 +52,26 @@
 {% endblock %}
 {% block buttons %}
 
-    <div class="col-lg-3 text-center">
+
+    <div class="col-lg-1 text-center"></div>
+    <div class="col-lg-2 text-center">
         <label>
-            <input type="submit" name="setPrev" class="align-self-flex-start btn-lg btn-info shadow-sm"
+            <input type="submit" name="setPrev" class="btn-lg btn-info shadow-sm"
                    value="previous question" id="prev">
         </label>
     </div>
-    <div class="col-lg-2 text-center">
-        <label>
-            <input type="reset" name="skip" class="align-self-flex-center btn-lg btn-info shadow-sm"
-                   value="reset answers">
-        </label>
+    <div class="col-lg-3 text-center">
     </div>
     <div class="col-lg-2 text-center">
         <label>
-            <input type="submit" name="setNext" class="align-self-flex-end btn-lg btn-info shadow-sm"
+            <input type="submit" name="setNext" class="btn-lg btn-info shadow-sm"
                    value="next question" id="next">
+        </label>
+    </div>
+    <div class="col-lg-4 text-center">
+        <label>
+            <input type="submit" name="finish" class="btn-lg btn-info shadow-sm"
+                   value="finish quiz">
         </label>
     </div>
 <script>
@@ -86,7 +90,13 @@
         console.log()
         clickFn(givenAnswer);
     }
-    document.querySelector('#prev').disabled = Number({{ contentInfo.actual }}) === 1;
-    document.querySelector('#next').disabled = {{ contentInfo.totalQuestions }} === {{ contentInfo.actual }}
+    if (Number({{ contentInfo.actual }}) === 1){
+        document.querySelector('#prev').disabled = true;
+        document.querySelector('#prev').className =  "btn-lg btn-outline-info shadow-sm";
+    }
+    else if ({{ contentInfo.totalQuestions }} === {{ contentInfo.actual }}){
+        document.querySelector('#next').disabled = true;
+        document.querySelector('#next').className =  "btn-lg btn-outline-info shadow-sm";
+    }
 </script>
 {% endblock %}
