@@ -8,10 +8,6 @@ class QuestionSelector implements CanSelectQuestions
 {
     private array $questionPool;
 
-    /**
-     * @throws RandomException
-     *
-     */
     public function select(int $numberOfQuestions, array $categoryIds = []): array
     {
         $questions = [];
@@ -23,12 +19,13 @@ class QuestionSelector implements CanSelectQuestions
         return $questions;
     }
 
-    /**
-     * @throws RandomException
-     */
     private function pickOne() : int
     {
-        $index = random_int(0,count($this->questionPool)-1);
+        try {
+            $index = random_int(0, count($this->questionPool) - 1);
+        } catch (RandomException $e) {
+            $index = 0;
+        }
         $id = $this->questionPool[$index]['id'];
         unset( $this->questionPool[$index]);
         $this->questionPool = array_values($this->questionPool);

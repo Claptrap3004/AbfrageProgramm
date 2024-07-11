@@ -144,13 +144,20 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
     }
 
 
-    private function getActual():int
+    public function getActual():int
     {
         $sql = "SELECT id FROM $this->tableName WHERE is_actual = 1";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         $id = $stmt->fetch(2);
         return $id['id'];
+    }
+
+    public function checkDeleteQuestionId(int $id):void
+    {
+        $contentId = $this->getContentIdByQuestionId($id);
+        $this->deleteAtId($id);
+        if ($contentId && $contentId == $this->getActual()) $this->setActual(SetActual::NEXT);
     }
     public function setActual(SetActual $setActual): void
     {

@@ -21,7 +21,7 @@ class QuizQuestionController extends Controller
             $user = $this->factory->createUser($_SESSION['UserId']);
             $stats = new UserStats($user);
             $this->view('welcome', ['user' => $user, 'stats' => $stats]);
-        } else header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
+        } else header("refresh:0.01;url='" . HOST . "QuizQuestion/actual'");
     }
 
     /**
@@ -34,14 +34,13 @@ class QuizQuestionController extends Controller
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $handler->create(['question_ids' => $data]);
-        header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
+        header("refresh:0.01;url='" . HOST . "QuizQuestion/actual'");
 
     }
 
     /**
      * directs to category selection page, after categories and number of questions are selected QuestionSelector object
      * is created and random selection of question ids is sent to according method to create the content
-     * @throws RandomException
      */
     public function select(): void
     {
@@ -51,10 +50,9 @@ class QuizQuestionController extends Controller
             $selector = new QuestionSelector();
             $questions = $selector->select($numberOfQuestions, $categories);
             $this->fillTableAndStartActual($questions);
-        }
-        else{
-            $questionsByCategories = KindOf::QUESTION->getDBHandler()->findAll(['question_by_category'=> null]);
-            $this->view('quiz/selectQuestions',['categories'=>$questionsByCategories]);
+        } else {
+            $questionsByCategories = KindOf::QUESTION->getDBHandler()->findAll(['question_by_category' => null]);
+            $this->view('quiz/selectQuestions', ['categories' => $questionsByCategories]);
         }
     }
 
@@ -72,10 +70,11 @@ class QuizQuestionController extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
-                $clearStats = $_POST['clearStats'] ?? '';
-                $answers = $_POST['answers'] ?? [];
-                $questionId = $_POST['questionId'] ?? $id;
+            $clearStats = $_POST['clearStats'] ?? '';
+            $answers = $_POST['answers'] ?? [];
+            $questionId = $_POST['questionId'] ?? $id;
 
+            try {
                 $question = $this->factory->createQuizQuestionById($questionId);
                 if ($clearStats) $question->getStats()->reset();
                 foreach ($answers as $answer) {
@@ -89,18 +88,25 @@ class QuizQuestionController extends Controller
 
                 KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
 
-            header("refresh:0.01;url='". HOST ."QuizQuestion/actual'");
+            } catch (\Exception $e) {
+
+            }
+            header("refresh:0.01;url='" . HOST . "QuizQuestion/actual'");
         } else {
-            $question = $this->factory->createQuizQuestionById($id);
-            $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
-            $answers = [];
-            foreach ($trackContent as $item) $answers[] = $item['answer_id'];
-            $content = $this->getContentInfos();
-            if ($question) $this->view('quiz/answerQuestion', ['question' => $question,'answers'=> $answers, 'contentInfo' => $content]);
+            try {
+                $question = $this->factory->createQuizQuestionById($id);
+                $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
+                $answers = [];
+                foreach ($trackContent as $item) $answers[] = $item['answer_id'];
+                $content = $this->getContentInfos();
+                if ($question) $this->view('quiz/answerQuestion', ['question' => $question, 'answers' => $answers, 'contentInfo' => $content]);
+            } catch (\Exception $e) {
+                header("refresh:0.01;url='" . HOST . "QuizQuestion/actual?id=" . $id . "'");
+            }
         }
     }
 
-    private function getContentInfos():array
+    private function getContentInfos(): array
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $data = $handler->findAll();
@@ -108,34 +114,36 @@ class QuizQuestionController extends Controller
         foreach ($data as $item) {
             if ($item['is_actual']) $id = $item['id'];
         }
-        return ['totalQuestions'=>count($data),'actual'=> $id];
+        return ['totalQuestions' => count($data), 'actual' => $id];
     }
+
     /** checks for actual question in quiz_content and calls answer method for given question id. if no item is set to
      * actual in quiz_content validation and stats are triggered.
      * @return void
      */
     public function actual(): void
     {
-        $handler = KindOf::QUIZCONTENT->getDBHandler();
-        $data = $handler->findAll();
-        $id = null;
-        foreach ($data as $item) {
-            if ($item['is_actual']) $id = $item['question_id'];
-        }
-        if ($id) header("refresh:0.01;url='". HOST ."QuizQuestion/answer/$id'");
-        else {
-            header("refresh:0.01;url='". HOST ."QuizQuestion/final'");
+        if ($_SERVER['REQUEST_METHOD'] == "GET") {
+            $id = $_GET['id'] ?? null;
+            if (!$id) header("refresh:0.01;url='" . HOST . "QuizQuestion/actual'");
+            else KindOf::QUIZCONTENT->getDBHandler()->checkDeleteQuestionId($id);
+        } else {
+            $id = KindOf::QUIZCONTENT->getDBHandler()->getActual();
+            if ($id) header("refresh:0.01;url='" . HOST . "QuizQuestion/answer/$id'");
+            else {
+                header("refresh:0.01;url='" . HOST . "QuizQuestion/final'");
+            }
         }
     }
 
     public function final(): void
     {
-            $quizStats = new QuizStats();
-            KindOf::QUIZCONTENT->getDBHandler()->createTables();
-            $this->view('quiz/finalStats', $quizStats->getFormatted() );
+        $quizStats = new QuizStats();
+        KindOf::QUIZCONTENT->getDBHandler()->createTables();
+        $this->view('quiz/finalStats', $quizStats->getFormatted());
     }
 
-    public function quickStart($numberOfQuestions = 20)
+    public function quickStart($numberOfQuestions = 20): void
     {
         $selector = new QuestionSelector();
         $questions = $selector->select($numberOfQuestions);
