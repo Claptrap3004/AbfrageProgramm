@@ -11,9 +11,7 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
         body {
-            background-image: url("../../Files/qmarks.jpg");
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-image:url('Files/qmarks.jpg');
             background-size: cover;
             overflow: hidden;
         }
@@ -143,6 +141,7 @@
     {% endblock %}
 </div>
 <script>
+    document.querySelector('body').style.backgroundImage = 'qmarks.jpg';
     function setLoginScreen(){
         let newContentLeft = document.createElement('div');
         newContentLeft.className = "col-4 bg-light rounded-5 my-2 py-2 align-self-left scrollable-contentleft";

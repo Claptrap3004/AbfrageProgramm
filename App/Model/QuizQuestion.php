@@ -15,9 +15,9 @@ class QuizQuestion extends Question
      * @param IdText[] $wrongAnswers
      * @param Stats $stats
      */
-    public function __construct(int $id, string $text,IdText $category, array $rightAnswers, array $wrongAnswers,Stats $stats)
+    public function __construct(int $id, string $text,string $explanation,IdText $category, array $rightAnswers, array $wrongAnswers,Stats $stats)
     {
-        parent::__construct($id,$text,$category,$rightAnswers,$wrongAnswers);
+        parent::__construct($id,$text,$explanation,$category,$rightAnswers,$wrongAnswers);
         $this->stats = $stats;
         $this->givenAnswers = [];
     }

@@ -5,6 +5,7 @@
 namespace quiz;
 abstract class Question extends IdText
 {
+    protected string $explanation;
     protected IdText $category;
     protected array $rightAnswers;
     protected array $wrongAnswers;
@@ -13,13 +14,15 @@ abstract class Question extends IdText
     /**
      * @param int $id
      * @param string $text
+     * @param string $explanation
      * @param IdText $category
      * @param IdText[] $rightAnswers
      * @param IdText[] $wrongAnswers
      */
-    protected function __construct(int $id, string $text, IdText $category, array $rightAnswers, array $wrongAnswers)
+    protected function __construct(int $id, string $text,  string $explanation,IdText $category,array $rightAnswers, array $wrongAnswers)
     {
         parent::__construct($id, $text, KindOf::QUESTION);
+        $this->explanation = $explanation;
         $this->category = $category;
         $this->rightAnswers = $rightAnswers;
         $this->wrongAnswers = $wrongAnswers;
@@ -49,5 +52,11 @@ abstract class Question extends IdText
         shuffle($answers);
         return $answers;
     }
+
+    public function getExplanation(): string
+    {
+        return $this->explanation;
+    }
+
 
 }

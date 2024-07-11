@@ -94,7 +94,7 @@
         document.querySelector('#prev').disabled = true;
         document.querySelector('#prev').className =  "btn-lg btn-outline-info shadow-sm";
     }
-    else if ({{ contentInfo.totalQuestions }} === {{ contentInfo.actual }}){
+    if ({{ contentInfo.totalQuestions }} === {{ contentInfo.actual }}){
         document.querySelector('#next').disabled = true;
         document.querySelector('#next').className =  "btn-lg btn-outline-info shadow-sm";
     }

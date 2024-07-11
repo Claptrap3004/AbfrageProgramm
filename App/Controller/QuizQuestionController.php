@@ -2,8 +2,6 @@
 
 namespace quiz;
 
-use Random\RandomException;
-
 class QuizQuestionController extends Controller
 {
 
@@ -123,17 +121,17 @@ class QuizQuestionController extends Controller
      */
     public function actual(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] == "GET") {
-            $id = $_GET['id'] ?? null;
-            if (!$id) header("refresh:0.01;url='" . HOST . "QuizQuestion/actual'");
-            else KindOf::QUIZCONTENT->getDBHandler()->checkDeleteQuestionId($id);
-        } else {
-            $id = KindOf::QUIZCONTENT->getDBHandler()->getActual();
+//        if ($_SERVER['REQUEST_METHOD'] == "GET") {
+//            $id = $_GET['id'] ?? null;
+//            if (!$id) header("refresh:0.01;url='" . HOST . "QuizQuestion/actual'");
+//            else KindOf::QUIZCONTENT->getDBHandler()->checkDeleteQuestionId($id);
+//        } else {
+            $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
             if ($id) header("refresh:0.01;url='" . HOST . "QuizQuestion/answer/$id'");
             else {
                 header("refresh:0.01;url='" . HOST . "QuizQuestion/final'");
             }
-        }
+//        }
     }
 
     public function final(): void
@@ -148,6 +146,11 @@ class QuizQuestionController extends Controller
         $selector = new QuestionSelector();
         $questions = $selector->select($numberOfQuestions);
         $this->fillTableAndStartActual($questions);
+    }
+
+    public function test():void
+    {
+        $this->view('base', ['file' => 'qmarks.jpg']);
     }
 
 

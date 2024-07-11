@@ -70,6 +70,7 @@ class Factory
         }
         return [
             'text' => $questionAttributes['text'],
+            'explanation' => $questionAttributes['explanation'],
             'category' => $category,
             'rightAnswers' => $rightAnswers,
             'wrongAnswers' => $wrongAnswers
@@ -85,6 +86,7 @@ class Factory
         return new EditQuestion(
             $id,
             $data['text'],
+            $data['explanation'],
             $data['category'],
             $data['rightAnswers'],
             $data['wrongAnswers']
@@ -101,6 +103,7 @@ class Factory
         return new QuizQuestion(
             $id,
             $data['text'],
+            $data['explanation'],
             $data['category'],
             $data['rightAnswers'],
             $data['wrongAnswers'],

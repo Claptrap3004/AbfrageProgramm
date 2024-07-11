@@ -71,6 +71,7 @@ class QuestionDBHandler extends IdTextDBHandler
     protected function validateArgsCreate(array $args): bool
     {
         return array_key_exists('text', $args) &&
+            array_key_exists('explanation', $args) &&
             array_key_exists('category_id', $args) &&
             array_key_exists('user_id', $args);
     }

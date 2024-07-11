@@ -46,10 +46,10 @@ class CSVImporterNiklas implements CanHandleCSV
         $answers[] = $data[$i];
         }
         $rightAnswer = $data[6];
-        $description = $data[7];
+        $explanation = $data[7];
 
         $questionDBHandler = KindOf::QUESTION->getDBHandler();
-        $questionId = $questionDBHandler->create(['category_id'=> $categoryId,'user_id'=>$_SESSION['UserId'],'text' => $question]);
+        $questionId = $questionDBHandler->create(['category_id'=> $categoryId,'user_id'=>$_SESSION['UserId'],'text' => $question, 'explanation' => $explanation]);
         $answerDBHandler = KindOf::ANSWER->getDBHandler();
         $relationDBHandler = KindOf::RELATION->getDBHandler();
 

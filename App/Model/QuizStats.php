@@ -71,7 +71,7 @@ class QuizStats
     {
         $key = $question->getId();
         $text = $question->getText();
-        $explanation = '';
+        $explanation = $question->getExplanation();
         $answers = [];
         foreach ($question->getRightAnswers() as $answer) {
             $answerId = $answer->getId();

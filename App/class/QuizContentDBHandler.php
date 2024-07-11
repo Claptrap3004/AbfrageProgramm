@@ -21,6 +21,7 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
         $this->setTablename();
     }
 
+
     private function setTablename(): void
     {
         $factory = Factory::getFactory();
@@ -143,7 +144,6 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
         return true;
     }
 
-
     public function getActual():int
     {
         $sql = "SELECT id FROM $this->tableName WHERE is_actual = 1";
@@ -153,12 +153,15 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
         return $id['id'];
     }
 
-    public function checkDeleteQuestionId(int $id):void
+    public function getActualQuestionId():int|null
     {
-        $contentId = $this->getContentIdByQuestionId($id);
-        $this->deleteAtId($id);
-        if ($contentId && $contentId == $this->getActual()) $this->setActual(SetActual::NEXT);
+        $sql = "SELECT question_id FROM $this->tableName WHERE is_actual = 1";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        $id = $stmt->fetch(2);
+        return $id['question_id'];
     }
+
     public function setActual(SetActual $setActual): void
     {
         $numberOfQuestions = count($this->findAll());

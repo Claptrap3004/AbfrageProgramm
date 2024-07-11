@@ -24,9 +24,9 @@ class EditQuestion extends Question
      * @param IdText[] $rightAnswers
      * @param IdText[] $wrongAnswers
      */
-    public function __construct(int $id, string $text, IdText $category, array $rightAnswers, array $wrongAnswers)
+    public function __construct(int $id, string $text,string $explanation, IdText $category, array $rightAnswers, array $wrongAnswers)
     {
-        parent::__construct($id, $text, $category, $rightAnswers, $wrongAnswers);
+        parent::__construct($id, $text,$explanation, $category, $rightAnswers, $wrongAnswers);
         $this->relator = KindOf::RELATION->getDBHandler();
         $this->allAnswers = array_merge($this->rightAnswers,$this->wrongAnswers);
         $this->setRelationMapper();
