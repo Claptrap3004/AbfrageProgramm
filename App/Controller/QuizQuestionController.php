@@ -93,13 +93,18 @@ class QuizQuestionController extends Controller
         } else {
             try {
                 $question = $this->factory->createQuizQuestionById($id);
-                $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
-                $answers = [];
-                foreach ($trackContent as $item) $answers[] = $item['answer_id'];
-                $content = $this->getContentInfos();
-                if ($question) $this->view('quiz/answerQuestion', ['question' => $question, 'answers' => $answers, 'contentInfo' => $content]);
+                if ($question) {
+                    $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
+                    $answers = [];
+                    foreach ($trackContent as $item) $answers[] = $item['answer_id'];
+                    $content = $this->getContentInfos();
+                    $this->view('quiz/answerQuestion', ['question' => $question, 'answers' => $answers, 'contentInfo' => $content]);
+                }
+                else header("refresh:0.01;url='" . HOST . "QuizQuestion/actual");
             } catch (\Exception $e) {
-                header("refresh:0.01;url='" . HOST . "QuizQuestion/actual?id=" . $id . "'");
+                if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
+
+                header("refresh:0.01;url='" . HOST . "QuizQuestion/actual");
             }
         }
     }
@@ -121,17 +126,11 @@ class QuizQuestionController extends Controller
      */
     public function actual(): void
     {
-//        if ($_SERVER['REQUEST_METHOD'] == "GET") {
-//            $id = $_GET['id'] ?? null;
-//            if (!$id) header("refresh:0.01;url='" . HOST . "QuizQuestion/actual'");
-//            else KindOf::QUIZCONTENT->getDBHandler()->checkDeleteQuestionId($id);
-//        } else {
-            $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
-            if ($id) header("refresh:0.01;url='" . HOST . "QuizQuestion/answer/$id'");
-            else {
-                header("refresh:0.01;url='" . HOST . "QuizQuestion/final'");
-            }
-//        }
+        $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
+        if ($id) header("refresh:0.01;url='" . HOST . "QuizQuestion/answer/$id'");
+        else {
+            header("refresh:0.01;url='" . HOST . "QuizQuestion/final'");
+        }
     }
 
     public function final(): void
@@ -148,7 +147,7 @@ class QuizQuestionController extends Controller
         $this->fillTableAndStartActual($questions);
     }
 
-    public function test():void
+    public function test(): void
     {
         $this->view('base', ['file' => 'qmarks.jpg']);
     }
