@@ -7,13 +7,14 @@ namespace quiz;
 
 interface CanHandleDB
 {
-    public function create(array $args): int;
+    function create(array $args): int;
 
-    public function findById(int $id): array;
+    function findById(int $id): array;
 
-    public function findAll(array $filters = []): array;
+    function findAll(array $filters = []): array;
 
-    public function update(array $args): bool;
-    public function deleteAtId(int $id): bool;
+    function update(array $args): bool;
+
+    function deleteAtId(int $id): bool;
 
 }

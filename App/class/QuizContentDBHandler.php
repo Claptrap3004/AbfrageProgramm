@@ -32,8 +32,12 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
         $this->tableName = $this->tableName . $email;
     }
 
-    // creates new tables for tracking quizContent first and then populates quiz_content table
-    // with list of question-ids setting first to actual
+    /**
+     * creates new tables for tracking quizContent first and then populates quiz_content table with list of
+     * question-ids setting first to actual
+     * @param array $args
+     * @return int
+     */
     public function create(array $args): int
     {
         if (!$this->validateArgsCreate($args)) {
@@ -65,6 +69,10 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
     }
 
 
+    /**
+     * creates quiz_content and track_quiz_content tables for logged in user
+     * @return void
+     */
     public function createTables(): void
     {
         $track = $this->getTrackTableName();
@@ -85,6 +93,13 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
     }
 
     // returns given answers to question if in quiz content
+
+    /**
+     * returns given answers to question if in quiz content table of logged-in user
+     * return is numeric array containing associative arrays with key value pairs for id and text of answer
+     * @param int $id
+     * @return array
+     */
     public function findById(int $id): array
     {
         $data = $this->findAll();
@@ -100,6 +115,12 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
         return $stmt->fetchALl(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * since track_quiz_content table is related to content_id this method provides content_id if only question_id
+     * is known
+     * @param int $questionId
+     * @return int
+     */
     private function getContentIdByQuestionId(int $questionId):int
     {   $sql = "SELECT * FROM $this->tableName WHERE question_id = :question_id;";
         $stmt = $this->connection->prepare($sql);
@@ -109,6 +130,13 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
 
 
     // expects array ['questionId' = int, 'answers' = [int]]
+
+    /**
+     * expects associative array containing keys 'question_id' as well as 'answers' where question id holds integer and
+     * answers holding numeric array containing answers to track which answers the user did choose for given question
+     * @param array $args
+     * @return bool
+     */
     public function update(array $args): bool
     {
         if ($this->validateArgsUpdate($args)) {
@@ -131,6 +159,12 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
 
 
     // deletes single question from quiz content (also eventually given answers to that question)
+
+    /**
+     * deletes single question from quiz_content as well as eventually given answers to that question
+     * @param int $id
+     * @return bool
+     */
     public function deleteAtId(int $id): bool
     {
         $track = $this->getTrackTableName();
@@ -144,24 +178,43 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
         return true;
     }
 
-    public function getActual():int
+    /**
+     * returns associative array holding table data of quiz_content of actual question
+     * @return array
+     */
+    private function getActualData():array
     {
         $sql = "SELECT id FROM $this->tableName WHERE is_actual = 1";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
-        $id = $stmt->fetch(2);
-        return $id['id'];
+        return $stmt->fetch(2);
     }
 
+    /**
+     * returns content_id of actual question
+     * @return int
+     */
+    public function getActual():int
+    {
+        return $this->getActualData()['id'];
+    }
+
+    /**
+     * returns question_id of actual question
+     * @return int|null
+     */
     public function getActualQuestionId():int|null
     {
-        $sql = "SELECT question_id FROM $this->tableName WHERE is_actual = 1";
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
-        $id = $stmt->fetch(2);
-        return $id['question_id'];
+        return $this->getActualData()['question_id'];
     }
 
+
+    /**
+     * selects question being actual (and all others not) according value of SetActual enum, value NONE sets all
+     * questions to not actual to indicate end of quiz
+     * @param SetActual $setActual
+     * @return void
+     */
     public function setActual(SetActual $setActual): void
     {
         $numberOfQuestions = count($this->findAll());
