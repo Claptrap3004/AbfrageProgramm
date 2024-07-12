@@ -87,26 +87,21 @@ class QuizQuestionController extends Controller
                 KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
 
             } catch (\Exception $e) {
-
+                if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
             }
-            header("refresh:0.01;url='" . HOST . "QuizQuestion/actual'");
         } else {
             try {
                 $question = $this->factory->createQuizQuestionById($id);
-                if ($question) {
-                    $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
-                    $answers = [];
-                    foreach ($trackContent as $item) $answers[] = $item['answer_id'];
-                    $content = $this->getContentInfos();
-                    $this->view('quiz/answerQuestion', ['question' => $question, 'answers' => $answers, 'contentInfo' => $content]);
-                }
-                else header("refresh:0.01;url='" . HOST . "QuizQuestion/actual");
+                $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
+                $answers = [];
+                foreach ($trackContent as $item) $answers[] = $item['answer_id'];
+                $content = $this->getContentInfos();
+                $this->view('quiz/answerQuestion', ['question' => $question, 'answers' => $answers, 'contentInfo' => $content]);
             } catch (\Exception $e) {
                 if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
-
-                header("refresh:0.01;url='" . HOST . "QuizQuestion/actual");
             }
         }
+        header("refresh:0.01;url='" . HOST . "QuizQuestion/actual");
     }
 
     private function getContentInfos(): array

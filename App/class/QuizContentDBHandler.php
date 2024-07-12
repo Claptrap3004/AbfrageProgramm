@@ -184,7 +184,7 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
      */
     private function getActualData():array
     {
-        $sql = "SELECT id FROM $this->tableName WHERE is_actual = 1";
+        $sql = "SELECT * FROM $this->tableName WHERE is_actual = 1";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         return $stmt->fetch(2);
