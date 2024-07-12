@@ -16,7 +16,7 @@ class QuizStats
     public function __construct()
     {
         $this->factory = Factory::getFactory();
-        $this->dbHandler = new QuizContentDBHandler(KindOf::QUIZCONTENT);
+        $this->dbHandler = KindOf::QUIZCONTENT->getDBHandler();
         $this->getQuestionsFromDB();
         $this->validate();
     }
@@ -32,12 +32,15 @@ class QuizStats
         $answeredQuestionsData = $this->dbHandler->findAll();
         $this->questionsAsked = count($answeredQuestionsData);
         foreach ($answeredQuestionsData as $questionData) {
-            $question = $this->factory->createQuizQuestionById($questionData['question_id']);
-            $answersData = $this->dbHandler->findById($questionData['question_id']);
-            $answers = [];
-            foreach ($answersData as $answer) $answers[] = $this->factory->findIdTextObjectById($answer['answer_id'], KindOf::ANSWER);
-            $question->setGivenAnswers($answers);
-            $this->questions[] = $question;
+            try {
+                $question = $this->factory->createQuizQuestionById($questionData['question_id']);
+                $answersData = $this->dbHandler->findById($questionData['question_id']);
+                $answers = [];
+                foreach ($answersData as $answer) $answers[] = $this->factory->findIdTextObjectById($answer['answer_id'], KindOf::ANSWER);
+                $question->setGivenAnswers($answers);
+                $this->questions[] = $question;
+            } catch (\Exception $e) {
+            }
         }
     }
 
@@ -75,11 +78,11 @@ class QuizStats
         $answers = [];
         foreach ($question->getRightAnswers() as $answer) {
             $answerId = $answer->getId();
-            $answers["$answerId"] = $this->createAssocArray($question,$answer,true);
+            $answers["$answerId"] = $this->createAssocArray($question, $answer, true);
         }
         foreach ($question->getWrongAnswers() as $answer) {
             $answerId = $answer->getId();
-            $answers["$answerId"] = $this->createAssocArray($question,$answer,false);
+            $answers["$answerId"] = $this->createAssocArray($question, $answer, false);
         }
         $this->questionData["$key"] =
             ['isCorrect' => $this->validatedQuestions["$key"],

@@ -9,7 +9,7 @@ class QuizQuestion extends Question
     /**
      * @param int $id
      * @param string $text
-
+     * @param string $explanation
      * @param IdText $category
      * @param IdText[] $rightAnswers
      * @param IdText[] $wrongAnswers
@@ -83,8 +83,8 @@ class QuizQuestion extends Question
     {
         $answerIds = [];
         foreach ($this->givenAnswers as $answer) $answerIds[]=$answer->getId();
-        $handler = KindOf::QUIZCONTENT->getDBHandler();
-        $handler->update(['question_id' => $this->id, 'answers' => $answerIds]);
+        KindOf::QUIZCONTENT->getDBHandler()->update(['question_id' => $this->id, 'answers' => $answerIds]);
+
     }
 
 }
