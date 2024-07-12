@@ -101,7 +101,7 @@ class QuizQuestionController extends Controller
                 if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
             }
         }
-        header("refresh:0.01;url='" . HOST . "QuizQuestion/actual");
+        $this->actual();
     }
 
     private function getContentInfos(): array

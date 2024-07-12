@@ -179,10 +179,11 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
     }
 
     /**
-     * returns associative array holding table data of quiz_content of actual question
-     * @return array
+     * returns associative array holding table data of quiz_content of actual question or false if no question
+     * is set to actual
+     * @return array|false
      */
-    private function getActualData():array
+    private function getActualData():array|false
     {
         $sql = "SELECT * FROM $this->tableName WHERE is_actual = 1";
         $stmt = $this->connection->prepare($sql);
@@ -191,21 +192,21 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
     }
 
     /**
-     * returns content_id of actual question
-     * @return int
+     * returns content_id of actual question or false if no question is set to actual
+     * @return int|false|null
      */
-    public function getActual():int
+    public function getActual():int|false|null
     {
         return $this->getActualData()['id'];
     }
 
     /**
-     * returns question_id of actual question
-     * @return int|null
+     * returns question_id of actual question or false if no question is set to actual
+     * @return int|false|null
      */
-    public function getActualQuestionId():int|null
+    public function getActualQuestionId():int|false|null
     {
-        return $this->getActualData()['question_id'];
+        return $this->getActualData()['question_id'] ?? null;
     }
 
 
