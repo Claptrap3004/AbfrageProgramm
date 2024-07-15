@@ -20,7 +20,7 @@
 
         <div class="row align-self-center mx-5 pb-2">
             <label class="col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-2 my-2 p-2 w-100"
-                   data-bs-toggle='button' onclick="clickFn({{ answer.id }})" id="l_id{{ answer.id }}">{{ answer.text }}
+                   data-bs-toggle='button' onclick="clickAnswer({{ answer.id }})" id="l_id{{ answer.id }}">{{ answer.text }}
 
                 <input type="checkbox" name="answers[]" id="a_id{{ answer.id }}" value="{{ answer.id }}"
                        hidden="hidden">
@@ -76,7 +76,7 @@
     </div>
 <script>
 
-    function clickFn(id) {
+    function clickAnswer(id) {
         let idStr = "#a_id" + id;
         document.querySelector(idStr).checked = !document.querySelector(idStr).checked
     }
@@ -88,7 +88,7 @@
         element.ariaPressed = 'true';
         element.className += ' active';
         console.log()
-        clickFn(givenAnswer);
+        clickAnswer(givenAnswer);
     }
     if (Number({{ contentInfo.actual }}) === 1){
         document.querySelector('#prev').disabled = true;

@@ -26,7 +26,7 @@
                 <button type="button" class="btn-lg w-75 {{ button }} shadow " data-bs-toggle="collapse"
                         data-bs-target="#details"
                         aria-expanded="false" aria-controls="details"
-                        onclick="showDetails(this,'{{ value.text }}','{{ value.explanation }}', {{ value.answers }})">{{ key }}</button>
+                        onmouseover="showDetails(this,'{{ value.text }}','{{ value.explanation }}', {{ value.answers }})">{{ key }}</button>
             </td>
             {% set counter = counter + 1 %}
             {% endfor %}
