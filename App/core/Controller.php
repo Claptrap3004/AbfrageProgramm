@@ -29,6 +29,7 @@ class Controller
             try {
                 echo $twig->render("$viewname.html.twig", $data);
             } catch (LoaderError|RuntimeError|SyntaxError $e) {
+                echo $e;
             }
         }
         else require '../App/View/PageNotFoundController.php';
