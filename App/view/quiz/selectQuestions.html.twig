@@ -29,7 +29,7 @@
         </div>
 
     </div>
-
+    {% set all = 0 %}
     {% for category in categories %}
         <div class="row  p-2 m-2">
             <div class="col-lg-1 align-items-right">
@@ -52,48 +52,48 @@
                 </p>
             </div>
         </div>
-
+        {% set all = all + category.number %}
     {% endfor %}
-
-
-{% endblock %}
-{% block contentright %}
-    {% set all = 0 %}
-    {% for category in categories %}
-    {% set all = all + category.number %}
-    {% endfor %}
-    <div class="row text-black pt-5 py-1 my-1">
-        <div class="col text-start">
+    <div class="row text-black p-2 m-2">
+        <div class="col-lg-10 text-end">
             <p>Fragen gesamt:</p>
         </div>
-        <div class="col text-end">
+        <div class="col-lg-2 text-end">
             <p><span id="maxQuestions">{{ all }}</span> / {{ all }} </p>
         </div>
     </div>
-
-    <div class="row text-black pt-5 py-1 my-1">
-        <div class="col text-start">
-            <p>Fragen gewählt:</p>
+    <div class="row text-black p-2 m-2">
+        <div class="col-lg-3 text-end">
+            <span id="minVal">1</span>
         </div>
-            <label for="customRange"></label>
+        <div class="col-lg-6 text-center">
+            <label for="customRange">Anzahl Fragen</label>
             <input type="range" name="range" class="form-range" min="1" max="{{ all }}" step="1" value="1"
-                   id="customRange" oninput="trackVal(this)">
+                   id="customRange" oninput=" trackVal(this)">
             <div class="row">
                 <span id="currentVal">1</span>
             </div>
+        </div>
+        <div class="col-lg-3 text-start">
+            <span id="maxVal">{{ all }}</span>
+        </div>
     </div>
 
 {% endblock %}
+{% block contentright %}
+
+
+{% endblock %}
 {% block buttons %}
-    <div class="row text-black p-5  my-1"></div>
+
     <div class="col-lg-6 align-items-center text-center">
         <a href="http://abfrageprogramm.ddev.site:8443/">
-            <button class="btn-lg btn-primary">Zurück</button>
+            <button class="btn btn-primary">Zurück</button>
         </a>
     </div>
     <div class="col-lg-6 align-items-center text-center">
         <a href="http://abfrageprogramm.ddev.site:8443/select?categories=category[]&range=range">
-            <button class="btn-lg btn-primary">Select Questions</button>
+            <button class="btn btn-primary">Select Categories</button>
         </a>
     </div>
 
