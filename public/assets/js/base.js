@@ -1,4 +1,16 @@
 
+function clearAllStats()  {
+    console.log('bla');
+    document.querySelector('#modalTitle').ariaHidden = 'Löschen aller Stats';
+    document.querySelector('#modalText').innerHTML = 'Durch bestätigen werden alle Stats gelöscht';
+    document.querySelector('#modalCancel').innerHTML = 'cancel';
+    document.querySelector('#modalConfirm').innerHTML = 'confirm';
+}
+
+function bla(){
+    console.log('bla');
+}
+
 function setLoginScreen(){
     let newContentLeft = document.createElement('div');
     newContentLeft.className = "col-4 bg-light rounded-5 my-2 py-2 align-self-left scrollable-contentleft";

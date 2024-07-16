@@ -34,7 +34,9 @@ class UserController extends Controller
                     if ($userData !== []){
                         $user = $this->factory->createUser($userData[0]['id']);
                         $_SESSION['UserId'] = $user->getId();
-                        header("refresh:0.01;url='" . HOST . "QuizQuestion/'");
+                        $controller = new QuizQuestionController();
+                        $controller->index();
+//                        header("refresh:0.01;url='" . HOST . "QuizQuestion/'");
                     }
                     else{
                         $this->reportError("Zu $email existiert kein User");

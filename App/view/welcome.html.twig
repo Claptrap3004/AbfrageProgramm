@@ -41,21 +41,34 @@
     </div>
 {% endblock %}
     {% block contentright %}
+
         <div class="card align-self-center bg-light rounded-3 mx-4 my-5 py-3">
             <div class="card-body rounded-3">
                 <br>
                 <h5 class="card-title">Statistik von #{{ user.username }}</h5>
                 <br>
                 <br>
-                <p class="card-text">{{ stats.timesAsked }} Fragen beantwortet</p>
+                <p class="card-text" id="allTimesAsked">{{ stats.timesAsked }} Fragen beantwortet</p>
                 <br>
-                <p class="card-text">{{ stats.timesRight }} davon korrekt</p>
+                <p class="card-text" id="allTimesRight">{{ stats.timesRight }} davon korrekt</p>
                 <br>
-                <p class="card-text">{{ stats.rate }} % Erfolgsquote</p>
+                <p class="card-text" id="allRate">{{ stats.rate }} % Erfolgsquote</p>
+
+                <!-- Button trigger modal -->
+                <label for="clearAllStatsButton" onclick="clearAllStats()"></label>
+                <button type="button" class="btn btn-info" id="clearAllStatsButton" data-bs-toggle="modal" data-bs-target="#modal"  >
+                    Clear all stats
+                </button>
+
+                <!-- Modal -->
+
             </div>
         </div>
 
     {% endblock %}
 {% block buttons %}
 
+{% endblock %}
+{% block scripts %}
+    <script src="/assets/js/welcome.js"></script>
 {% endblock %}
