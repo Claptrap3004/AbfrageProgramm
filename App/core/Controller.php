@@ -27,7 +27,8 @@ class Controller
         $viewFile = '../App/View/' .  ucfirst($viewname). '.html.twig';
         if (file_exists($viewFile)) {
             try {
-                echo $twig->render("$viewname.html.twig", $data);
+                $page = $twig->render("$viewname.html.twig", $data);
+                echo $page;
             } catch (LoaderError|RuntimeError|SyntaxError $e) {
                 echo $e;
             }

@@ -74,7 +74,7 @@ function toggleLoginRegister(toggleButton) {
 }
 
 function showDetails(button, text, explanation, answers) {
-
+    document.querySelector('#details').collapse(false);
     document.querySelector('#detailsQuestion').innerHTML = text;
     document.querySelector('#detailsDescription').innerHTML = explanation;
     let detailsAnswers = document.querySelector('#detailsAnswers');

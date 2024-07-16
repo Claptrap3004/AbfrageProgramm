@@ -122,7 +122,8 @@ class QuizQuestionController extends Controller
     public function actual(): void
     {
         $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
-        if ($id) header("refresh:0.01;url='" . HOST . "QuizQuestion/answer/$id'", false,302);
+        if ($id) $this->answer($id);
+//        if ($id) header("refresh:0.01;url='" . HOST . "QuizQuestion/answer/$id'", false,302);
         else {
             header("refresh:0.01;url='" . HOST . "QuizQuestion/final'");
         }
