@@ -7,84 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="/assets/css/base.css" rel="stylesheet">
 
-    <style>
-        body {
-            background-image: url('/assets/qmarks.jpg');
-            background-size: cover;
-            overflow: hidden;
-        }
-        .welcomeButton {
-
-            min-width: 33em;
-            max-width: 33em;
-            max-height: 12em;
-            min-height: 12em;
-
-        }
-
-        .labelWelcomeButton {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            justify-content: center;
-            border-radius: 2rem;
-        }
-
-        .welcomeButtonDiv {
-            /*min-width: .2em;*/
-            /*max-width: .2em;*/
-            /*max-height: .25em;*/
-            /*min-height: .25em;*/
-        }
-    card {
-        opacity: initial;
-    }
-        .scrollable-contentleft {
-            min-width: 70rem;
-            max-width: 70rem;
-            max-height: 30rem;
-            min-height: 30rem;
-            overflow: hidden;
-            scrollbar-gutter: stable both-edges;
-            border-radius: 1.5rem;
-        }
-
-        .content-right {
-            min-width: 20rem;
-            max-width: 20rem;
-            max-height: 30rem;
-            min-height: 30rem;
-            border-radius: 1.5rem;
-            overflow: hidden;
-        }
-
-        .scrollable-contentbuttons {
-            min-width: 120rem;
-            max-width: 120rem;
-            min-height: 15rem;
-            max-height: 15rem;
-            overflow: hidden;
-            scrollbar-gutter: stable both-edges;
-
-        }
-
-        body, html, head,
-        .scrollable-contentleft:hover,
-        .scrollable-contentbuttons:hover,
-        .scrollable-contentleft:active,
-        .scrollable-contentbuttons:active,
-        .scrollable-contentleft:focus,
-        .scrollable-contentbuttons:focus {
-            overflow-y: auto;
-        }
-
-        .login-contentRight {
-            display: none;
-        }
-
-
-    </style>
     {% block head %}
     {% endblock %}
     <title>Quiz {% block title %}{% endblock %}</title>
@@ -100,7 +24,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav">
                     <a href="config/" class="nav-item nav-link">Config</a>
-                    <a href="quizquestion/quickstart/" class="nav-item nav-link">Start Quiz</a>
+                    <a href="quizquestion/quickstart/20/" class="nav-item nav-link">Start Quiz</a>
                     <a href="edit/" class="nav-item nav-link">Edit</a>
                     <a href="edit/import" class="nav-item nav-link">Import</a>
                 </div>
@@ -141,111 +65,10 @@
         &copy; Copyright 2024 by René.
     {% endblock %}
 </div>
-<script>
-
-//    function setLoginScreen(){
-//        let newContentLeft = document.createElement('div');
-//        newContentLeft.className = "col-4 bg-light rounded-5 my-2 py-2 align-self-left scrollable-contentleft";
-//        document.querySelector('#spacerContentLeft').className = "col-3";
-//        document.querySelector('#contentRight').hidden = 'hidden';
-//        document.querySelector('#contentLeft').replaceWith(newContentLeft);
-//        console.log(document.querySelector('#contentLeft').className);
-//    }
-//
-//
-//    function clickCategory(categoryId) {
-//        let valueId = "#numberOfQuestions" + categoryId;
-//        let checkBoxId = "#categorySwitch" + categoryId;
-//        let maxQuestionsId = "#maxQuestions" + categoryId;
-//        let val = document.querySelector(checkBoxId).checked ? document.querySelector(maxQuestionsId).value : 0;
-//        document.querySelector(valueId).innerHTML = val;
-//        let maxValue = Number(document.querySelector('#maxVal').innerHTML);
-//        maxValue = val > 0 ? maxValue + Number(document.querySelector(maxQuestionsId).value) :
-//            maxValue - Number(document.querySelector(maxQuestionsId).value);
-//        document.querySelector('#customRange').max = maxValue;
-//        document.querySelector('#currentVal').innerHTML =
-//            Number(document.querySelector('#currentVal').innerHTML) > maxValue ?
-//                maxValue : document.querySelector('#currentVal').innerHTML;
-//        document.querySelector('#maxVal').innerHTML = `${maxValue}`;
-//        document.querySelector('#maxQuestions').innerHTML = document.querySelector('#maxVal').innerHTML;
-//    }
-//
-//    function changeAllCategories() {
-//        let isChecked = document.querySelector('#categoryAll').checked;
-//        document.querySelectorAll('.categories').forEach(function (value) {
-//            if (value.checked !== isChecked) {
-//                value.checked = !value.checked;
-//                clickCategory(value.value)
-//            }
-//        });
-//    }
-//
-//    function trackVal(element) {
-//        element.nextElementSibling.value = element.value;
-//        document.getElementById('currentVal').innerHTML = element.value;
-//    }
-//
-//    function toggleLoginRegister(toggleButton) {
-//        let buttonUserName = document.querySelector('#inputUsername');
-//        let buttonEmailValidate = document.querySelector('#inputEmailValidate');
-//        let buttonPasswordValidate = document.querySelector('#inputPasswordValidate');
-//        let labelUserName = document.querySelector('#labelInputUsername');
-//        let labelEmailValidate = document.querySelector('#labelInputEmailValidate');
-//        let labelPasswordValidate = document.querySelector('#labelInputPasswordValidate');
-//        let buttonConfirm = document.querySelector('#confirm');
-//
-//        if (toggleButton.innerHTML === 'go to Register') {
-//            buttonUserName.type = 'text';
-//            buttonEmailValidate.type = 'email';
-//            buttonPasswordValidate.type = 'password';
-//            labelUserName.style.visibility = "visible";
-//            labelEmailValidate.style.visibility = "visible";
-//            labelPasswordValidate.style.visibility = "visible";
-//            buttonConfirm.name = 'registerUser';
-//            buttonConfirm.innerHTML = 'Sign Up';
-//            toggleButton.innerHTML = 'go to Login';
-//        } else {
-//            buttonUserName.type = 'hidden';
-//            buttonEmailValidate.type = 'hidden';
-//            buttonPasswordValidate.type = 'hidden';
-//            labelUserName.style.visibility = "hidden";
-//            labelEmailValidate.style.visibility = "hidden";
-//            labelPasswordValidate.style.visibility = "hidden";
-//            buttonConfirm.name = 'loginUser';
-//            buttonConfirm.innerHTML = 'Sign In';
-//            toggleButton.innerHTML = 'go to Register';
-//        }
-//    }
-//
-//    function showDetails(button, text, explanation, answers) {
-//
-//        document.querySelector('#detailsQuestion').innerHTML = text;
-//        document.querySelector('#detailsDescription').innerHTML = explanation;
-//        let detailsAnswers = document.querySelector('#detailsAnswers');
-//        detailsAnswers.innerHTML = document.createElement("p").innerHTML = '';
-//        for (let answersKey in answers) {
-//            let nextNode = document.createElement("p");
-//            nextNode.innerHTML = answers[answersKey].text;
-//            nextNode.style.textAlign = 'center';
-//            nextNode.style.color = answers[answersKey].isRight === 'true' ? 'green' : 'red';
-//            nextNode.style.background = answers[answersKey].isSelected === 'true' ? 'yellow' : detailsAnswers.style.background;
-//            detailsAnswers.appendChild(nextNode);
-//        }
-//    }
-//
-//    function clearStatsOfQuestion(timesAsked, timesRight){
-//        let stats = document.querySelector('#clearStatsOfQuestion');
-//        stats.checked = !stats.checked;
-//        document.querySelector('#statsTimesAsked').innerHTML = (stats.checked ? 0 : timesAsked) + ' times asked';
-//        document.querySelector('#statsTimesRight').innerHTML = (stats.checked ? 0 : timesRight) + ' times answered correct';
-//        document.querySelector('#labelClearStats').innerHTML = stats.checked ? ' undo clear Stats ' : ' clear Stats ';
-//    }
-</script>
-<script src="/assets/base.js"></script>
-{#<script src="{{ absolute_url(asset('/App/view/js/answerQuestion.js')) }}"></script>#}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+<script src="/assets/js/base.js"></script>
 {% block scripts %}
 {% endblock %}
 </body>

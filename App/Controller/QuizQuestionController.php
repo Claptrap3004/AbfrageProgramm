@@ -32,7 +32,7 @@ class QuizQuestionController extends Controller
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $handler->create(['question_ids' => $data]);
-        header("refresh:0.01;url='" . HOST . "QuizQuestion/actual'");
+        header("refresh:0.01;url='" . HOST . "QuizQuestion/answer'");
 
     }
 
@@ -44,7 +44,7 @@ class QuizQuestionController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $categories = $_POST['categories'] ?? [];
-            $numberOfQuestions = $_POST['range'] ?? 0;
+            $numberOfQuestions = (int)$_POST['range'] ?? 0;
             $selector = new QuestionSelector();
             $questions = $selector->select($numberOfQuestions, $categories);
             $this->fillTableAndStartActual($questions);
@@ -118,20 +118,6 @@ class QuizQuestionController extends Controller
         return ['totalQuestions' => count($data), 'actual' => $id];
     }
 
-    /** checks for actual question in quiz_content and calls answer method for given question id. if no item is set to
-     * actual in quiz_content validation and stats are triggered.
-     * @return void
-     */
-//    public function actual(): void
-//    {
-//        $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
-//        if ($id) $this->answer($id);
-////        if ($id) header("refresh:0.01;url='" . HOST . "QuizQuestion/answer/$id'", false,302);
-//        else {
-//            header("refresh:0.01;url='" . HOST . "QuizQuestion/final'");
-//        }
-//    }
-
     public function final(): void
     {
         $quizStats = new QuizStats();
@@ -142,13 +128,13 @@ class QuizQuestionController extends Controller
     public function quickStart($numberOfQuestions = 20): void
     {
         $selector = new QuestionSelector();
-        $questions = $selector->select($numberOfQuestions);
+        $questions = $selector->select((int)$numberOfQuestions);
         $this->fillTableAndStartActual($questions);
     }
 
     public function test(): void
     {
-        $this->view('base', ['file' => 'qmarks.jpg']);
+
     }
 
 

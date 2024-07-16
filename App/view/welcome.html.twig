@@ -1,14 +1,14 @@
 {% extends "base.html.twig" %}
+{% block head %}
+    <link href="/assets/css/welcome.css" rel="stylesheet">
+{% endblock %}
 
 {% block title %} Herzlich Willkommen {% endblock %}
-{% block head %}
-
-{% endblock %}
 {% block subtitle %}
     Hallo {{ user.username }}, herzlich Willlkommen zum Quiz
 {% endblock %}
 {% block contentleft %}
-    <div class="row row-cols-2 py-4 g-4 welcomeButtonDiv">
+    <div class="row row-cols-2 py-4 g-4">
         <div class="col welcomeButton">
             <a href="quizquestion/quickstart/20/">
                 <label class="labelWelcomeButton btn btn-primary btn-block w-100 h-100">

@@ -1,0 +1,49 @@
+body {
+    background-image: url('/assets/img/qmarks.jpg');
+    background-size: cover;
+    overflow: hidden;
+}
+
+.scrollable-contentleft {
+    min-width: 70rem;
+    max-width: 70rem;
+    max-height: 30rem;
+    min-height: 30rem;
+    overflow: hidden;
+    scrollbar-gutter: stable both-edges;
+    border-radius: 1.5rem;
+}
+
+.content-right {
+    min-width: 20rem;
+    max-width: 20rem;
+    max-height: 30rem;
+    min-height: 30rem;
+    border-radius: 1.5rem;
+    overflow: hidden;
+}
+
+.scrollable-contentbuttons {
+    min-width: 120rem;
+    max-width: 120rem;
+    min-height: 15rem;
+    max-height: 15rem;
+    overflow: hidden;
+    scrollbar-gutter: stable both-edges;
+
+}
+
+body, html, head,
+.scrollable-contentleft:hover,
+.scrollable-contentbuttons:hover,
+.scrollable-contentleft:active,
+.scrollable-contentbuttons:active,
+.scrollable-contentleft:focus,
+.scrollable-contentbuttons:focus {
+    overflow-y: auto;
+}
+
+.login-contentRight {
+    display: none;
+}
+
