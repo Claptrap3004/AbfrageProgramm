@@ -19,7 +19,7 @@ class QuizQuestionController extends Controller
             $user = $this->factory->createUser($_SESSION['UserId']);
             $stats = new UserStats($user);
             $this->view('welcome', ['user' => $user, 'stats' => $stats]);
-        } else header("refresh:0.01;url='" . HOST . "QuizQuestion/actual'");
+        } else header("refresh:0.01;url='" . HOST . "QuizQuestion/answer'");
     }
 
     /**
@@ -56,18 +56,16 @@ class QuizQuestionController extends Controller
 
 
     /**
-     * loads question for given id with possible answers and displays it. On post request of page it sets actual attribute
+     * loads actual question with possible answers and displays it. On post request of page it sets actual attribute
      * in quiz_content table after storing given answer(s) in track_quiz_content table. If post request is set next question
      * as actual while actual question was last one is_actual is set to false for all questions to trigger validation of
      * quiz.
-     * @param int $id
      * @return void
      */
-    public function answer(int $id): void
+    public function answer(): void
     {
-
+        $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-
             $clearStats = $_POST['clearStats'] ?? '';
             $answers = $_POST['answers'] ?? [];
             $questionId = $_POST['questionId'] ?? $id;
@@ -88,8 +86,13 @@ class QuizQuestionController extends Controller
 
             } catch (\Exception $e) {
                 if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
+                $this->answer();
             }
-        } else {
+            unset ($_POST);
+            $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
+        }
+        if (!$id) $this->final();
+        else {
             try {
                 $question = $this->factory->createQuizQuestionById($id);
                 $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
@@ -99,9 +102,9 @@ class QuizQuestionController extends Controller
                 $this->view('quiz/answerQuestion', ['question' => $question, 'answers' => $answers, 'contentInfo' => $content]);
             } catch (\Exception $e) {
                 if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
+                $this->answer();
             }
         }
-        $this->actual();
     }
 
     private function getContentInfos(): array
@@ -119,15 +122,15 @@ class QuizQuestionController extends Controller
      * actual in quiz_content validation and stats are triggered.
      * @return void
      */
-    public function actual(): void
-    {
-        $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
-        if ($id) $this->answer($id);
-//        if ($id) header("refresh:0.01;url='" . HOST . "QuizQuestion/answer/$id'", false,302);
-        else {
-            header("refresh:0.01;url='" . HOST . "QuizQuestion/final'");
-        }
-    }
+//    public function actual(): void
+//    {
+//        $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
+//        if ($id) $this->answer($id);
+////        if ($id) header("refresh:0.01;url='" . HOST . "QuizQuestion/answer/$id'", false,302);
+//        else {
+//            header("refresh:0.01;url='" . HOST . "QuizQuestion/final'");
+//        }
+//    }
 
     public function final(): void
     {
