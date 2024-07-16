@@ -1,17 +1,16 @@
+const init = () => {
+    console.log('init');
+}
+const clearAllStats = () => {
 
-function clearAllStats()  {
-    console.log('bla');
-    document.querySelector('#modalTitle').ariaHidden = 'Löschen aller Stats';
+    document.querySelector('#modalTitle').innerHTML = 'Löschen aller Stats';
     document.querySelector('#modalText').innerHTML = 'Durch bestätigen werden alle Stats gelöscht';
     document.querySelector('#modalCancel').innerHTML = 'cancel';
     document.querySelector('#modalConfirm').innerHTML = 'confirm';
 }
 
-function bla(){
-    console.log('bla');
-}
 
-function setLoginScreen(){
+const setLoginScreen = () => {
     let newContentLeft = document.createElement('div');
     newContentLeft.className = "col-4 bg-light rounded-5 my-2 py-2 align-self-left scrollable-contentleft";
     document.querySelector('#spacerContentLeft').className = "col-3";
@@ -21,7 +20,7 @@ function setLoginScreen(){
 }
 
 
-function clickCategory(categoryId) {
+const clickCategory = (categoryId) => {
     let valueId = "#numberOfQuestions" + categoryId;
     let checkBoxId = "#categorySwitch" + categoryId;
     let maxQuestionsId = "#maxQuestions" + categoryId;
@@ -38,7 +37,7 @@ function clickCategory(categoryId) {
     document.querySelector('#maxQuestions').innerHTML = document.querySelector('#maxVal').innerHTML;
 }
 
-function changeAllCategories() {
+const changeAllCategories = () => {
     let isChecked = document.querySelector('#categoryAll').checked;
     document.querySelectorAll('.categories').forEach(function (value) {
         if (value.checked !== isChecked) {
@@ -48,12 +47,12 @@ function changeAllCategories() {
     });
 }
 
-function trackVal(element) {
+const trackVal = (element) => {
     element.nextElementSibling.value = element.value;
     document.getElementById('currentVal').innerHTML = element.value;
 }
 
-function toggleLoginRegister(toggleButton) {
+const toggleLoginRegister = (toggleButton) => {
     let buttonUserName = document.querySelector('#inputUsername');
     let buttonEmailValidate = document.querySelector('#inputEmailValidate');
     let buttonPasswordValidate = document.querySelector('#inputPasswordValidate');
@@ -85,7 +84,7 @@ function toggleLoginRegister(toggleButton) {
     }
 }
 
-function showDetails(button, text, explanation, answers) {
+const showDetails = (button, text, explanation, answers) => {
 
     document.querySelector('#detailsQuestion').innerHTML = text;
     document.querySelector('#detailsDescription').innerHTML = explanation;
@@ -101,7 +100,7 @@ function showDetails(button, text, explanation, answers) {
     }
 }
 
-function clearStatsOfQuestion(timesAsked, timesRight){
+const clearStatsOfQuestion = (timesAsked, timesRight) =>{
     let stats = document.querySelector('#clearStatsOfQuestion');
     stats.checked = !stats.checked;
     document.querySelector('#statsTimesAsked').innerHTML = (stats.checked ? 0 : timesAsked) + ' times asked';

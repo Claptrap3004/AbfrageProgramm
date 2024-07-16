@@ -1,6 +1,7 @@
 {% extends "base.html.twig" %}
 {% block head %}
     <link href="/assets/css/welcome.css" rel="stylesheet">
+    <script src="/assets/js/welcome.js"></script>
 {% endblock %}
 
 {% block title %} Herzlich Willkommen {% endblock %}
@@ -55,8 +56,8 @@
                 <p class="card-text" id="allRate">{{ stats.rate }} % Erfolgsquote</p>
 
                 <!-- Button trigger modal -->
-                <label for="clearAllStatsButton" onclick="clearAllStats()"></label>
-                <button type="button" class="btn btn-info" id="clearAllStatsButton" data-bs-toggle="modal" data-bs-target="#modal"  >
+                <label for="clearAllStatsButton"></label>
+                <button type="button" class="btn btn-info" id="clearAllStatsButton" data-bs-toggle="modal" data-bs-target="#modal" onclick="clearAllStats()" >
                     Clear all stats
                 </button>
 
@@ -70,5 +71,5 @@
 
 {% endblock %}
 {% block scripts %}
-    <script src="/assets/js/welcome.js"></script>
+
 {% endblock %}
