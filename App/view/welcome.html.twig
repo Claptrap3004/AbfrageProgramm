@@ -3,8 +3,10 @@
     <link href="/assets/css/welcome.css" rel="stylesheet">
     <script src="/assets/js/welcome.js"></script>
 {% endblock %}
-
 {% block title %} Herzlich Willkommen {% endblock %}
+{% block onload %}
+    initWelcome();
+{% endblock %}
 {% block subtitle %}
     Hallo {{ user.username }}, herzlich Willlkommen zum Quiz
 {% endblock %}
@@ -49,15 +51,15 @@
                 <h5 class="card-title">Statistik von #{{ user.username }}</h5>
                 <br>
                 <br>
-                <p class="card-text" id="allTimesAsked">{{ stats.timesAsked }} Fragen beantwortet</p>
+                <p class="card-text"><span id="allTimesAsked">{{ stats.timesAsked }}</span> Fragen beantwortet</p>
                 <br>
-                <p class="card-text" id="allTimesRight">{{ stats.timesRight }} davon korrekt</p>
+                <p class="card-text"><span id="allTimesRight">{{ stats.timesRight }}</span> davon korrekt</p>
                 <br>
-                <p class="card-text" id="allRate">{{ stats.rate }} % Erfolgsquote</p>
+                <p class="card-text"><span  id="allRate">{{ stats.rate }}</span> % Erfolgsquote</p>
 
                 <!-- Button trigger modal -->
                 <label for="clearAllStatsButton"></label>
-                <button type="button" class="btn btn-info" id="clearAllStatsButton" data-bs-toggle="modal" data-bs-target="#modal" onclick="clearAllStats()" >
+                <button type="button" class="btn btn-info" id="clearAllStatsButton" data-bs-toggle="modal" data-bs-target="#modal">
                     Clear all stats
                 </button>
 

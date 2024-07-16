@@ -1,13 +1,14 @@
 const init = () => {
     console.log('init');
 }
-const clearAllStats = () => {
 
-    document.querySelector('#modalTitle').innerHTML = 'Löschen aller Stats';
-    document.querySelector('#modalText').innerHTML = 'Durch bestätigen werden alle Stats gelöscht';
-    document.querySelector('#modalCancel').innerHTML = 'cancel';
-    document.querySelector('#modalConfirm').innerHTML = 'confirm';
+const changeModal = (title, text, confirmFunction) => {
+    document.querySelector('#modalTitle').innerHTML = title;
+    document.querySelector('#modalText').innerHTML = text;
+    document.querySelector('#modalConfirm').addEventListener('click', confirmFunction)
 }
+
+
 
 
 const setLoginScreen = () => {
