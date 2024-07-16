@@ -39,6 +39,7 @@ class QuizQuestionController extends Controller
     /**
      * directs to category selection page, after categories and number of questions are selected QuestionSelector object
      * is created and random selection of question ids is sent to according method to create the content
+     * @return void
      */
     public function select(): void
     {
@@ -88,7 +89,8 @@ class QuizQuestionController extends Controller
                 if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
                 $this->answer();
             }
-            unset ($_POST);
+            unset($_POST);
+            unset ($_SERVER['REQUEST_METHOD']);
             $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
         }
         if (!$id) $this->final();

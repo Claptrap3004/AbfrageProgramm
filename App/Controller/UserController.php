@@ -37,26 +37,25 @@ class UserController extends Controller
                         header("refresh:0.01;url='" . HOST . "QuizQuestion/'");
                     }
                     else{
-                        $this->view('login/login', ['error' => 'User existiert nicht', 'username' => $email]);
+                        $this->reportError("Zu $email existiert kein User");
                     }
                 }
             } elseif (isset($_POST['registerUser'])) {
                 $emailValidate = $_POST['emailValidate'] ?? '';
                 $passwordValidate = $_POST['passwordValidate'] ?? '';
                 $userName = $_POST['userName'] ?? '';
-                $errorMessage = '';
 
-                if (!$this->checkCorrectEmail($email)) $errorMessage = 'es ist keine gültige E-Mail eingegeben worden';
-                elseif (!$this->validateEqual($email, $emailValidate)) $errorMessage = 'die eingegebenen E-Mail-Adressen stimmen nicht überein';
-                elseif (!$this->validatePassword($password)) $errorMessage = 'Das Passwort muss mindestens 8 Zeichen lang sein';
-                elseif (!$this->validateEqual($password, $passwordValidate)) $errorMessage = 'Die eingegebenen Passwörter stimmen nicht überein';
-                if ($errorMessage !== '') $this->view('login/login', ['error' => $errorMessage, 'username' => $userName]);
+
+                if (!$this->checkCorrectEmail($email))  $this->reportError( 'es ist keine gültige E-Mail eingegeben worden');
+                elseif (!$this->validateEqual($email, $emailValidate))  $this->reportError('die eingegebenen E-Mail-Adressen stimmen nicht überein');
+                elseif (!$this->validatePassword($password))  $this->reportError('Das Passwort muss mindestens 8 Zeichen lang sein');
+                elseif (!$this->validateEqual($password, $passwordValidate))  $this->reportError('Die eingegebenen Passwörter stimmen nicht überein');
                 else {
 
                     try {
                         $id = $this->dbFactory->createUser($userName, $email, $password);
                     } catch (Exception $e) {
-                        $this->view('login/login', ['error' => $e, 'username' => $userName]);
+                        $this->reportError('User konnte nicht erstellt werden');
                     }
                     $user = Factory::getFactory()->createUser($id);
                     $_SESSION['UserId'] = $user->getId();
@@ -67,14 +66,17 @@ class UserController extends Controller
 
 
             } else {
-                $errorMessage = 'Irgendwas ist schief gelaufen';
-                $this->view('login/login', ['error' => $errorMessage]);
+                $this->reportError('Irgendwas ist schief gelaufen');
             }
         } else {
             $this->view('login/login', []);
         }
     }
 
+    private function reportError(string $errorMessage): void
+    {
+        $this->view('login/login', ['error' => $errorMessage]);
+    }
     private function validatePassword(string $password): bool
     {
 
