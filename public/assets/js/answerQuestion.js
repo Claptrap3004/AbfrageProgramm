@@ -1,15 +1,20 @@
-let givenAsnwers;
-function initAnswerQuestion() {
-    const givenAnswers = JSON.parse(document.querySelector('#jsDataAnswers').getAttribute('data-content'));
-    const questionAnswers = JSON.parse(document.querySelector('#jsDataQuestionAnswers').getAttribute('data-content'));
-    const actual = document.querySelector('#jsDataActual').getAttribute('data-content');
-    const numberOfQuestions = document.querySelector('#jsDataNumberOfQuestions').getAttribute('data-content');
+const initAnswerQuestion = () => {
+    setListeners();
+    markGivenAnswers();
+    setButtonState();
+}
 
+const setListeners = () => {
     let answerLabels = document.querySelectorAll('.answerLabels');
     for (const answerLabel of answerLabels) {
         answerLabel.addEventListener('click',clickAnswer)
     }
     document.querySelector('#labelClearStatsOfQuestion').addEventListener('click', clearStatsOfQuestion)
+
+}
+
+const markGivenAnswers = () => {
+    const givenAnswers = JSON.parse(document.querySelector('#jsDataAnswers').getAttribute('data-content'));
     for (const givenAnswer of givenAnswers) {
         let labelId = '#l_id' + givenAnswer;
         let element = document.querySelector(labelId);
@@ -19,16 +24,21 @@ function initAnswerQuestion() {
         document.querySelector(buttonId).checked = !document.querySelector(buttonId).checked
     }
 
-    if (Number(actual) === 1){
-        document.querySelector('#prev').disabled = true;
-        document.querySelector('#prev').className =  "btn-lg btn-outline-info shadow-sm";
-    }
-    if (Number(actual) === Number(numberOfQuestions)){
-        document.querySelector('#next').disabled = true;
-        document.querySelector('#next').className =  "btn-lg btn-outline-info shadow-sm";
-    }
 }
 
+const setButtonState = () => {
+    const actual = document.querySelector('#jsDataActual').getAttribute('data-content');
+    const numberOfQuestions = document.querySelector('#jsDataNumberOfQuestions').getAttribute('data-content');
+    if (Number(actual) === 1) {
+        document.querySelector('#prev').disabled = true;
+        document.querySelector('#prev').className = "btn-lg btn-outline-info shadow-sm";
+    }
+    if (Number(actual) === Number(numberOfQuestions)) {
+        document.querySelector('#next').disabled = true;
+        document.querySelector('#next').className = "btn-lg btn-outline-info shadow-sm";
+    }
+
+}
 
 
 const clearStatsOfQuestion = () =>{
