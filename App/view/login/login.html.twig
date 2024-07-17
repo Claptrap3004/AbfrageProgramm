@@ -2,19 +2,17 @@
 
 {% block title %} Login Quiz {% endblock %}
 {% block head %}
-
+    <link href="/assets/css/login.css" rel="stylesheet">
+    <script src="/assets/js/login.js"></script>
+{% endblock %}
+{% block onload %}
+    initLogin();
 {% endblock %}
 {% block subtitle %}
     Herzlich Willkommen beim Quiz
 {% endblock %}
 {% block contentleft %}
-    <script>
-        let contentLeft = document.querySelector('#contentLeft');
-        document.querySelector('#spacerContentLeft').className = "col-4";
-        contentLeft.style.minWidth='30%';
-        contentLeft.style.maxWidth='30%';
-    </script>
-    <div class="row mb-3">
+     <div class="row mb-3">
         <div class="col-1"></div>
         <label for="inputUsername" class="col-sm-2 col-form-label" id="labelInputUsername"
                style="visibility: hidden">Username</label>
@@ -61,23 +59,24 @@
 
 {% endblock %}
 {% block contentright %}
-    <script>
-        document.querySelector('#contentRight').className = 'login-contentRight';
-    </script>
+
 {% endblock %}
 
 
 {% block buttons %}
-    <div class="col-3"></div>
-    <div class="col-3 text-center">
+{#    <div class="col-3"></div>#}
+{#    <div class="col-3 text-center">#}
 
-        <button type="submit" id="confirm" name="loginUser" class="btn btn-primary">Sign in</button>
-    </div>
-    <div class="col-2 text-center">
-        <button type="Button" id="registerUser" name="registerUser" class="btn btn-primary"
+        <button type="submit" id="loginRegisterConfirmButton" name="loginUser" class="btn btn-primary">Sign in</button>
+{#    </div>#}
+{#    <div class="col-2 text-center">#}
+        <button type="Button" id="loginRegisterToggleButton" name="registerUser" class="btn btn-primary"
                 onclick="toggleLoginRegister(this)">go to Register
         </button>
-    </div>
-    <div class="col-3"></div>
+{#    </div>#}
+{#    <div class="col-3"></div>#}
+{% endblock %}
+{% block scripts %}
+
 {% endblock %}
 
