@@ -2,15 +2,12 @@
 
 {% block title %} Answer Questions{% endblock %}
 {% block head %}
-    <link href="/assets/css/answerQuestion.css" rel="stylesheet">
-    <script src="/assets/js/answerQuestion.js"></script>
+<link href="./assets/css/answerQuestion.css" rel="stylesheet">
+<script src="./assets/js/answerQuestion.js"></script>
 {% endblock %}
-{% block onload %}
-    initAnswerQuestion();
-{% endblock %}
-            {% block subtitle %}Frage {{ contentInfo.actual }} / {{ contentInfo.totalQuestions }}{% endblock %}
+{% block onload %}initAnswerQuestion{% endblock %}
+{% block subtitle %}Frage {{ contentInfo.actual }} / {{ contentInfo.totalQuestions }}{% endblock %}
 {% block contentleft %}
-
     <div class="row align-self-center mx-5 pb-2">
         <label class="col align-self-center bold btn btn-primary rounded-3 shadow btn-lg disabled mx-2 my-4 p-2 w-100">
             <input type="hidden" name="questionId" value="{{ question.id }}">
@@ -18,20 +15,13 @@
         </label>
     </div>
     {% for answer in question.answers %}
-
         <div class="row align-self-center mx-5 pb-2">
             <label class="answerLabels col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-2 my-2 p-2 w-100"
                    data-bs-toggle='button' id="l_id{{ answer.id }}">{{ answer.text }}
-
                 <input type="checkbox" name="answers[]" id="a_id{{ answer.id }}" value="{{ answer.id }}"
                        hidden="hidden">
             </label>
         </div>
-{#        {% if answer.id in answers %}#}
-{#            <script>#}
-{#                givenAnswers.push({{ answer.id }});#}
-{#            </script>#}
-{#        {% endif %}#}
     {% endfor %}
 {% endblock %}
 {% block contentright %}
@@ -52,8 +42,6 @@
     </div>
 {% endblock %}
 {% block buttons %}
-
-
     <div class="col-1 text-center"></div>
     <div class="col-2 text-center">
         <label>
@@ -76,3 +64,4 @@
         </label>
     </div>
 {% endblock %}
+

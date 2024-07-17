@@ -1,4 +1,4 @@
-const initAnswerQuestion = () => {
+function initAnswerQuestion() {
     const givenAnswers = {{ answers }};
     const timesAsked = {{ question.stats.timesAsked }};
     const timesRight = {{ question.stats.timesRight }};
