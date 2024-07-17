@@ -101,12 +101,24 @@ class QuizQuestionController extends Controller
                 $answers = [];
                 foreach ($trackContent as $item) $answers[] = $item['answer_id'];
                 $content = $this->getContentInfos();
-                $this->view('quiz/answerQuestion', ['question' => $question, 'answers' => $answers, 'contentInfo' => $content]);
+                $jsData = $this->jsFormat($question,$answers);
+                $this->view('quiz/answerQuestion', ['question' => $question, 'answers' => $answers, 'contentInfo' => $content,'jsData'=> $jsData]);
             } catch (\Exception $e) {
                 if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
                 $this->answer();
             }
         }
+    }
+    private function jsFormat(QuizQuestion $question, array $answers): array{
+        $data = [];
+        $questionAnswers = [];
+        foreach ($question->getAnswers() as $answer) $questionAnswers[]= $answer->getId();
+        $data['givenAnswers'] = json_encode($answers);
+        $data['questionAnswers'] = json_encode($questionAnswers);
+        $stats = ['timesAsked' => $question->getStats()->getTimesAsked(), 'timesRight' => $question->getStats()->getTimesRight()];
+        $data['stats'] = json_encode($stats);
+        return $data;
+
     }
 
     private function getContentInfos(): array

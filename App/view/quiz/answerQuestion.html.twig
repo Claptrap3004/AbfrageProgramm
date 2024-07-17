@@ -5,9 +5,14 @@
 <link href="./assets/css/answerQuestion.css" rel="stylesheet">
 <script src="./assets/js/answerQuestion.js"></script>
 {% endblock %}
-{% block onload %}initAnswerQuestion{% endblock %}
+{% block onload %}initAnswerQuestion(){% endblock %}
 {% block subtitle %}Frage {{ contentInfo.actual }} / {{ contentInfo.totalQuestions }}{% endblock %}
 {% block contentleft %}
+    <div id="jsDataAnswers" data-content="{{ jsData.givenAnswers }}" hidden="hidden"></div>
+    <div id="jsDataQuestionAnswers" data-content="{{ jsData.questionAnswers }}" hidden="hidden"></div>
+    <div id="jsDataQuestionStats" data-content="{{ jsData.stats }}" hidden="hidden"></div>
+    <div id="jsDataActual" data-content="{{ contentInfo.actual }}" hidden="hidden"></div>
+    <div id="jsDataNumberOfQuestions" data-content="{{ contentInfo.totalQuestions }}" hidden="hidden"></div>
     <div class="row align-self-center mx-5 pb-2">
         <label class="col align-self-center bold btn btn-primary rounded-3 shadow btn-lg disabled mx-2 my-4 p-2 w-100">
             <input type="hidden" name="questionId" value="{{ question.id }}">

@@ -1,8 +1,9 @@
+let givenAsnwers;
 function initAnswerQuestion() {
-    const givenAnswers = {{ answers }};
-    const timesAsked = {{ question.stats.timesAsked }};
-    const timesRight = {{ question.stats.timesRight }};
-    console.log(answers, timesAsked, timesRight);
+    const givenAnswers = JSON.parse(document.querySelector('#jsDataAnswers').getAttribute('data-content'));
+    const questionAnswers = JSON.parse(document.querySelector('#jsDataQuestionAnswers').getAttribute('data-content'));
+    const actual = document.querySelector('#jsDataActual').getAttribute('data-content');
+    const numberOfQuestions = document.querySelector('#jsDataNumberOfQuestions').getAttribute('data-content');
 
     let answerLabels = document.querySelectorAll('.answerLabels');
     for (const answerLabel of answerLabels) {
@@ -18,23 +19,25 @@ function initAnswerQuestion() {
         document.querySelector(buttonId).checked = !document.querySelector(buttonId).checked
     }
 
-    if (Number({{ contentInfo.actual }}) === 1){
+    if (Number(actual) === 1){
         document.querySelector('#prev').disabled = true;
         document.querySelector('#prev').className =  "btn-lg btn-outline-info shadow-sm";
     }
-    if ({{ contentInfo.totalQuestions }} === {{ contentInfo.actual }}){
+    if (Number(actual) === Number(numberOfQuestions)){
         document.querySelector('#next').disabled = true;
         document.querySelector('#next').className =  "btn-lg btn-outline-info shadow-sm";
     }
-
 }
 
 
+
 const clearStatsOfQuestion = () =>{
+    const questionStats = JSON.parse(document.querySelector('#jsDataQuestionStats').getAttribute('data-content'));
+
     let stats = document.querySelector('#clearStatsOfQuestion');
     stats.checked = !stats.checked;
-    document.querySelector('#statsTimesAsked').innerHTML = (stats.checked ? 0 : timesAsked) + ' times asked';
-    document.querySelector('#statsTimesRight').innerHTML = (stats.checked ? 0 : timesRight) + ' times answered correct';
+    document.querySelector('#statsTimesAsked').innerHTML = (stats.checked ? 0 : questionStats['timesAsked']) + ' times asked';
+    document.querySelector('#statsTimesRight').innerHTML = (stats.checked ? 0 : questionStats['timesRight']) + ' times answered correct';
     document.querySelector('#labelClearStats').innerHTML = stats.checked ? ' undo clear Stats ' : ' clear Stats ';
 }
 
