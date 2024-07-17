@@ -62,11 +62,3 @@ const showDetails = (button, text, explanation, answers) => {
         detailsAnswers.appendChild(nextNode);
     }
 }
-
-const clearStatsOfQuestion = (timesAsked, timesRight) =>{
-    let stats = document.querySelector('#clearStatsOfQuestion');
-    stats.checked = !stats.checked;
-    document.querySelector('#statsTimesAsked').innerHTML = (stats.checked ? 0 : timesAsked) + ' times asked';
-    document.querySelector('#statsTimesRight').innerHTML = (stats.checked ? 0 : timesRight) + ' times answered correct';
-    document.querySelector('#labelClearStats').innerHTML = stats.checked ? ' undo clear Stats ' : ' clear Stats ';
-}
