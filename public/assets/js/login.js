@@ -27,7 +27,7 @@ const toggleLoginRegister = (event) => {
     let labelPasswordValidate = document.querySelector('#labelInputPasswordValidate');
     let buttonConfirm = document.querySelector('#loginRegisterConfirmButton');
 
-    if (event.target.innerHTML === 'go to Register') {
+    if (buttonUserName.type === 'hidden') {
         buttonUserName.type = 'text';
         buttonEmailValidate.type = 'email';
         buttonPasswordValidate.type = 'password';
