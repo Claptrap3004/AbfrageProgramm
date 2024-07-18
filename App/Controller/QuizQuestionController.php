@@ -152,8 +152,6 @@ class QuizQuestionController extends Controller
         }
         else{
         $quizStatsView = json_encode(new QuizStatsView());
-        $test = new QuizStatsView();
-        var_dump($test);
         $this->view('quiz/beforeFinal', ['questionsJS' => $quizStatsView]);
         }
         $_SERVER['REQUEST_METHOD'] = null;

@@ -77,6 +77,11 @@ class QuizStatsView implements JsonSerializable
 
     public function jsonSerialize(): mixed
     {
-        return [$this->questions, $this->questionsAsked, $this->answeredCorrect,$this->rate];
+        return [
+            'questions' => $this->questions,
+            'questionsAsked' => $this->questionsAsked,
+            'answeredCorrect' => $this->answeredCorrect,
+            'rate' => $this->rate
+        ];
     }
 }

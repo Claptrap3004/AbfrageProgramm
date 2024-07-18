@@ -61,6 +61,12 @@ abstract class Question extends IdText implements JsonSerializable
 
     public function jsonSerialize(): mixed
     {
-       return [$this->id, $this->text, $this->category,$this->rightAnswers, $this->wrongAnswers];
+       return [
+           'id' => $this->id,
+           'text' => $this->text,
+           'category' => $this->category,
+           'rightAnswers' => $this->rightAnswers,
+           'wrongAnswers' => $this->wrongAnswers
+       ];
     }
 }

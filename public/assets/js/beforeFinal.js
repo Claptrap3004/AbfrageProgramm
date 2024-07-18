@@ -2,8 +2,8 @@ let statsData;
 const initBeforeFinal = () => {
     statsData = JSON.parse(document.querySelector('#jsBeforeFinalData').getAttribute('data-content'));
     console.log(statsData)
-    for (let i = 0; i < statsData.length; i++) {
-        addBeforeFinalButton(statsData[i].questionId,i)
+    for (const statsDatum of statsData) {
+        
     }
 }
 

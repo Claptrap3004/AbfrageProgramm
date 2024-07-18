@@ -97,7 +97,16 @@ class QuizQuestion extends Question implements JsonSerializable
     }
     public function jsonSerialize(): mixed
     {
-        return [$this->id, $this->text, $this->category,$this->rightAnswers, $this->wrongAnswers, $this->stats,$this->givenAnswers, $this->answeredCorrect];
+        return [
+            'id' => $this->id,
+            'text' => $this->text,
+            'category' => $this->category,
+            'rightAnswers' => $this->rightAnswers,
+            'wrongAnswers' => $this->wrongAnswers,
+            'stats' => $this->stats,
+            'givenAnswers' => $this->givenAnswers,
+            'answeredCorrect' => $this->answeredCorrect
+        ];
     }
 
 

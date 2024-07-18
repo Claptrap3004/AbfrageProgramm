@@ -89,6 +89,12 @@ class Stats implements JsonSerializable
 
     public function jsonSerialize(): mixed
     {
-        return [$this->id, $this->questionId, $this->userId, $this->timesAsked, $this->timesRight];
+        return [
+            'id' => $this->id,
+            'questionId' => $this->questionId,
+            'userId' => $this->userId,
+            'timesAsked' => $this->timesAsked,
+            'timesRight' => $this->timesRight
+        ];
     }
 }
