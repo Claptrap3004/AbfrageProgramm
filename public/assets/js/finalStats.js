@@ -9,10 +9,6 @@ const initFinalStats = () => {
 const addStatsButton = (questionId,index) => {
     console.log(questionId, index)
     let newButton = document.createElement('label');
-    newButton.style.maxHeight = '100%';
-    newButton.style.minHeight = '100%';
-    newButton.style.maxWidth = '18%';
-    newButton.style.minWidth = '18%';
     let addClass = Number(statsData[index].isCorrect) ? 'btn-success' : 'btn-danger';
     newButton.className = 'statsButton btn-lg shadow m-2 p-2 ' + addClass;
     newButton.value = index;

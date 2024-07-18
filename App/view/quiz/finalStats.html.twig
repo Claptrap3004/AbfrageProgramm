@@ -2,6 +2,7 @@
 
 {% block title %} Auswertung Quiz {% endblock %}
 {% block head %}
+    <link href="/assets/css/finalStats.css" rel="stylesheet">
     <script src="assets/js/finalStats.js"></script>
 {% endblock %}
 {% block onload %}
@@ -35,7 +36,9 @@
 {% endblock %}
 {% block buttons %}
     <div id="details" hidden="hidden">
+        <div class="row">
         <h5 id="detailsQuestion">Question</h5>
+        </div>
         <div class="row">
             <div id="detailsAnswers" class="col-4 px-3">
                 <p></p>
