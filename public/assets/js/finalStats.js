@@ -35,7 +35,7 @@ const showDetails = (event) => {
         detailsAnswers.appendChild(nextNode);
     }
 }
-const hideDetails = (event) => {
+const hideDetails = () => {
     document.querySelector('#details').hidden = 'hidden';
 
 }

@@ -56,7 +56,7 @@
 </div>
 
 <div id="content">
-    <form method="post">
+    <form method="post" action="{% block formAction %}{% endblock %}">
         <div id="subtitle" class="container text-center py-2 my-2">
             <h3 class="text-decoration-underline text-bold">{% block subtitle %}{% endblock %}</h3>
         </div>

@@ -72,7 +72,7 @@ class QuizQuestionController extends Controller
     {
         $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $clearStats = $_POST['clearStats'] ?? '';
+             $clearStats = $_POST['clearStats'] ?? '';
             $answers = $_POST['answers'] ?? [];
             $questionId = $_POST['questionId'] ?? $id;
             if ($id !== null) {
