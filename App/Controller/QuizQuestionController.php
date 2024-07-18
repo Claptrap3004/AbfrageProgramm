@@ -13,6 +13,10 @@ class QuizQuestionController extends Controller
      */
     public function index(array $data = []): void
     {
+        if (isset($_SESSION['final'])) {
+            KindOf::QUIZCONTENT->getDBHandler()->createTables();
+            unset($_SESSION['final']);
+        }
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
         if (count($questions) === 0) {
@@ -136,7 +140,7 @@ class QuizQuestionController extends Controller
     public function final(): void
     {
         $quizStats = new QuizStats();
-        KindOf::QUIZCONTENT->getDBHandler()->createTables();
+        $_SESSION['final'] = true;
         $this->view('quiz/finalStats', $quizStats->getFormatted());
     }
 

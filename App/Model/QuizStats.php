@@ -84,11 +84,13 @@ class QuizStats
             $answerId = $answer->getId();
             $answers["$answerId"] = $this->createAssocArray($question, $answer, false);
         }
-        $this->questionData["$key"] =
-            ['isCorrect' => $this->validatedQuestions["$key"],
+        $this->questionData[] =
+            [
+                'questionId' => $key,
+                'isCorrect' => $this->validatedQuestions["$key"],
                 'text' => $text,
                 'explanation' => $explanation,
-                'answers' => json_encode($answers)
+                'answers' => $answers
             ];
 
     }
@@ -113,6 +115,12 @@ class QuizStats
     public function getQuestionData(): array
     {
         return $this->questionData;
+    }
+
+    public function getJSFormattedQuestionData():string
+    {
+
+        return json_encode($this->questionData);
     }
 
 
@@ -153,7 +161,8 @@ class QuizStats
         return ['asked' => $this->questionsAsked,
             'correct' => $this->answeredCorrect,
             'rate' => $this->getRate(),
-            'questions' => $this->questionData];
+             'questionsJS' => $this->getJSFormattedQuestionData()];
     }
+
 
 }

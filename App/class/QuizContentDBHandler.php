@@ -197,7 +197,7 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
      */
     public function getActual():int|false|null
     {
-        return $this->getActualData()['id'];
+        return $this->getActualData() != [] ? $this->getActualData()['id']: null;
     }
 
     /**

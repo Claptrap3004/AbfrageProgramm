@@ -2,37 +2,18 @@
 
 {% block title %} Auswertung Quiz {% endblock %}
 {% block head %}
-
+    <script src="assets/js/finalStats.js"></script>
 {% endblock %}
+{% block onload %}
+    initFinalStats();
+{% endblock %}
+
 {% block subtitle %}
     Auswertung Quiz
 {% endblock %}
 {% block contentleft %}
-
-    <table class="w-100 h-100 m-1 p-1">
-        <tr>
-            {% set counter = 0 %}
-            {% for key,value in questions %}
-            {% if counter % 5 == 0 %}
-        </tr>
-        <tr>
-            {% endif %}
-            <td class="w-20">
-                {% set button = "btn-success" %}
-
-                {% if value.isCorrect == 0 %}
-                    {% set button = "btn-danger" %}
-                {% endif %}
-                <button type="button" class="btn-lg w-75 {{ button }} shadow " data-bs-toggle="collapse"
-                        data-bs-target="#details"
-                        aria-expanded="false" aria-controls="details"
-                        onmouseover="showDetails(this,'{{ value.text }}','{{ value.explanation }}', {{ value.answers }})">{{ key }}</button>
-            </td>
-            {% set counter = counter + 1 %}
-            {% endfor %}
-        </tr>
-
-    </table>
+    <div id="jsStatsData" data-content="{{ questionsJS }}" hidden="hidden"></div>
+    <div class="row row-cols-5 text-center" id="statsButtons"></div>
 
 {% endblock %}
 {% block contentright %}
@@ -46,21 +27,20 @@
         </div>
     </div>
     <div class="align-items-center text-center">
-        <a href="quizquestion/">
+        <a href="/index">
             <label class="align-self-center btn btn-info shadow-sm">zurück zum Hauptmenü
             </label>
         </a>
     </div>
 {% endblock %}
 {% block buttons %}
-    <div class="col-lg-1 text-center"></div>
-    <div class="col-lg-7 collapse card text-center bg-light rounded-3 mx-1 my-1 py-1" id="details">
-        <h5 id="detailsQuestion" class="col card-title">Question</h5>
-        <div class="card-body row row-cols-2 gx-2 rounded-3">
-            <div id="detailsAnswers" class="col card-text">
+    <div id="details" hidden="hidden">
+        <h5 id="detailsQuestion">Question</h5>
+        <div class="row">
+            <div id="detailsAnswers" class="col-4 px-3">
                 <p></p>
             </div>
-            <div class="col card-text">
+            <div class="col-6  px-3">
                 <p class="btn-outline-info" id="legende">Richtige Antworten zu der Frage sind grün, falsche rot.<br>
                     Gewählte sind gelb
                     hinterlegt</p>
@@ -69,5 +49,4 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-4 text-center"></div>
 {% endblock %}
