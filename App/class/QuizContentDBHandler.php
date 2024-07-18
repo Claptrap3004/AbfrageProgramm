@@ -227,7 +227,7 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
             SetActual::LAST => $numberOfQuestions,
             SetActual::NONE => $numberOfQuestions + 1
         };
-
+        echo "setting actual to $newActual";
         $sql = "UPDATE $this->tableName SET is_actual = 1 WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([':id'=>$newActual]);

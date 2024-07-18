@@ -75,27 +75,29 @@ class QuizQuestionController extends Controller
             $clearStats = $_POST['clearStats'] ?? '';
             $answers = $_POST['answers'] ?? [];
             $questionId = $_POST['questionId'] ?? $id;
+            if ($id !== null) {
 
-            try {
-                $question = $this->factory->createQuizQuestionById($questionId);
-                if ($clearStats) $question->getStats()->reset();
-                foreach ($answers as $answer) {
-                    if ((int)$answer > 0) $question->addGivenAnswer($this->factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
+                try {
+                    $question = $this->factory->createQuizQuestionById($questionId);
+                    if ($clearStats) $question->getStats()->reset();
+                    foreach ($answers as $answer) {
+                        if ((int)$answer > 0) $question->addGivenAnswer($this->factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
+                    }
+
+                    $question->writeResultDB();
+
+                    if (isset($_POST['finish'])) $whichActual = SetActual::NONE;
+                    else $whichActual = isset($_POST['setNext']) ? SetActual::NEXT : SetActual::PREVIUOS;
+
+                    KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
+
+                } catch (\Exception $e) {
+                    if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
+                    $this->answer();
                 }
-
-                $question->writeResultDB();
-
-                if (isset($_POST['finish'])) $whichActual = SetActual::NONE;
-                else $whichActual = isset($_POST['setNext']) ? SetActual::NEXT : SetActual::PREVIUOS;
-
-                KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
-
-            } catch (\Exception $e) {
-                if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
-                $this->answer();
             }
             unset($_POST);
-            unset ($_SERVER['REQUEST_METHOD']);
+            $_SERVER['REQUEST_METHOD'] = null;
             $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
         }
         if (!$id) $this->final();
@@ -140,8 +142,18 @@ class QuizQuestionController extends Controller
     public function final(): void
     {
         $quizStats = new QuizStats();
-        $_SESSION['final'] = true;
-        $this->view('quiz/finalStats', $quizStats->getFormatted());
+
+            if (isset($_REQUEST['reset'])){
+                KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::FIRST);
+                $this->answer();
+            }
+            elseif (isset($_REQUEST['confirm'])){
+                $_SESSION['final'] = true;
+                $this->view('quiz/finalStats', $quizStats->getFormatted());
+            }
+        else{
+        $this->view('quiz/beforeFinal', $quizStats->getFormatted());
+        }
     }
 
     public function quickStart($numberOfQuestions = 20): void
