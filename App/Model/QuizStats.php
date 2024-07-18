@@ -10,6 +10,7 @@ class QuizStats
     private array $validatedQuestions = [];
     private int $questionsAsked = 0;
     private int $answeredCorrect = 0;
+    private float $rate = 0;
     private array $questionData = [];
 
 
@@ -58,6 +59,7 @@ class QuizStats
                 $this->answeredCorrect++;
                 $value = 1;
             }
+            $this->setRate();
             $this->validatedQuestions["$key"] = $value;
             $this->extractData($question);
         }
@@ -126,8 +128,13 @@ class QuizStats
 
     public function getRate(): float
     {
+
+        return $this->rate;
+    }
+    private function setRate():void
+    {
         $percentage = $this->questionsAsked != 0 ? $this->answeredCorrect * 100 / $this->questionsAsked : 0;
-        return round($percentage, 2);
+        $this->rate = round($percentage, 2);
     }
 
     public function getQuestions(): array

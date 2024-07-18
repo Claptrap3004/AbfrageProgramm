@@ -143,17 +143,20 @@ class QuizQuestionController extends Controller
     {
         $quizStats = new QuizStats();
 
-            if (isset($_REQUEST['reset'])){
-                KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::FIRST);
-                $this->answer();
-            }
-            elseif (isset($_REQUEST['confirm'])){
-                $_SESSION['final'] = true;
-                $this->view('quiz/finalStats', $quizStats->getFormatted());
-            }
-        else{
-        $this->view('quiz/beforeFinal', $quizStats->getFormatted());
+        if (isset($_REQUEST['reset'])) {
+            KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::FIRST);
+            header("refresh:0.01;url='" . HOST . "QuizQuestion/answer'");
+        } elseif (isset($_REQUEST['confirm'])) {
+            $_SESSION['final'] = true;
+            $this->view('quiz/finalStats', $quizStats->getFormatted());
         }
+        else{
+        $quizStatsView = json_encode(new QuizStatsView());
+        $test = new QuizStatsView();
+        var_dump($test);
+        $this->view('quiz/beforeFinal', ['questionsJS' => $quizStatsView]);
+        }
+        $_SERVER['REQUEST_METHOD'] = null;
     }
 
     public function quickStart($numberOfQuestions = 20): void

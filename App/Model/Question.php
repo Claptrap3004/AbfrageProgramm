@@ -3,7 +3,8 @@
 
 
 namespace quiz;
-abstract class Question extends IdText
+use JsonSerializable;
+abstract class Question extends IdText implements JsonSerializable
 {
     protected string $explanation;
     protected IdText $category;
@@ -58,5 +59,8 @@ abstract class Question extends IdText
         return $this->explanation;
     }
 
-
+    public function jsonSerialize(): mixed
+    {
+       return [$this->id, $this->text, $this->category,$this->rightAnswers, $this->wrongAnswers];
+    }
 }

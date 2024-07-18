@@ -1,10 +1,13 @@
 <?php
 
 namespace quiz;
-class QuizQuestion extends Question
+use JsonSerializable;
+
+class QuizQuestion extends Question implements JsonSerializable
 {
     private Stats $stats;
     private array $givenAnswers;
+    private bool $answeredCorrect = false;
 
     /**
      * @param int $id
@@ -34,6 +37,7 @@ class QuizQuestion extends Question
         $this->stats->incrementTimesAsked();
         if ($this->givenAnswers == $this->rightAnswers){
             $this->stats->incrementTimesRight();
+            $this->answeredCorrect = true;
             return true;
         }
         return false;
@@ -86,5 +90,15 @@ class QuizQuestion extends Question
         KindOf::QUIZCONTENT->getDBHandler()->update(['question_id' => $this->id, 'answers' => $answerIds]);
 
     }
+
+    public function isAnsweredCorrect(): bool
+    {
+        return $this->answeredCorrect;
+    }
+    public function jsonSerialize(): mixed
+    {
+        return [$this->id, $this->text, $this->category,$this->rightAnswers, $this->wrongAnswers, $this->stats,$this->givenAnswers, $this->answeredCorrect];
+    }
+
 
 }

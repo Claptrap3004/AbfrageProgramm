@@ -3,9 +3,10 @@
 // kindOfText defines to which type in the DB the class refers. The Enum deals as kind of controller for choosing the
 // correct implementation of CanHandleDB Interface
 namespace quiz;
+use JsonSerializable;
 use quiz\CanConnectDB;
 
-class IdText
+class IdText implements JsonSerializable
 {
     protected int $id;
     protected string $text;
@@ -57,4 +58,8 @@ class IdText
         $handler->update(['id' => $this->id, 'text' => $this->text]);
     }
 
+    public function jsonSerialize(): mixed
+    {
+        return [$this->id, $this->text];
+    }
 }

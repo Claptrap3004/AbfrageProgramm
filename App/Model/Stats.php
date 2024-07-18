@@ -4,7 +4,9 @@
 namespace quiz;
 
 
-class Stats
+use JsonSerializable;
+
+class Stats implements JsonSerializable
 {
     private int $id;
     private int $questionId;
@@ -85,5 +87,8 @@ class Stats
     }
 
 
-
+    public function jsonSerialize(): mixed
+    {
+        return [$this->id, $this->questionId, $this->userId, $this->timesAsked, $this->timesRight];
+    }
 }
