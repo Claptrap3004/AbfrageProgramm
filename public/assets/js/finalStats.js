@@ -7,6 +7,7 @@ const initFinalStats = () => {
     for (let i = 0; i < questions.length; i++) {
         addStatsButton(questions[i].id,i)
     }
+    addStats();
 
 }
 const addStats = () => {

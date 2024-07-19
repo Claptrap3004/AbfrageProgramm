@@ -2,10 +2,12 @@ let statsData;
 let questions;
 const initBeforeFinal = () => {
     statsData = JSON.parse(document.querySelector('#jsBeforeFinalData').getAttribute('data-content'));
+    console.log(statsData);
     questions = statsData.questions;
-    console.log(questions[0].givenAnswers)
+
     for (let i = 0; i < questions.length; i++) {
-        addBeforeFinalButton(questions[i].id,i)
+        addBeforeFinalButton(questions[i].id,i);
+        console.log(checkAnswersGiven(i));
     }
 }
 
@@ -19,5 +21,5 @@ const addBeforeFinalButton = (questionId, index) => {
 }
 
 const checkAnswersGiven = (index) => {
-    return questions[index].givenAnswers === []
+    return questions[index].givenAnswers.length;
 }
