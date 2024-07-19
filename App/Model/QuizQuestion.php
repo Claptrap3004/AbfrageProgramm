@@ -101,6 +101,7 @@ class QuizQuestion extends Question implements JsonSerializable
             'id' => $this->id,
             'text' => $this->text,
             'category' => $this->category,
+            'explanation' => $this->explanation,
             'rightAnswers' => $this->rightAnswers,
             'wrongAnswers' => $this->wrongAnswers,
             'stats' => $this->stats,

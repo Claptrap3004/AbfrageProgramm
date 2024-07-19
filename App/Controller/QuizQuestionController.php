@@ -141,17 +141,16 @@ class QuizQuestionController extends Controller
 
     public function final(): void
     {
-        $quizStats = new QuizStats();
+        $quizStatsView = json_encode(new QuizStatsView());
 
         if (isset($_REQUEST['reset'])) {
             KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::FIRST);
             header("refresh:0.01;url='" . HOST . "QuizQuestion/answer'");
         } elseif (isset($_REQUEST['confirm'])) {
             $_SESSION['final'] = true;
-            $this->view('quiz/finalStats', $quizStats->getFormatted());
+            $this->view('quiz/finalStats', ['questionsJS' => $quizStatsView]);
         }
         else{
-        $quizStatsView = json_encode(new QuizStatsView());
         $this->view('quiz/beforeFinal', ['questionsJS' => $quizStatsView]);
         }
         $_SERVER['REQUEST_METHOD'] = null;

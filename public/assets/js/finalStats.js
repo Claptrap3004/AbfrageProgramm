@@ -1,15 +1,23 @@
 let statsData;
+let questions;
 const initFinalStats = () => {
     statsData = JSON.parse(document.querySelector('#jsStatsData').getAttribute('data-content'));
-    console.log(statsData)
-    for (let i = 0; i < statsData.length; i++) {
-        addStatsButton(statsData[i].questionId,i)
+    questions = statsData.questions;
+    console.log(statsData);
+    for (let i = 0; i < questions.length; i++) {
+        addStatsButton(questions[i].id,i)
     }
+
 }
+const addStats = () => {
+    document.querySelector('#finalStatsAsked').innerHTML = statsData.questionsAsked;
+    document.querySelector('#finalStatsRight').innerHTML = statsData.answeredRight;
+    document.querySelector('#finalStatsRate').innerHTML = statsData.rate;
+}
+
 const addStatsButton = (questionId,index) => {
-    console.log(questionId, index)
     let newButton = document.createElement('label');
-    let addClass = Number(statsData[index].isCorrect) ? 'btn-success' : 'btn-danger';
+    let addClass = Number(questions[index].answeredCorrect) ? 'btn-success' : 'btn-danger';
     newButton.className = 'statsButton btn-lg shadow m-2 p-2 ' + addClass;
     newButton.value = index;
     newButton.innerHTML = questionId;
@@ -20,22 +28,32 @@ const addStatsButton = (questionId,index) => {
 }
 
 const showDetails = (event) => {
-    let question = statsData[Number(event.target.value)];
+    let question = questions[Number(event.target.value)];
+
     document.querySelector('#details').removeAttribute('hidden');
     document.querySelector('#detailsQuestion').innerHTML = question.text;
     document.querySelector('#detailsDescription').innerHTML = question.explanation;
     let detailsAnswers = document.querySelector('#detailsAnswers');
     detailsAnswers.innerHTML = document.createElement("p").innerHTML = '';
-    for (let answersKey in question.answers) {
+    let answers = question.rightAnswers.concat(question.wrongAnswers);
+    for (let answer of answers) {
         let nextNode = document.createElement("p");
-        nextNode.innerHTML = question.answers[answersKey].text;
+        nextNode.innerHTML = answer.text;
         nextNode.style.textAlign = 'center';
-        nextNode.style.color = question.answers[answersKey].isRight === 'true' ? 'green' : 'red';
-        nextNode.style.background = question.answers[answersKey].isSelected === 'true' ? 'yellow' : detailsAnswers.style.background;
+        nextNode.style.color = answerInArray(answer.id, question.rightAnswers) ? 'green' : 'red';
+        nextNode.style.background = answerInArray(answer.id, question.givenAnswers) ? 'yellow' : detailsAnswers.style.background;
         detailsAnswers.appendChild(nextNode);
     }
 }
 const hideDetails = () => {
     document.querySelector('#details').hidden = 'hidden';
 
+}
+
+const answerInArray = (answerId, answersArray) => {
+    let isIn = false;
+    for (const answersArrayElement of answersArray) {
+        if (answersArrayElement.id === answerId) isIn = true;
+    }
+    return isIn;
 }
