@@ -13,19 +13,22 @@
         <label>
             <input name="editQuestionId" type="number" hidden="hidden" id="editQuestionId">
         </label>
+        <div>Frage - Text</div>
         <label>
-            <input class="editText" name="editQuestionText" type="text" id="editQuestionText">
+            <textarea class="editText" name="editQuestionText" id="editQuestionText"></textarea>
         </label>
+        <div>Frage-Erklärung:</div>
         <label>
-            <input class="editText" name="editQuestionExplanation" type="text" id="editQuestionExplanation">
+            <textarea class="editText" name="editQuestionExplanation" id="editQuestionExplanation"></textarea>
         </label>
-        <label>
+        <div>Category:</div>
+        <label id="editSelectLabel">
             <select class="editCategory" name="editCategory" id="editCategory">
-                <option value="0">create new category</option>
+                <option value="0" id="newCategory">create new category</option>
             </select>
         </label>
         <label>
-           <input name="editCategoryId" type="number" hidden="hidden" id="editCategoryId">
+            <input name="editCategoryId" type="number" hidden="hidden" id="editCategoryId">
         </label>
         <label>
             <input name="editCategoryText" type="text" hidden="hidden" id="editCategoryText">
@@ -33,31 +36,26 @@
 
     </div>
     <div class="row align-self-center mx-5 pb-2" id="editAnswersDiv">
+        <label>
+            Antworten:
+        </label>
     </div>
 {% endblock %}
 {% block contentright %}
 
 {% endblock %}
 {% block buttons %}
-    <div class="col-1 text-center"></div>
-    <div class="col-2 text-center">
+    <div class="row row-cols-3 py-4">
+
         <label>
-            <input type="submit" name="cancelEditQuestion" class="btn-lg btn-info shadow-sm"
-                   id="cancelEditQuestion">
+            <input type="submit" name="cancelEditQuestion" class="editButton btn-lg btn-info shadow-sm"
+                    id="cancelEditQuestion" value="Discard changes">
+
         </label>
-    </div>
-    <div class="col-3 text-center">
-    </div>
-    <div class="col-2 text-center">
         <label>
-            <input type="reset" name="resetEditQuestion" class="btn-lg btn-info shadow-sm"
-                   id="resetEditQuestion">
-        </label>
-    </div>
-    <div class="col-4 text-center">
-        <label>
-            <input type="submit" name="confirmEditQuestion" class="btn-lg btn-info shadow-sm"
-                   id="confirmEditQuestion">
+            <input type="submit" name="confirmEditQuestion" class="editButton btn-lg btn-info shadow-sm"
+                    id="confirmEditQuestion" value="Save changes">
+
         </label>
     </div>
 {% endblock %}

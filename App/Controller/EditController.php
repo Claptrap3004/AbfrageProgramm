@@ -31,7 +31,7 @@ class EditController extends Controller
     {
         if ($questionId !== null){
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
-
+                var_dump($_POST);
             }
             else {
                 try {
