@@ -20,6 +20,7 @@ class EditQuestion extends Question
     /**
      * @param int $id
      * @param string $text
+     * @param string $explanation
      * @param IdText $category
      * @param IdText[] $rightAnswers
      * @param IdText[] $wrongAnswers
@@ -112,6 +113,17 @@ class EditQuestion extends Question
             if ($relation['id'] == null) $this->relator->create($relation);
             else $this->relator->update($relation);
         }
+    }
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->id,
+            'text' => $this->text,
+            'category' => $this->category,
+            'explanation' => $this->explanation,
+            'rightAnswers' => $this->rightAnswers,
+            'wrongAnswers' => $this->wrongAnswers,
+        ];
     }
 
 

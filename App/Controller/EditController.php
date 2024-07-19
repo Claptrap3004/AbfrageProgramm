@@ -2,7 +2,7 @@
 
 namespace quiz;
 
-class EditController
+class EditController extends Controller
 {
     public function index()
     {
@@ -27,9 +27,21 @@ class EditController
         $exporter->writeCSV('export.csv',$questionIds );
     }
 
-    public function editQuestion()
+    public function editQuestion(int $questionId = null)
     {
+        if ($questionId !== null){
+            if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
+            }
+            else {
+                try {
+                    $jsData = json_encode(Factory::getFactory()->createEditQuestionById($questionId));
+                    $jsDataCategories = json_encode(Factory::getFactory()->findAllIdTextObject(KindOf::CATEGORY));
+                    $this->view('edit/editQuestion', ['jsData' => $jsData, 'jsDataCategories' => $jsDataCategories]);
+                } catch (\Exception $e) {
+                }
+            }
+        }
     }
 
     public function createQuestion()

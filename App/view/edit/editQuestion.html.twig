@@ -1,0 +1,64 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Edit Questions{% endblock %}
+{% block head %}
+    <link href="./assets/css/editQuestions.css" rel="stylesheet">
+    <script src="./assets/js/editQuestions.js"></script>
+{% endblock %}
+{% block onload %}initEditQuestion(){% endblock %}
+{% block contentleft %}
+    <div id="jsDataEditQuestions" data-content="{{ jsData }}" hidden="hidden"></div>
+    <div id="jsDataEditCategories" data-content="{{ jsDataCategories }}" hidden="hidden"></div>
+    <div class="row align-self-center mx-5 pb-2" id="editQuestionDiv">
+        <label>
+            <input name="editQuestionId" type="number" hidden="hidden" id="editQuestionId">
+        </label>
+        <label>
+            <input class="editText" name="editQuestionText" type="text" id="editQuestionText">
+        </label>
+        <label>
+            <input class="editText" name="editQuestionExplanation" type="text" id="editQuestionExplanation">
+        </label>
+        <label>
+            <select class="editCategory" name="editCategory" id="editCategory">
+                <option value="0">create new category</option>
+            </select>
+        </label>
+        <label>
+           <input name="editCategoryId" type="number" hidden="hidden" id="editCategoryId">
+        </label>
+        <label>
+            <input name="editCategoryText" type="text" hidden="hidden" id="editCategoryText">
+        </label>
+
+    </div>
+    <div class="row align-self-center mx-5 pb-2" id="editAnswersDiv">
+    </div>
+{% endblock %}
+{% block contentright %}
+
+{% endblock %}
+{% block buttons %}
+    <div class="col-1 text-center"></div>
+    <div class="col-2 text-center">
+        <label>
+            <input type="submit" name="cancelEditQuestion" class="btn-lg btn-info shadow-sm"
+                   id="cancelEditQuestion">
+        </label>
+    </div>
+    <div class="col-3 text-center">
+    </div>
+    <div class="col-2 text-center">
+        <label>
+            <input type="reset" name="resetEditQuestion" class="btn-lg btn-info shadow-sm"
+                   id="resetEditQuestion">
+        </label>
+    </div>
+    <div class="col-4 text-center">
+        <label>
+            <input type="submit" name="confirmEditQuestion" class="btn-lg btn-info shadow-sm"
+                   id="confirmEditQuestion">
+        </label>
+    </div>
+{% endblock %}
+
