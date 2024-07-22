@@ -2,6 +2,8 @@
 
 namespace quiz;
 
+use Exception;
+
 class EditController extends Controller
 {
     public function index()
@@ -27,7 +29,7 @@ class EditController extends Controller
         $exporter->writeCSV('export.csv',$questionIds );
     }
 
-    public function editQuestion(int $questionId = null)
+    public function editQuestion(int $questionId = null): void
     {
         if ($questionId !== null){
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -40,12 +42,23 @@ class EditController extends Controller
                 $answers = json_decode($answerArray);
 
                 if ($categoryId < 1) $categoryId = DBFactory::getFactory()->createCategory($categoryText);
-                $answerObjects = [];
-                foreach ($answers as $answer){
-                        $answerId = DBFactory::getFactory()->createAnswer($answer->text);
-                        $answerObjects[] = $this->factory->findIdTextObjectById($answerId,KindOf::ANSWER);
-                }
 
+                if (!$id) $id = DBFactory::getFactory()->createNewQuizQuestion($text, $categoryId);
+
+                try {
+                    $editQuestion = $this->factory->createEditQuestionById($id);
+                    $editQuestion->setCategory($this->factory->findIdTextObjectById($categoryId, KindOf::CATEGORY));
+                    $editQuestion->setExplanation($explanation);
+                    $editQuestion->resetAnswers();
+                    foreach ($answers as $answer){
+                            $answerId = DBFactory::getFactory()->createAnswer($answer->text);
+                            $answerToRelate = $this->factory->findIdTextObjectById($answerId,KindOf::ANSWER);
+                            $editQuestion->setAnswer($answerToRelate,$answer->isRight);
+                    }
+                    $editQuestion->saveQuestion();
+                } catch (Exception $e) {
+
+                }
             }
             else {
                 try {
@@ -56,6 +69,8 @@ class EditController extends Controller
                 }
             }
         }
+        $controller = new QuizQuestionController();
+        $controller->index();
     }
 
     public function createQuestion()

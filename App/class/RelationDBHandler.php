@@ -27,6 +27,15 @@ class RelationDBHandler extends IdTextDBHandler
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function deleteAtId(int $id): bool
+    {
+        $sql = "DELETE FROM $this->tableName WHERE question_id = :id;";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
+
     protected function validateArgsCreate(array $args): bool
     {
         return array_key_exists('question_id', $args) &&

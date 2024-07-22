@@ -21,7 +21,7 @@ class DBFactory
     /**
      * @throws Exception
      */
-    public function createQuizQuestion(string $questionText, string $categoryText, array $answers): int
+    public function createQuizQuestionByCSVImport(string $questionText, string $categoryText, array $answers): int
     {
         if ($this->getIdByText($questionText, KindOf::QUESTION->getDBHandler()) !== 0) throw new Exception('Frage existert bereits');
 
@@ -36,13 +36,19 @@ class DBFactory
         return $questionId;
     }
 
+    public function createNewQuizQuestion(string $questionText, int $categoryId):int
+    {
+        return $this->createQuestion($categoryId,$questionText);
+
+    }
+
 
     public function createRelation(int $questionId, int $answerId, bool $isRight): void
     {
         KindOf::RELATION->getDBHandler()->create([
             'question_id' => $questionId,
             'answer_id' => $answerId,
-            'is_Right' => $isRight ? 1 : 0
+            'is_right' => $isRight ? 1 : 0
         ]);
     }
 

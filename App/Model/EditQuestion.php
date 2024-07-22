@@ -27,14 +27,18 @@ class EditQuestion extends Question
     {
         $this->category = $category;
     }
+    public function setExplanation(string $explanation): void
+    {
+        $this->explanation = $explanation;
+    }
 
     public function resetAnswers():void
     {
         $this->relator->deleteAtId($this->id);
         $this->wrongAnswers = [];
         $this->rightAnswers = [];
-
     }
+
     public function setAnswer(IdText $answer, bool $isRight): void
     {
         if ($isRight) $this->rightAnswers[] = $answer;
@@ -63,7 +67,10 @@ class EditQuestion extends Question
         $handler = $this->kindOf->getDBHandler();
         $handler->update(['id' => $this->id,
             'text' => $this->text,
-            'category_id' => $this->category->getId()]);
+            'explanation' => $this->explanation,
+            'category_id' => $this->category->getId(),
+            'user_id' => $_SESSION['UserId']
+            ]);
         foreach ($this->rightAnswers as $answer) DBFactory::getFactory()->createRelation($this->id, $answer->id,true);
         foreach ($this->wrongAnswers as $answer) DBFactory::getFactory()->createRelation($this->id, $answer->id,false);
     }

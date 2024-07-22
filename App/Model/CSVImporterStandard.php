@@ -43,7 +43,7 @@ class CSVImporterStandard implements CanHandleCSV
             $answers[$data[$i]] = (int)$data[$i + 1];
         }
         try {
-            $this->dbFactory->createQuizQuestion($question, $category, $answers);
+            $this->dbFactory->createQuizQuestionByCSVImport($question, $category, $answers);
         } catch (Exception $e) {
             return;
         }
