@@ -31,7 +31,21 @@ class EditController extends Controller
     {
         if ($questionId !== null){
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
-                var_dump($_POST);
+                $answerArray = $_POST['answerArrayJSON'] ?? '';
+                $id = $_POST['editQuestionId'] ?? null;
+                $text = $_POST['editQuestionText'] ?? '';
+                $explanation = $_POST['editQuestionExplanation'] ?? '';
+                $categoryId = $_POST['editCategoryId'] ?? null;
+                $categoryText = $_POST['editCategoryText'] ?? null;
+                $answers = json_decode($answerArray);
+
+                if ($categoryId < 1) $categoryId = DBFactory::getFactory()->createCategory($categoryText);
+                $answerObjects = [];
+                foreach ($answers as $answer){
+                        $answerId = DBFactory::getFactory()->createAnswer($answer->text);
+                        $answerObjects[] = $this->factory->findIdTextObjectById($answerId,KindOf::ANSWER);
+                }
+
             }
             else {
                 try {

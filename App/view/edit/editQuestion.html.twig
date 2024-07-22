@@ -9,6 +9,9 @@
 {% block contentleft %}
     <div id="jsDataEditQuestions" data-content="{{ jsData }}" hidden="hidden"></div>
     <div id="jsDataEditCategories" data-content="{{ jsDataCategories }}" hidden="hidden"></div>
+    <label>
+        <input name="answerArrayJSON" type="text" hidden="hidden" id="answerArrayJSON">
+    </label>
     <div class="row align-self-center mx-5 pb-2" id="editQuestionDiv">
         <label>
             <input name="editQuestionId" type="number" hidden="hidden" id="editQuestionId">
@@ -23,15 +26,12 @@
         </label>
         <div>Category:</div>
         <label id="editSelectLabel">
-            <select class="editCategory" name="editCategory" id="editCategory">
+            <select class="editCategory" name="editCategoryId" id="editCategory">
                 <option value="0" id="newCategory">create new category</option>
             </select>
         </label>
         <label>
-            <input name="editCategoryId" type="number" hidden="hidden" id="editCategoryId">
-        </label>
-        <label>
-            <input name="editCategoryText" type="text" hidden="hidden" id="editCategoryText">
+            <input name="editCategoryText" type="text" id="editCategoryText">
         </label>
 
     </div>
@@ -49,13 +49,15 @@
 
         <label>
             <input type="submit" name="cancelEditQuestion" class="editButton btn-lg btn-info shadow-sm"
-                    id="cancelEditQuestion" value="Discard changes">
+                   id="cancelEditQuestion" value="Discard changes">
 
         </label>
-        <label>
-            <input type="submit" name="confirmEditQuestion" class="editButton btn-lg btn-info shadow-sm"
-                    id="confirmEditQuestion" value="Save changes">
 
+        <label id="confirmEditChanges" > <button class="editButton btn-lg btn-info shadow-sm">
+                save changes
+            </button></label>
+        <label>
+            <input type="submit" name="confirmEditQuestion" id="confirmEditQuestion" value="Save changes" hidden="hidden">
         </label>
     </div>
 {% endblock %}

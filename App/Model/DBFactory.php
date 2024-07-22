@@ -36,7 +36,8 @@ class DBFactory
         return $questionId;
     }
 
-    private function createRelation(int $questionId, int $answerId, bool $isRight): void
+
+    public function createRelation(int $questionId, int $answerId, bool $isRight): void
     {
         KindOf::RELATION->getDBHandler()->create([
             'question_id' => $questionId,
@@ -90,9 +91,15 @@ class DBFactory
         ]);
     }
 
+
     public function createCategory(string $text): int
     {
         return $this->createIdText($text, KindOf::CATEGORY);
+    }
+
+    public function createAnswer(string $text): int
+    {
+        return $this->createIdText($text, KindOf::ANSWER);
     }
 
 }

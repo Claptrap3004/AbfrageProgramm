@@ -9,19 +9,23 @@ const initEditQuestion = () => {
     for (let i = answers.length; i < 4; i++) {
         answers.push({id:null,text:''})
     }
+    document.querySelector('#editCategoryText').style.visibility = 'hidden';
     createSelectOptions();
     createInputFields();
+    addListeners();
     fillInputFields();
 }
 
 const addListeners = () => {
-    console.log('toggle');
-    document.querySelector('#editCategory').addEventListener('change',toggleInputVisible)
+    document.querySelector('#editCategory').addEventListener('change',toggleInputVisible);
+    document.querySelector('#confirmEditChanges').addEventListener('click',createAnswerObjectArray);
+
 }
 
 const toggleInputVisible = (event) => {
-    let toToggle = document.querySelector('#newCategory');
-    if (toToggle.selected === true) toToggle.style.visibility = 'visible';
+
+    let toToggle = document.querySelector('#editCategoryText');
+    if (Number(event.target.value) === 0) toToggle.style.visibility = 'visible';
     else toToggle.style.visibility = 'hidden';
 }
 
@@ -48,8 +52,8 @@ const createAnswerInputField = (index) => {
     let checkbox = document.createElement('input');
     let field = document.createElement('textarea');
 
-    checkbox.name = `answerCheckBox[]`;
-    field.name = `answerText[]`;
+    // checkbox.name = `answerCheckBox[]`;
+    // field.name = `answerText[]`;
 
     div.id = "answerDiv" + index;
     checkbox.id = 'answerCheckBox' + index;
@@ -102,4 +106,27 @@ const isRightAnswer = (id) =>{
         if (rightAnswer.id === id) return true
     }
     return false
+}
+
+const createAnswerObjectArray = () => {
+    class answer{
+        constructor(id,text, isRight){
+            this.id = id;
+            this.text = text;
+            this.isRight = isRight;
+        }
+    }
+
+    console.log('clicked');
+    let answers = [];
+    let editedAnswers = document.querySelectorAll('.editDiv');
+    for (let index = 0; index < editedAnswers.length; index++) {
+        let checkboxId = '#answerCheckBox' + index;
+        let textInputId = "#answerText" + index;
+        let checkbox = document.querySelector(checkboxId);
+        let textInput = document.querySelector(textInputId);
+        answers.push(new answer(checkbox.value, textInput.value,checkbox.checked))
+    }
+    document.querySelector('#answerArrayJSON').value = JSON.stringify(answers);
+    document.querySelector('#confirmEditQuestion').click();
 }
