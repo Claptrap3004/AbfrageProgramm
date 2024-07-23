@@ -116,6 +116,7 @@ class QuizQuestionController extends Controller
             }
         }
     }
+
     private function jsFormat(QuizQuestion $question, array $answers): array{
         $data = [];
         $questionAnswers = [];

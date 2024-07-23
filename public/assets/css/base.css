@@ -7,31 +7,19 @@ body {
 .scrollable-contentleft {
     min-width: 70rem;
     max-width: 70rem;
-    max-height: 30rem;
-    min-height: 30rem;
+    max-height: 40rem;
+    min-height: 40rem;
     overflow: hidden;
     scrollbar-gutter: stable both-edges;
     border-radius: 1.5rem;
 }
 
-.questionLabel{
-    text-align: left;
-    align-content: start;
-    align-items: start;
-}
-.scrollableQuestion {
-    max-height: 12rem;
-    min-height: 12rem;
-    overflow-y: auto;
-
-    scrollbar-gutter: stable both-edges;
-}
 
 .content-right {
     min-width: 20rem;
     max-width: 20rem;
-    max-height: 30rem;
-    min-height: 30rem;
+    max-height: 40rem;
+    min-height: 40rem;
     border-radius: 1.5rem;
     overflow: hidden;
 }
