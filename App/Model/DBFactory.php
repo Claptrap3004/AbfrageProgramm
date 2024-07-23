@@ -21,12 +21,12 @@ class DBFactory
     /**
      * @throws Exception
      */
-    public function createQuizQuestionByCSVImport(string $questionText, string $categoryText, array $answers): int
+    public function createQuizQuestionByCSVImport(string $questionText, string $categoryText,string $explanation, array $answers): int
     {
         if ($this->getIdByText($questionText, KindOf::QUESTION->getDBHandler()) !== 0) throw new Exception('Frage existert bereits');
 
         $categoryId = $this->createIdText($categoryText, KindOf::CATEGORY);
-        $questionId = $this->createQuestion($categoryId, $questionText);
+        $questionId = $this->createQuestion($categoryId, $questionText, $explanation);
 
         foreach ($answers as $key => $answer) {
             $answerId = $this->createIdText($key, KindOf::ANSWER);
@@ -59,12 +59,13 @@ class DBFactory
     }
 
 
-    private function createQuestion($categoryId, $text): int
+    private function createQuestion(int $categoryId,string $text,string $explanation): int
     {
         return KindOf::QUESTION->getDBHandler()->create([
             'category_id' => $categoryId,
             'user_id' => $_SESSION['UserId'],
-            'text' => $text
+            'text' => $text,
+            'explanation' => $explanation
         ]);
     }
 

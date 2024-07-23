@@ -14,6 +14,19 @@ body {
     border-radius: 1.5rem;
 }
 
+.questionLabel{
+    text-align: left;
+    align-content: start;
+    align-items: start;
+}
+.scrollableQuestion {
+    max-height: 12rem;
+    min-height: 12rem;
+    overflow-y: auto;
+
+    scrollbar-gutter: stable both-edges;
+}
+
 .content-right {
     min-width: 20rem;
     max-width: 20rem;

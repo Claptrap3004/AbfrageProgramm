@@ -27,8 +27,8 @@ CREATE TABLE question
     id          INT PRIMARY KEY AUTO_INCREMENT,
     category_id INT,
     user_id     int,
-    text        VARCHAR(255),
-    explanation VARCHAR(255),
+    text        TEXT,
+    explanation TEXT,
     FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE SET NULL,
     FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE SET NULL
 );

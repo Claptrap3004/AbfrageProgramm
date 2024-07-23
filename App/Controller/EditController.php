@@ -13,11 +13,20 @@ class EditController extends Controller
 
     public function import(): void
     {
+        $importer = new CSVImporterStandard();
+        $importer->readCSV('../Files/jscerti.csv');
+        $this->deleteInvalidQuestions();
+        $this->deleteDuplicates();
+    }
+
+    public function importNiklas(): void
+    {
         $importer = new CSVImporterNiklas();
         $importer->readCSV('../Files/quiz1.csv');
         $this->deleteInvalidQuestions();
         $this->deleteDuplicates();
     }
+
 
     public function export(): void
     {

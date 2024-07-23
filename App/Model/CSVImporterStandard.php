@@ -19,11 +19,11 @@ class CSVImporterStandard implements CanHandleCSV
     }
 
 
-    function readCSV(string $fileName): void
+    function readCSV(string $fileName, string $separator = '@' ): void
     {
         $row = 0;
         if (($handle = fopen($fileName, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            while (($data = fgetcsv($handle, 0, $separator)) !== FALSE) {
                 $row++;
                 if ($row === 1) continue;
 
@@ -35,18 +35,24 @@ class CSVImporterStandard implements CanHandleCSV
 
     private function proceedData(array $data): void
     {
-        $category = $data[0];
-        $question = $data[1];
-        $explanation = $data[2];
+        $category = $this->restoreLineBreaks($data[0]);
+        $question = $this->restoreLineBreaks($data[1]);
+        $explanation = $this->restoreLineBreaks($data[2]);;
         $answers = [];
-        for ($i = 3; $i < count($data); $i += 2) {
+        for ($i = 3; $i < count($data)-1; $i += 2) {
             $answers[$data[$i]] = (int)$data[$i + 1];
         }
         try {
-            $this->dbFactory->createQuizQuestionByCSVImport($question, $category, $answers);
+            $this->dbFactory->createQuizQuestionByCSVImport($question, $category,$explanation, $answers);
         } catch (Exception $e) {
+            echo $e;
             return;
         }
+    }
+
+    public function restoreLineBreaks(string $data):string
+    {
+        return str_replace('<br>', "\n",$data);
     }
 
     function writeCSV(string $fileName, array $questionIds): void

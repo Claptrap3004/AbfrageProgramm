@@ -13,10 +13,10 @@
     <div id="jsDataQuestionStats" data-content="{{ jsData.stats }}" hidden="hidden"></div>
     <div id="jsDataActual" data-content="{{ contentInfo.actual }}" hidden="hidden"></div>
     <div id="jsDataNumberOfQuestions" data-content="{{ contentInfo.totalQuestions }}" hidden="hidden"></div>
-    <div class="row align-self-center mx-5 pb-2">
-        <label class="col align-self-center bold btn btn-primary rounded-3 shadow btn-lg disabled mx-2 my-4 p-2 w-100">
+    <div class="row mx-5 pb-2 scrollableQuestion">
+        <label class="col bold btn btn-primary rounded-3 shadow btn-lg disabled mx-2 my-4 p-2 w-100 questionLabel">
+            {{ question.text | nl2br }}
             <input type="hidden" name="questionId" value="{{ question.id }}">
-            {{ question.text }}
         </label>
     </div>
     {% for answer in question.answers %}
