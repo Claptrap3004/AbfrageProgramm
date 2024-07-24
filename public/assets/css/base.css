@@ -5,8 +5,8 @@ body {
 }
 
 .scrollable-contentleft {
-    min-width: 70rem;
-    max-width: 70rem;
+    min-width: 80rem;
+    max-width: 80rem;
     max-height: 40rem;
     min-height: 40rem;
     overflow: hidden;

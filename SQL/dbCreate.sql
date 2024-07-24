@@ -19,7 +19,7 @@ CREATE TABLE category
 CREATE TABLE answer
 (
     id   INT PRIMARY KEY AUTO_INCREMENT,
-    text VARCHAR(255)
+    text VARCHAR(1024)
 );
 
 CREATE TABLE question
@@ -27,8 +27,8 @@ CREATE TABLE question
     id          INT PRIMARY KEY AUTO_INCREMENT,
     category_id INT,
     user_id     int,
-    text        TEXT,
-    explanation TEXT,
+    text        VARCHAR(1024),
+    explanation VARCHAR(4096),
     FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE SET NULL,
     FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE SET NULL
 );

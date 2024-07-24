@@ -43,9 +43,10 @@ class EditController extends Controller
         $exporter->writeCSV('export.csv', $questionIds);
     }
 
-    public function editQuestion(int $questionId = null): void
+    public function editQuestion(int|string $questionId = null): void
     {
-        if ($questionId !== null) {
+        if ($questionId !== null && (int)$questionId >0) {
+
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $answerArray = $_POST['answerArrayJSON'] ?? '';
                 $id = $_POST['editQuestionId'] ?? null;
