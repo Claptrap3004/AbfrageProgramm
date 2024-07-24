@@ -8,7 +8,7 @@ class UserController extends Controller
 {
     public function index(): void
     {
-        $this->view('login/login', []);
+        $this->view(UseCase::LOGIN_REGISTER->getView(), []);
     }
 
     public function logout(): void
@@ -62,7 +62,7 @@ class UserController extends Controller
                     $_SESSION['UserId'] = $user->getId();
                     KindOf::QUIZCONTENT->getDBHandler()->createTables();
                     $stats = new UserStats($user);
-                    $this->view('welcome', ['user' => $user, 'stats' => $stats]);
+                    $this->view(UseCase::WELCOME->getView(), ['user' => $user, 'stats' => $stats]);
                 }
 
 
@@ -70,13 +70,13 @@ class UserController extends Controller
                 $this->reportError('Irgendwas ist schief gelaufen');
             }
         } else {
-            $this->view('login/login', []);
+            $this->view(UseCase::LOGIN_REGISTER->getView(), []);
         }
     }
 
     private function reportError(string $errorMessage): void
     {
-        $this->view('login/login', ['error' => $errorMessage]);
+        $this->view(UseCase::LOGIN_REGISTER->getView(), ['error' => $errorMessage]);
     }
     private function validatePassword(string $password): bool
     {

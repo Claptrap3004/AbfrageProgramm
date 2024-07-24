@@ -22,8 +22,8 @@ class QuizQuestionController extends Controller
         if (count($questions) === 0) {
             $user = $this->factory->createUser($_SESSION['UserId']);
             $stats = new UserStats($user);
-            $this->view('welcome', ['user' => $user, 'stats' => $stats]);
-        } else header("refresh:0.01;url='" . HOST . "QuizQuestion/answer'");
+            $this->view(UseCase::WELCOME->getView(), ['user' => $user, 'stats' => $stats]);
+        } else $this->answer();
     }
 
     /**
@@ -109,7 +109,7 @@ class QuizQuestionController extends Controller
                 foreach ($trackContent as $item) $answers[] = $item['answer_id'];
                 $content = $this->getContentInfos();
                 $jsData = $this->jsFormat($question,$answers);
-                $this->view('quiz/answerQuestion', ['question' => $question, 'answers' => $answers, 'contentInfo' => $content,'jsData'=> $jsData]);
+                $this->view(UseCase::ANSWER_QUESTION->getView(), ['question' => $question, 'answers' => $answers, 'contentInfo' => $content,'jsData'=> $jsData]);
             } catch (\Exception $e) {
                 if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
                 $this->answer();
@@ -146,13 +146,13 @@ class QuizQuestionController extends Controller
 
         if (isset($_REQUEST['reset'])) {
             KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::FIRST);
-            header("refresh:0.01;url='" . HOST . "QuizQuestion/answer'");
+            $this->answer();
         } elseif (isset($_REQUEST['confirm'])) {
             $_SESSION['final'] = true;
-            $this->view('quiz/finalStats', ['questionsJS' => $quizStatsView]);
+            $this->view(UseCase::FINALIZE_QUIZ->getView(), ['questionsJS' => $quizStatsView]);
         }
         else{
-        $this->view('quiz/beforeFinal', ['questionsJS' => $quizStatsView]);
+        $this->view(UseCase::CHECK_BEFORE_FINALIZE->getView(), ['questionsJS' => $quizStatsView]);
         }
         $_SERVER['REQUEST_METHOD'] = null;
     }

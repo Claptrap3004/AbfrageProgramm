@@ -20,16 +20,14 @@ class EditController extends Controller
     {
         $importer = new CSVImporterStandard();
         $importer->readCSV('../Files/jscerti.csv');
-        $this->deleteInvalidQuestions();
-        $this->deleteDuplicates();
+        $this->cleanUp();
     }
 
     public function importNiklas(): void
     {
         $importer = new CSVImporterNiklas();
         $importer->readCSV('../Files/quiz1.csv');
-        $this->deleteInvalidQuestions();
-        $this->deleteDuplicates();
+        $this->cleanUp();
     }
 
 
@@ -39,13 +37,17 @@ class EditController extends Controller
         $all = KindOf::QUESTION->getDBHandler()->findAll();
         $questionIds = [];
         foreach ($all as $item) $questionIds[] = $item['id'];
-        var_dump($questionIds);
         $exporter->writeCSV('export.csv', $questionIds);
     }
 
-    public function editQuestion(int|string $questionId = null): void
+    private function cleanUp():void {
+        $this->deleteInvalidQuestions();
+        $this->deleteDuplicates();
+    }
+
+    public function editQuestion(int|string|null $questionId = null): void
     {
-        if ($questionId !== null && (int)$questionId >0) {
+        if ($questionId !== null && (int)($questionId) >= 0) {
 
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $answerArray = $_POST['answerArrayJSON'] ?? '';
@@ -55,11 +57,14 @@ class EditController extends Controller
                 $categoryId = $_POST['editCategoryId'] ?? null;
                 $categoryText = $_POST['editCategoryText'] ?? null;
                 $answers = json_decode($answerArray);
-
-                if ($categoryId < 1) $categoryId = DBFactory::getFactory()->createCategory($categoryText);
-
+                // if new question is created no valid id will be submitted, hence new question needs to be created
                 if (!$id) $id = DBFactory::getFactory()->createNewQuizQuestion($text, $categoryId);
 
+                // if user selects create new category id will be 0, hence new category needs to be created
+                if ($categoryId < 1) $categoryId = DBFactory::getFactory()->createCategory($categoryText);
+
+                // new EditQuestion instance needs to be created and updated with submitted user inputs, after
+                // EditQuestion has contains all edited values it needs to update itself to db
                 try {
                     $editQuestion = $this->factory->createEditQuestionById($id);
                     $editQuestion->setText($text);
@@ -68,6 +73,9 @@ class EditController extends Controller
                     $editQuestion->resetAnswers();
                     if ($answers) {
                         foreach ($answers as $answer) {
+                            // since createAnswer method in DBFactory checks for existence of answer text and either
+                            // returns id of existing answer or id of newly created answer there is no need to check for
+                            // existence of answer in controller
                             $answerId = DBFactory::getFactory()->createAnswer($answer->text);
                             $answerToRelate = $this->factory->findIdTextObjectById($answerId, KindOf::ANSWER);
                             $editQuestion->setAnswer($answerToRelate, $answer->isRight);
@@ -77,30 +85,33 @@ class EditController extends Controller
                 } catch (Exception $e) {
 
                 }
-                $controller = new QuizQuestionController();
-                $controller->index();
+                $this->view(UseCase::WELCOME->getView(),[]);
             } else {
+                // sends data of question to according view in json format
                 try {
                     $jsData = json_encode(Factory::getFactory()->createEditQuestionById($questionId));
                     $jsDataCategories = json_encode(Factory::getFactory()->findAllIdTextObject(KindOf::CATEGORY));
-                    $this->view('edit/editQuestion', ['jsData' => $jsData, 'jsDataCategories' => $jsDataCategories]);
+                    $this->view(UseCase::EDIT_QUESTION->getView(), ['jsData' => $jsData, 'jsDataCategories' => $jsDataCategories]);
                 } catch (\Exception $e) {
                 }
             }
         } else {
-
-            $controller = new QuizQuestionController();
-            $controller->index();
+            // if method has been called with no proper parameter it will return user to main screen
+            $this->view(UseCase::WELCOME->getView(),[]);
         }
     }
 
 
-    public function createQuestion()
+    private function createQuestion()
     {
 
     }
 
-    public function deleteDuplicates(): void
+    /**
+     * if question text is not unique in db the first created question is being kept and all duplicates are removed
+     * @return void
+     */
+    private function deleteDuplicates(): void
     {
         $questiondata = KindOf::QUESTION->getDBHandler()->findAll();
         $texts = [];
@@ -110,11 +121,14 @@ class EditController extends Controller
             if (array_key_exists($key, $texts)) $duplicateIds[] = $data['id'];
             else $texts[$key] = $data['id'];
         }
-        var_dump($duplicateIds);
         foreach ($duplicateIds as $id) KindOf::QUESTION->getDBHandler()->deleteAtId($id);
     }
 
-    public function deleteInvalidQuestions(): void
+    /**
+     * if question has no answers set to be correct the question is being removed
+     * @return void
+     */
+    private function deleteInvalidQuestions(): void
     {
         $questiondata = KindOf::QUESTION->getDBHandler()->findAll();
         $questions = [];
