@@ -1,5 +1,5 @@
 <?php
-
+namespace quiz;
 echo "Page not found controller <br>";
 
 class PageNotFoundController

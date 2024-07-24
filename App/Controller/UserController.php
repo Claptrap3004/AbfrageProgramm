@@ -8,7 +8,7 @@ class UserController extends Controller
 {
     public function index(): void
     {
-        header("refresh:0.2;url='" . HOST . "index'");
+        $this->view('login/login', []);
     }
 
     public function logout(): void
@@ -36,7 +36,6 @@ class UserController extends Controller
                         $_SESSION['UserId'] = $user->getId();
                         $controller = new QuizQuestionController();
                         $controller->index();
-//                        header("refresh:0.01;url='" . HOST . "QuizQuestion/'");
                     }
                     else{
                         $this->reportError("Zu $email existiert kein User");
