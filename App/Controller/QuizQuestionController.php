@@ -87,7 +87,7 @@ class QuizQuestionController extends Controller
                     $question->writeResultDB();
 
                     if (isset($_POST['finish'])) $whichActual = SetActual::NONE;
-                    else $whichActual = isset($_POST['setNext']) ? SetActual::NEXT : SetActual::PREVIUOS;
+                    else $whichActual = isset($_POST['setNext']) ? SetActual::NEXT : SetActual::PREVIOUS;
 
                     KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
 

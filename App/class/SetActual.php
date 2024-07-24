@@ -6,7 +6,7 @@ namespace quiz;
 enum SetActual
 {
     case FIRST;
-    case PREVIUOS;
+    case PREVIOUS;
     case NEXT;
     case LAST;
     case NONE;

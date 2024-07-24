@@ -8,7 +8,7 @@ class UserController extends Controller
 {
     public function index(): void
     {
-        $this->view(UseCase::LOGIN_REGISTER->getView(), []);
+        $this->login();
     }
 
     public function logout(): void
@@ -28,60 +28,93 @@ class UserController extends Controller
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
 
+            // user tries to log in
             if (isset($_POST['loginUser'])) {
-                if ($this->checkCorrectEmail($email) && $this->checkCorrectPassword($email, $password)) {
+                $error = $this->checkErrorsLogin($email, $password);
+                if ($error->isNoError()) {
                     $userData = KindOf::USER->getDBHandler()->findAll(['userEmail' => $email]);
-                    if ($userData !== []){
-                        $user = $this->factory->createUser($userData[0]['id']);
-                        $_SESSION['UserId'] = $user->getId();
-                        $controller = new QuizQuestionController();
-                        $controller->index();
-                    }
-                    else{
-                        $this->reportError("Zu $email existiert kein User");
-                    }
+                    $user = $this->factory->createUser($userData[0]['id']);
+                    $_SESSION['UserId'] = $user->getId();
+                    $this->view(UseCase::WELCOME->getView(), []);
+                } else {
+                    $this->reportError($error);
                 }
-            } elseif (isset($_POST['registerUser'])) {
+            } // user tries to register
+            elseif (isset($_POST['registerUser'])) {
                 $emailValidate = $_POST['emailValidate'] ?? '';
                 $passwordValidate = $_POST['passwordValidate'] ?? '';
                 $userName = $_POST['userName'] ?? '';
 
+                $error = $this->checkErrorsRegister($email, $emailValidate, $password, $passwordValidate);
 
-                if (!$this->checkCorrectEmail($email))  $this->reportError( 'es ist keine gültige E-Mail eingegeben worden');
-                elseif (!$this->validateEqual($email, $emailValidate))  $this->reportError('die eingegebenen E-Mail-Adressen stimmen nicht überein');
-                elseif (!$this->validatePassword($password))  $this->reportError('Das Passwort muss mindestens 8 Zeichen lang sein');
-                elseif (!$this->validateEqual($password, $passwordValidate))  $this->reportError('Die eingegebenen Passwörter stimmen nicht überein');
-                else {
-
+                if ($error->isNoError()) {
                     try {
                         $id = $this->dbFactory->createUser($userName, $email, $password);
+                        $user = Factory::getFactory()->createUser($id);
+                        $_SESSION['UserId'] = $user->getId();
+                        KindOf::QUIZCONTENT->getDBHandler()->createTables();
+                        $stats = new UserStats($user);
+                        $this->view(UseCase::WELCOME->getView(), ['user' => $user, 'stats' => $stats]);
                     } catch (Exception $e) {
-                        $this->reportError('User konnte nicht erstellt werden');
+                        $error->fatal = ErrorMessage::USER_CREATE_FAILS->getErrorElement('');
+                        $this->reportError($error);
                     }
-                    $user = Factory::getFactory()->createUser($id);
-                    $_SESSION['UserId'] = $user->getId();
-                    KindOf::QUIZCONTENT->getDBHandler()->createTables();
-                    $stats = new UserStats($user);
-                    $this->view(UseCase::WELCOME->getView(), ['user' => $user, 'stats' => $stats]);
                 }
-
-
-            } else {
-                $this->reportError('Irgendwas ist schief gelaufen');
+                else $this->reportError($error);
+            } // invalid post request
+            else {
+                $this->view(UseCase::LOGIN_REGISTER->getView(), []);
             }
+        // no post request
         } else {
             $this->view(UseCase::LOGIN_REGISTER->getView(), []);
         }
     }
 
-    private function reportError(string $errorMessage): void
+
+    private function checkErrorsLogin(string $email, string $password): LoginRegisterError
     {
-        $this->view(UseCase::LOGIN_REGISTER->getView(), ['error' => $errorMessage]);
+        $error = new LoginRegisterError();
+        if (!$this->checkCorrectEmail($email)) $error->email = ErrorMessage::EMAIL_INCORRECT->getErrorElement($email);
+        elseif (!$this->userExists($email)) $error->email = ErrorMessage::USER_DOES_NOT_EXIST->getErrorElement($email);
+        if (!$this->validatePassword($password)) $error->password = ErrorMessage::PASSWORD_INVALID->getErrorElement($password);
+        elseif (!$this->checkCorrectPassword($email, $password)) $error->email = ErrorMessage::CREDENTIALS_INVALID->getErrorElement($email);
+
+        return $error;
     }
+
+    private function checkErrorsRegister(string $email, string $emailValidate, string $password, string $passwordValidate): LoginRegisterError
+    {
+        $error = new LoginRegisterError();
+        $error->isLoginError = false;
+        if (!$this->checkCorrectEmail($email)) $error->email = ErrorMessage::EMAIL_INCORRECT->getErrorElement($email);
+        elseif (!$this->validateEqual($email, $emailValidate)) {
+            $error->email = ErrorMessage::EMAILS_NOT_MATCH->getErrorElement($email);
+            $error->emailValidate = ErrorMessage::EMAILS_NOT_MATCH->getErrorElement($emailValidate);
+        }
+        if (!$this->validatePassword($password)) $error->password = ErrorMessage::PASSWORD_INVALID->getErrorElement($password);
+        elseif (!$this->validateEqual($password, $passwordValidate)) {
+            $error->password = ErrorMessage::PASSWORDS_NOT_MATCH->getErrorElement($password);
+            $error->passwordValidate = ErrorMessage::PASSWORDS_NOT_MATCH->getErrorElement($passwordValidate);
+        }
+        return $error;
+    }
+
+    private function reportError(LoginRegisterError $error): void
+    {
+        $error = json_encode($error);
+        $this->view(UseCase::LOGIN_REGISTER->getView(), ['error' => $error]);
+    }
+
     private function validatePassword(string $password): bool
     {
 
-        return strlen($password) >= 8;
+        $uppercase = preg_match('@[A-Z]@', $password);
+        $lowercase = preg_match('@[a-z]@', $password);
+        $number = preg_match('@[0-9]@', $password);
+        $specialChars = preg_match('@[^\w]@', $password);
+
+        return !(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8);
     }
 
     private function validateEqual(string $first, string $second): bool
@@ -94,10 +127,15 @@ class UserController extends Controller
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
+    private function userExists($email): bool
+    {
+        $possibleUser = DBHandlerProvider::getUserDBHandler()->findAll(['userEmail' => $email]);
+        return $possibleUser !== [];
+    }
+
     private function checkCorrectPassword(string $email, string $password): bool
     {
         $possibleUser = DBHandlerProvider::getUserDBHandler()->findAll(['userEmail' => $email]);
-        if ($possibleUser === []) return false;
-        return password_verify($password, $possibleUser[0]['password']);
+        return !($possibleUser === []) && password_verify($password, $possibleUser[0]['password']);
     }
 }

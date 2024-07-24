@@ -221,7 +221,7 @@ class QuizContentDBHandler extends DataBase implements CanHandleQuizContent
         $numberOfQuestions = count($this->findAll());
         $actual = $this->getActual();
         $newActual = match($setActual){
-            SetActual::PREVIUOS => $actual > 1 ? $actual - 1 : 1,
+            SetActual::PREVIOUS => $actual > 1 ? $actual - 1 : 1,
             SetActual::NEXT => $actual <= $numberOfQuestions ? $actual + 1 : $numberOfQuestions,
             SetActual::FIRST => 1,
             SetActual::LAST => $numberOfQuestions,
