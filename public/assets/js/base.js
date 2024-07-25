@@ -1,5 +1,5 @@
 const init = () => {
-    console.log('init');
+
 }
 
 const changeModal = (title, text, confirmFunction) => {

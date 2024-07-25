@@ -4,6 +4,7 @@ let contentInfos;
 const initAnswerQuestion = () => {
     questionObject = JSON.parse(document.querySelector('#jsDataAnswerQuestion').getAttribute('data-content'));
     contentInfos = JSON.parse(document.querySelector('#jsDataContent').getAttribute('data-content'));
+    setContentInfos();
     createQuestionInfos();
     createAnswerButtons();
     setListeners();
@@ -45,7 +46,7 @@ const createAnswerButtons = () => {
 }
 
 const setContentInfos = (clear = null) => {
-
+    document.querySelector('#subTitle').innerHTML = `Frage ${contentInfos.actual} / ${contentInfos.totalQuestions}`;
 }
 const setStats = (clear = null) => {
     let timesAsked = document.querySelector('#statsTimesAsked');
