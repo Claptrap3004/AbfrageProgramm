@@ -4,6 +4,11 @@ body {
     overflow: hidden;
 }
 
+#user-feedback{
+    color: red;
+    font-size: x-small;
+}
+
 .scrollable-contentleft {
     min-width: 80rem;
     max-width: 80rem;

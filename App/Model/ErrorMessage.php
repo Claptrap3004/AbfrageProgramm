@@ -14,7 +14,7 @@ enum ErrorMessage:string
     case SOMETHING_WENT_WRONG = 'something went wrong';
 
 
-    public function getErrorElement(string $input):LoginRegisterErrorELement
+    public function getErrorElement(string $input = ''):LoginRegisterErrorELement
     {
         return new LoginRegisterErrorELement($input,$this->value);
 

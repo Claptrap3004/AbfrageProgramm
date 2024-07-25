@@ -1,5 +1,6 @@
 const initLogin = () => {
     let contentLeft = document.querySelector('#contentLeft');
+    let errorData = document.querySelector('#jsLoginErrorData').getAttribute('data-content');
     document.querySelector('#spacerContentLeft').className = "col-4";
     contentLeft.style.minWidth='40%';
     contentLeft.style.maxWidth='40%';
@@ -7,8 +8,42 @@ const initLogin = () => {
     document.querySelector('#loginRegisterToggleButton').addEventListener('click', toggleLoginRegister);
     document.querySelector('#loginRegisterConfirmButton').style.left = '20%';
     document.querySelector('#loginRegisterToggleButton').style.right= '20%';
+    if (errorData !== '') handleErrors(errorData);
 
 }
+
+const handleErrors = (errorData) => {
+
+    const errorObject = JSON.parse(errorData);
+    if (!errorObject.isLoginError) document.querySelector('#loginRegisterToggleButton').click();
+    for (const errorObjectKey in errorObject) {
+        if (errorObjectKey === 'isLoginError') continue;
+        if (errorObject[errorObjectKey] !== null){
+            console.log(errorObjectKey);
+            let inputId = 'input' + capitalize(errorObjectKey);
+            showError(inputId, errorObject[errorObjectKey])
+        }
+    }
+    console.log(errorObject);
+}
+
+const showError = (id, errorObject) => {
+    let inputField = document.querySelector('#'+ id);
+    let hint = document.createElement('div');
+    let divId = '#div' + capitalize(id);
+    hint.className = "invalid-feedback";
+    hint.innerHTML = errorObject.errorMessage;
+    inputField.className += ' is-invalid';
+    inputField.value = errorObject.input;
+    console.log(hint);
+    document.querySelector(divId).appendChild(hint);
+}
+
+const capitalize = (s) =>
+{
+    return s[0].toUpperCase() + s.slice(1);
+}
+
 const setLoginScreen = () => {
     let newContentLeft = document.createElement('div');
     newContentLeft.className = "col-4 bg-light rounded-5 my-2 py-2 align-self-left scrollable-contentleft";

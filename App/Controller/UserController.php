@@ -46,6 +46,7 @@ class UserController extends Controller
                 $userName = $_POST['userName'] ?? '';
 
                 $error = $this->checkErrorsRegister($email, $emailValidate, $password, $passwordValidate);
+                var_dump($error);
 
                 if ($error->isNoError()) {
                     try {
@@ -56,7 +57,7 @@ class UserController extends Controller
                         $stats = new UserStats($user);
                         $this->view(UseCase::WELCOME->getView(), ['user' => $user, 'stats' => $stats]);
                     } catch (Exception $e) {
-                        $error->fatal = ErrorMessage::USER_CREATE_FAILS->getErrorElement('');
+                        $error->fatal = ErrorMessage::USER_CREATE_FAILS->getErrorElement();
                         $this->reportError($error);
                     }
                 }
@@ -77,7 +78,7 @@ class UserController extends Controller
         $error = new LoginRegisterError();
         if (!$this->checkCorrectEmail($email)) $error->email = ErrorMessage::EMAIL_INCORRECT->getErrorElement($email);
         elseif (!$this->userExists($email)) $error->email = ErrorMessage::USER_DOES_NOT_EXIST->getErrorElement($email);
-        if (!$this->validatePassword($password)) $error->password = ErrorMessage::PASSWORD_INVALID->getErrorElement($password);
+        if (!$this->validatePassword($password)) $error->password = ErrorMessage::PASSWORD_INVALID->getErrorElement();
         elseif (!$this->checkCorrectPassword($email, $password)) $error->email = ErrorMessage::CREDENTIALS_INVALID->getErrorElement($email);
 
         return $error;
@@ -87,15 +88,15 @@ class UserController extends Controller
     {
         $error = new LoginRegisterError();
         $error->isLoginError = false;
-        if (!$this->checkCorrectEmail($email)) $error->email = ErrorMessage::EMAIL_INCORRECT->getErrorElement($email);
+        if (!$this->checkCorrectEmail($email) || $this->userExists($email)) $error->email = ErrorMessage::EMAIL_INCORRECT->getErrorElement($email);
         elseif (!$this->validateEqual($email, $emailValidate)) {
             $error->email = ErrorMessage::EMAILS_NOT_MATCH->getErrorElement($email);
             $error->emailValidate = ErrorMessage::EMAILS_NOT_MATCH->getErrorElement($emailValidate);
         }
-        if (!$this->validatePassword($password)) $error->password = ErrorMessage::PASSWORD_INVALID->getErrorElement($password);
+        if (!$this->validatePassword($password)) $error->password = ErrorMessage::PASSWORD_INVALID->getErrorElement();
         elseif (!$this->validateEqual($password, $passwordValidate)) {
-            $error->password = ErrorMessage::PASSWORDS_NOT_MATCH->getErrorElement($password);
-            $error->passwordValidate = ErrorMessage::PASSWORDS_NOT_MATCH->getErrorElement($passwordValidate);
+            $error->password = ErrorMessage::PASSWORDS_NOT_MATCH->getErrorElement();
+            $error->passwordValidate = ErrorMessage::PASSWORDS_NOT_MATCH->getErrorElement();
         }
         return $error;
     }
@@ -114,7 +115,8 @@ class UserController extends Controller
         $number = preg_match('@[0-9]@', $password);
         $specialChars = preg_match('@[^\w]@', $password);
 
-        return !(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8);
+        return strlen($password) >=8;
+//        return !(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8);
     }
 
     private function validateEqual(string $first, string $second): bool

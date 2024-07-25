@@ -12,34 +12,36 @@
     Herzlich Willkommen beim Quiz
 {% endblock %}
 {% block contentleft %}
-     <div class="row mb-3">
+    <div id="jsLoginErrorData" data-content="{{ error|default }}" hidden="hidden"></div>
+    <div class="row mb-3">
         <div class="col-1"></div>
         <label for="inputUsername" class="col-sm-2 col-form-label" id="labelInputUsername"
                style="visibility: hidden">Username</label>
-        <div class="col-7">
+        <div class="col-7" id="divInputUsername">
             <input type="hidden" name='userName' class="form-control" id="inputUsername"
                    placeholder="Username eingeben">
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-1"></div>
-        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-        <div class="col-7">
+        <label for="inputEmail" class="col-sm-2 form-label" id="labelInputEmail">Email</label>
+        <div class="col-7" id="divInputEmail">
             <input type="email" name='email' class="form-control" id="inputEmail" placeholder="Email eingeben">
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-1"></div>
-        <label for="inputEmailValidate" class="col-sm-2 col-form-label" id="labelInputEmailValidate" style="visibility: hidden">Email</label>
-        <div class="col-7">
+        <label for="inputEmailValidate" class="col-sm-2 col-form-label" id="labelInputEmailValidate"
+               style="visibility: hidden">Email</label>
+        <div class="col-7" id="divInputEmailValidate">
             <input type="hidden" name='emailValidate' class="form-control" id="inputEmailValidate"
                    placeholder="Email wiederholen">
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-1"></div>
-        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-7">
+        <label for="inputPassword" class="col-sm-2 form-label" id="labelInputPassword">Password</label>
+        <div class="col-7" id="divInputPassword">
             <input type="password" name='password' class="form-control" id="inputPassword" placeholder="Password">
         </div>
     </div>
@@ -47,17 +49,17 @@
         <div class="col-1"></div>
         <label for="inputPasswordValidate" class="col-sm-2 col-form-label" id="labelInputPasswordValidate"
                style="visibility: hidden">Password wiederholen</label>
-        <div class="col-7">
+        <div class="col-7" id="divInputPasswordValidate">
             <input type="hidden" name='passwordValidate' class="form-control" id="inputPasswordValidate"
                    placeholder="Password">
         </div>
     </div>
 {% endblock %}
 {% block buttons %}
-        <button type="submit" id="loginRegisterConfirmButton" name="loginUser" class="btn btn-primary">Sign in</button>
-        <button type="Button" id="loginRegisterToggleButton" name="registerUser" class="btn btn-primary"
-                >go to Register
-        </button>
+    <button type="submit" id="loginRegisterConfirmButton" name="loginUser" class="btn btn-primary">Sign in</button>
+    <button type="Button" id="loginRegisterToggleButton" name="registerUser" class="btn btn-primary"
+    >go to Register
+    </button>
 {% endblock %}
 
 
