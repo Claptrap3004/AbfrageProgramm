@@ -15,7 +15,6 @@ class QuizStatsView implements JsonSerializable
     public function __construct()
     {
         $this->getQuestionsFromDB();
-        $this->validate();
     }
 
 
@@ -48,7 +47,7 @@ class QuizStatsView implements JsonSerializable
      * as well as to increment counter for tracking the number of correctly answered questions
      * @return void
      */
-    private function validate(): void
+    public function validate(): void
     {
         foreach ($this->questions as $question) {
             if ($question->validate()) {
@@ -57,16 +56,6 @@ class QuizStatsView implements JsonSerializable
             $this->setRate();
         }
     }
-
-    private function jsonifyQuestions():void{
-        $formattedQuestions = [];
-        foreach ($this->questions as $question){
-            $id = $question->getId();
-            $text = $question->getText();
-
-        }
-    }
-
 
     private function setRate():void
     {

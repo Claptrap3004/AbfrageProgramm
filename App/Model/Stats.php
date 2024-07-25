@@ -76,8 +76,7 @@ class Stats implements JsonSerializable
 
     public function update():void
     {
-        $dbHandler = KindOf::STATS->getDBHandler();
-        $dbHandler->update([
+        KindOf::STATS->getDBHandler()->update([
             'id'=>$this->id,
             'question_id'=>$this->questionId,
             'user_id'=>$this->userId,

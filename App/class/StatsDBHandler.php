@@ -75,6 +75,14 @@ class StatsDBHandler extends IdTextDBHandler
         return false;
     }
 
+    public function deleteAll():bool
+    {
+        $sql = "DELETE FROM $this->tableName WHERE user_id = :user_id;";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(':user_id', $_SESSION['UserId']);
+        return $stmt->execute();
+    }
+
     protected function validateArgsCreate(array $args): bool
     {
         return array_key_exists('question_id', $args) &&

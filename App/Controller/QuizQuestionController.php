@@ -77,14 +77,13 @@ class QuizQuestionController extends Controller
     {
         $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $clearStats = $_POST['clearStats'] ?? '';
             $answers = $_POST['answers'] ?? [];
             $questionId = $_POST['questionId'] ?? $id;
             if ($id !== null) {
 
                 try {
                     $question = $this->factory->createQuizQuestionById($questionId);
-                    if ($clearStats) $question->getStats()->reset();
+
                     foreach ($answers as $answer) {
                         if ((int)$answer > 0) $question->addGivenAnswer($this->factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
                     }
@@ -126,13 +125,16 @@ class QuizQuestionController extends Controller
 
     public function final(): void
     {
-        $quizStatsView = json_encode(new QuizStatsView());
+        $quizStats = new QuizStatsView();
+        $quizStatsView = json_encode($quizStats);
 
         if (isset($_REQUEST['reset'])) {
             KindOf::QUIZCONTENT->getDBHandler()->setActual(SetActual::FIRST);
             $this->answer();
         } elseif (isset($_REQUEST['confirm'])) {
             $_SESSION['final'] = true;
+            $quizStats->validate();
+            $quizStatsView = json_encode($quizStats);
             $this->view(UseCase::FINALIZE_QUIZ->getView(), ['questionsJS' => $quizStatsView]);
         } else {
             $this->view(UseCase::CHECK_BEFORE_FINALIZE->getView(), ['questionsJS' => $quizStatsView]);
@@ -145,6 +147,17 @@ class QuizQuestionController extends Controller
         $selector = new QuestionSelector();
         $questions = $selector->select((int)$numberOfQuestions);
         $this->fillTableAndStartActual($questions);
+    }
+
+    public function deleteStatsQuestion(): void
+    {
+        $id = $_POST['id'] ?? 0;
+        KindOf::STATS->getDBHandler()->deleteAtId($id);
+    }
+
+    public function deleteStatsAll(): void
+    {
+        KindOf::STATS->getDBHandler()->deleteAll();
     }
 
     public function test(): void

@@ -32,7 +32,7 @@ const createAnswerButtons = () => {
         label.className = "answerLabels col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-2 my-2 p-2 w-100";
         label.id = 'l_id' + answer.id;
         label.innerHTML = answer.text;
-        label.setAttribute('data-bs-toggle','button');
+        label.setAttribute('data-bs-toggle', 'button');
         let input = document.createElement('input');
         input.type = 'checkbox';
         input.name = 'answers[]';
@@ -51,13 +51,12 @@ const setContentInfos = (clear = null) => {
 const setStats = (clear = null) => {
     let timesAsked = document.querySelector('#statsTimesAsked');
     let timesRight = document.querySelector('#statsTimesRight');
-    if (clear === null){
+    if (clear === null) {
         document.querySelector('#statsTitle').innerHTML = questionObject.id;
         document.querySelector('#clearStatsOfQuestion').value = questionObject.id;
         timesAsked.innerHTML = questionObject.stats.timesAsked;
         timesRight.innerHTML = questionObject.stats.timesRight;
-    }
-    else {
+    } else {
         timesAsked.innerHTML = '0';
         timesRight.innerHTML = '0';
     }
@@ -67,7 +66,7 @@ const setStats = (clear = null) => {
 const setListeners = () => {
     let answerLabels = document.querySelectorAll('.answerLabels');
     for (const answerLabel of answerLabels) {
-        answerLabel.addEventListener('click',clickAnswer)
+        answerLabel.addEventListener('click', clickAnswer)
     }
     document.querySelector('#labelClearStatsOfQuestion').addEventListener('click', clearStatsOfQuestion)
 
@@ -98,19 +97,31 @@ const setButtonState = () => {
 
 }
 
-
-const clearStatsOfQuestion = () =>{
-    const questionStats = questionObject.stats
-
-    let stats = document.querySelector('#clearStatsOfQuestion');
-    stats.checked = !stats.checked;
-    document.querySelector('#statsTimesAsked').innerHTML = (stats.checked ? 0 : questionStats['timesAsked']) + ' times asked';
-    document.querySelector('#statsTimesRight').innerHTML = (stats.checked ? 0 : questionStats['timesRight']) + ' times answered correct';
-    document.querySelector('#labelClearStats').innerHTML = stats.checked ? ' undo clear Stats ' : ' clear Stats ';
+const clearStatsOfQuestion = () => {
+    changeModal('Lösche Stats der aktuellen Frage','Durch bestätigen werden alle Stats zu dieser Frage gelöscht', confirmDeleteStatsOfQuestion)
 }
 
-const clickAnswer = (event)=> {
-    let id = event.target.id.replace('l_id','');
+
+
+const confirmDeleteStatsOfQuestion = () => {
+    let stats = document.querySelector('#labelClearStatsOfQuestion');
+    stats.disabled = true;
+    document.querySelector('#statsTimesAsked').innerHTML = '0';
+    document.querySelector('#statsTimesRight').innerHTML = '0';
+    document.querySelector('#closeModal').click();
+    deleteStats();
+}
+
+const deleteStats = () => {
+    let id = document.querySelector('#questionId').value;
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/quizQuestion/deleteStatsQuestion",true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(`id=${id}`);
+}
+
+const clickAnswer = (event) => {
+    let id = event.target.id.replace('l_id', '');
     let idStr = "#a_id" + id;
     document.querySelector(idStr).checked = !document.querySelector(idStr).checked
 }
