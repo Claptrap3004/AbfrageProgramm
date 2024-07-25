@@ -2,6 +2,8 @@
 
 namespace quiz;
 
+use Exception;
+
 class QuizQuestionController extends Controller
 {
 
@@ -78,27 +80,8 @@ class QuizQuestionController extends Controller
         $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $answers = $_POST['answers'] ?? [];
-            $questionId = $_POST['questionId'] ?? $id;
-            if ($id !== null) {
-
-                try {
-                    $question = $this->factory->createQuizQuestionById($questionId);
-
-                    foreach ($answers as $answer) {
-                        if ((int)$answer > 0) $question->addGivenAnswer($this->factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
-                    }
-
-                    $question->writeResultDB();
-
-                    if (isset($_POST['finish'])) $whichActual = SetActual::NONE;
-                    else $whichActual = isset($_POST['setNext']) ? SetActual::NEXT : SetActual::PREVIOUS;
-
-                    KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
-
-                } catch (\Exception $e) {
-                    if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
-                    $this->answer();
-                }
+            if ($id !== null && $this->isActionSet()) {
+                $this->evaluateUserInput($id, $answers);
             }
             unset($_POST);
             $_SERVER['REQUEST_METHOD'] = null;
@@ -106,23 +89,85 @@ class QuizQuestionController extends Controller
         }
         if (!$id) $this->final();
         else {
-            try {
-                $question = $this->factory->createQuizQuestionById($id);
-                $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
-                $answers = [];
-                foreach ($trackContent as $item) $answers[] = $item['answer_id'];
-                $question->setGivenAnswers($answers);
-                $jsData = json_encode($question);
-                $content = new ContentInfos();
-                $jsContent = json_encode($content);
-                $this->view(UseCase::ANSWER_QUESTION->getView(), ['contentInfo' => $jsContent, 'jsData' => $jsData]);
-            } catch (\Exception $e) {
-                if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
-                $this->answer();
-            }
+            $this->showNextQuestion($id);
         }
     }
 
+    /**
+     * creates actual QuizQuestion, fills its givenAnswers array if answers stored in track_quiz_content table and
+     * prepares necessary JSON strings for view. Then calls the view.
+     * @param int $id
+     * @return void
+     */
+    private function showNextQuestion(int $id):void
+    {
+        try {
+            $question = $this->factory->createQuizQuestionById($id);
+            $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
+            $answers = [];
+            foreach ($trackContent as $item) $answers[] = $item['answer_id'];
+            $question->setGivenAnswers($answers);
+            $jsData = json_encode($question);
+            $content = new ContentInfos();
+            $jsContent = json_encode($content);
+            $this->view(UseCase::ANSWER_QUESTION->getView(), ['contentInfo' => $jsContent, 'jsData' => $jsData]);
+        } catch (Exception $e) {
+            $this->reactOnQuestionCreateError($id);
+        }
+    }
+
+    /**
+     * updates track_quiz_content table accordingly to users answers and sets pointer actual to requested position.
+     * @param int $id
+     * @param array $answers
+     * @return void
+     */
+    private function evaluateUserInput(int $id, array $answers):void {
+        try {
+            $question = $this->factory->createQuizQuestionById($id);
+            foreach ($answers as $answer) {
+                if ((int)$answer > 0)
+                    $question->addGivenAnswer($this->factory->findIdTextObjectById((int)$answer, KindOf::ANSWER));
+            }
+
+            $question->writeResultDB();
+
+            if (isset($_POST['finish'])) $whichActual = SetActual::NONE;
+            else $whichActual = isset($_POST['setNext']) ? SetActual::NEXT : SetActual::PREVIOUS;
+
+            KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
+        } catch (Exception $e) {
+           $this->reactOnQuestionCreateError($id);
+        }
+    }
+
+
+    /**
+     * On error (unable to create question) the question is deleted from quiz_content and quiz goes on with next question
+     * @param int $id
+     * @return void
+     */
+    private function reactOnQuestionCreateError(int $id): void
+    {
+        if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id)
+            KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
+        $this->answer();
+    }
+
+    /**
+     * necessary to avoid skip to next question on users page refresh od answerQuestion.html.twig
+     * @return bool
+     */
+    public function isActionSet():bool
+    {
+        return isset($_POST['finish']) || isset($_POST['setPrev']) || isset($_POST['setNext']);
+    }
+
+    /**
+     * after user clicked finish quiz the user gets an overview of all questions with info if user chose any answer(s).
+     * user can either decide to go through the questions again or to get result of the quiz
+     * @return void
+     */
     public function final(): void
     {
         $quizStats = new QuizStatsView();
@@ -142,6 +187,11 @@ class QuizQuestionController extends Controller
         $_SERVER['REQUEST_METHOD'] = null;
     }
 
+    /**
+     * quick randomly generated quiz from all available question with standard selection method
+     * @param $numberOfQuestions
+     * @return void
+     */
     public function quickStart($numberOfQuestions = 20): void
     {
         $selector = new QuestionSelector();
@@ -149,12 +199,20 @@ class QuizQuestionController extends Controller
         $this->fillTableAndStartActual($questions);
     }
 
+    /**
+     * method to be called via ajax from answerQuestion.html.twig
+     * @return void
+     */
     public function deleteStatsQuestion(): void
     {
         $id = $_POST['id'] ?? 0;
         KindOf::STATS->getDBHandler()->deleteAtId($id);
     }
 
+    /**
+     * method to be called via ajax from welcome.html.twig
+     * @return void
+     */
     public function deleteStatsAll(): void
     {
         KindOf::STATS->getDBHandler()->deleteAll();
