@@ -7,6 +7,9 @@
 {% endblock %}
 {% block onload %}initAnswerQuestion(){% endblock %}
 {% block subtitle %}Frage {{ contentInfo.actual }} / {{ contentInfo.totalQuestions }}{% endblock %}
+{% block fornAction %}
+    /quizQuestion/answer
+{% endblock %}
 {% block contentleft %}
     <div id="jsDataAnswers" data-content="{{ jsData.givenAnswers }}" hidden="hidden"></div>
     <div id="jsDataQuestionAnswers" data-content="{{ jsData.questionAnswers }}" hidden="hidden"></div>
