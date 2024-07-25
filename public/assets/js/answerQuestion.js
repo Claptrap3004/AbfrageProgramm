@@ -4,6 +4,7 @@ let contentInfos;
 const initAnswerQuestion = () => {
     questionObject = JSON.parse(document.querySelector('#jsDataAnswerQuestion').getAttribute('data-content'));
     contentInfos = JSON.parse(document.querySelector('#jsDataContent').getAttribute('data-content'));
+    setScreen();
     setContentInfos();
     createQuestionInfos();
     createAnswerButtons();
@@ -11,6 +12,11 @@ const initAnswerQuestion = () => {
     setStats();
     markGivenAnswers();
     setButtonState();
+    setButtonPosition();
+}
+
+const setScreen = () => {
+    document.querySelector('#spacerContentLeft').display = 'none';
 }
 
 const createQuestionInfos = () => {
@@ -30,7 +36,7 @@ const createAnswerButtons = () => {
         let div = document.createElement('div');
         div.className = "row align-self-center mx-5 pb-2";
         let label = document.createElement('label');
-        label.className = "answerLabels col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-2 my-2 p-2 w-100";
+        label.className = "answerLabels col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-3 my-2 p-1 w-100";
         label.id = 'l_id' + answer.id;
         label.innerHTML = answer.text;
         label.setAttribute('data-bs-toggle', 'button');
@@ -95,7 +101,18 @@ const setButtonState = () => {
         document.querySelector('#next').disabled = true;
         document.querySelector('#next').className = "btn-lg btn-outline-info shadow-sm";
     }
+}
 
+const setButtonPosition = () => {
+    const positionQuestion =  document.querySelector('#answersList').getBoundingClientRect();
+    const left = positionQuestion.left;
+    const right = positionQuestion.right;
+    const width = positionQuestion.width;
+    document.querySelector('#divPrev').style.left = `${left}`;
+    document.querySelector('#divNext').style.right = `${right}`;
+    document.querySelector('#divFinish').style.left = `${left + width / 3}`;
+    console.log(document.querySelector('#divFinish'))
+    document.querySelector('#spacerContentLeft').remove();
 }
 
 const clearStatsOfQuestion = () => {

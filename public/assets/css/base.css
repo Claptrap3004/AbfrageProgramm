@@ -1,4 +1,5 @@
 body {
+    display: block;
     background-image: url('/assets/img/qmarks.jpg');
     background-size: cover;
     overflow: hidden;
@@ -12,8 +13,8 @@ body {
 .scrollable-contentleft {
     min-width: 80rem;
     max-width: 80rem;
-    max-height: 40rem;
-    min-height: 40rem;
+    max-height: 35rem;
+    min-height: 35rem;
     overflow: hidden;
     scrollbar-gutter: stable both-edges;
     border-radius: 1.5rem;
@@ -23,8 +24,8 @@ body {
 .content-right {
     min-width: 20rem;
     max-width: 20rem;
-    max-height: 40rem;
-    min-height: 40rem;
+    max-height: 35rem;
+    min-height: 35rem;
     border-radius: 1.5rem;
     overflow: hidden;
 }
@@ -32,11 +33,15 @@ body {
 .scrollable-contentbuttons {
     min-width: 120rem;
     max-width: 120rem;
-    min-height: 15rem;
-    max-height: 15rem;
+    min-height: 10rem;
+    max-height: 10rem;
     overflow: hidden;
     scrollbar-gutter: stable both-edges;
 
+}
+#modal {
+    position: relative;
+    top: 30%;
 }
 
 body, html, head,

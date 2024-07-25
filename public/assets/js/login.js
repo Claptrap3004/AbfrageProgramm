@@ -46,8 +46,8 @@ const capitalize = (s) =>
 
 const setLoginScreen = () => {
     let newContentLeft = document.createElement('div');
-    newContentLeft.className = "col-4 bg-light rounded-5 my-2 py-2 align-self-left scrollable-contentleft";
-    document.querySelector('#spacerContentLeft').className = "col-3";
+    newContentLeft.className = "col-6 bg-light rounded-5 my-2 py-2 align-self-left scrollable-contentleft";
+    document.querySelector('#spacerContentLeft').className = "col-2";
     document.querySelector('#contentRight').hidden = 'hidden';
     document.querySelector('#contentLeft').replaceWith(newContentLeft);
     console.log(document.querySelector('#contentLeft').className);
