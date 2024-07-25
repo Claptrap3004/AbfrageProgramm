@@ -35,7 +35,7 @@ class UserController extends Controller
                     $userData = KindOf::USER->getDBHandler()->findAll(['userEmail' => $email]);
                     $user = $this->factory->createUser($userData[0]['id']);
                     $_SESSION['UserId'] = $user->getId();
-                    $this->view(UseCase::WELCOME->getView(), []);
+                    UseCase::WELCOME->getController()->index();
                 } else {
                     $this->reportError($error);
                 }
@@ -46,7 +46,7 @@ class UserController extends Controller
                 $userName = $_POST['userName'] ?? '';
 
                 $error = $this->checkErrorsRegister($email, $emailValidate, $password, $passwordValidate);
-                var_dump($error);
+
 
                 if ($error->isNoError()) {
                     try {
@@ -73,6 +73,13 @@ class UserController extends Controller
     }
 
 
+    /**
+     * creates LoginRegisterError object depending on email is valid format, user does exist and password fulfilling
+     * requirements amd being correct
+     * @param string $email
+     * @param string $password
+     * @return LoginRegisterError
+     */
     private function checkErrorsLogin(string $email, string $password): LoginRegisterError
     {
         $error = new LoginRegisterError();
@@ -84,6 +91,15 @@ class UserController extends Controller
         return $error;
     }
 
+    /**
+     * creates LoginRegisterError object depending on email is valid format, user does exist and password fulfilling
+     * requirements amd being correct as well as validated input of email and password matching their counterparts
+     * @param string $email
+     * @param string $emailValidate
+     * @param string $password
+     * @param string $passwordValidate
+     * @return LoginRegisterError
+     */
     private function checkErrorsRegister(string $email, string $emailValidate, string $password, string $passwordValidate): LoginRegisterError
     {
         $error = new LoginRegisterError();
@@ -101,6 +117,11 @@ class UserController extends Controller
         return $error;
     }
 
+    /**
+     * if error on inputs did occure the LoginRegisterError object is send to login page
+     * @param LoginRegisterError $error
+     * @return void
+     */
     private function reportError(LoginRegisterError $error): void
     {
         $error = json_encode($error);

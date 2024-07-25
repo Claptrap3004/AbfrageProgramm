@@ -20,12 +20,16 @@ class QuizQuestionController extends Controller
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
         if (count($questions) === 0) {
-            $user = $this->factory->createUser($_SESSION['UserId']);
-            $stats = new UserStats($user);
-            $this->view(UseCase::WELCOME->getView(), ['user' => $user, 'stats' => $stats]);
+          $this->welcome();
         } else $this->answer();
     }
 
+    public function welcome():void
+    {
+        $user = $this->factory->createUser($_SESSION['UserId']);
+        $stats = new UserStats($user);
+        $this->view(UseCase::WELCOME->getView(), ['user' => $user, 'stats' => $stats]);
+    }
     /**
      * expects key 'question_ids' which holds int[] storing selected question_ids that will be asked in the quiz.
      * populates quiz_content table of actual user and directs to answer options of the first question
