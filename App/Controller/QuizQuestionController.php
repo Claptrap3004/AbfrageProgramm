@@ -26,6 +26,10 @@ class QuizQuestionController extends Controller
         } else $this->answer();
     }
 
+    /**
+     * shows welcome screen after login or back to welcome screen request
+     * @return void
+     */
     public function welcome(): void
     {
         $user = $this->factory->createUser($_SESSION['UserId']);
@@ -83,14 +87,26 @@ class QuizQuestionController extends Controller
             if ($id !== null && $this->isActionSet()) {
                 $this->evaluateUserInput($id, $answers);
             }
-            unset($_POST);
-            $_SERVER['REQUEST_METHOD'] = null;
             $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
         }
+        $this->clearActionRequests();
         if (!$id) $this->final();
         else {
             $this->showNextQuestion($id);
         }
+    }
+
+
+    /**
+     *
+     * @return void
+     */
+    private function clearActionRequests():void
+    {
+        unset($_POST['finish']);
+        unset($_POST['setPrev']);
+        unset($_POST['setNext']);
+        $_SERVER['REQUEST_METHOD'] = null;
     }
 
     /**

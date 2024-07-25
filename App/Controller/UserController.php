@@ -31,47 +31,49 @@ class UserController extends Controller
             // user tries to log in
             if (isset($_POST['loginUser'])) {
                 $error = $this->checkErrorsLogin($email, $password);
-                if ($error->isNoError()) {
-                    $userData = KindOf::USER->getDBHandler()->findAll(['userEmail' => $email]);
-                    $user = $this->factory->createUser($userData[0]['id']);
-                    $_SESSION['UserId'] = $user->getId();
-                    UseCase::WELCOME->getController()->index();
-                } else {
-                    $this->reportError($error);
-                }
-            } // user tries to register
+                if ($error->isNoError()) $this->successfulLogin($email);
+                else $this->reportError($error);
+            }
+            // user tries to register
             elseif (isset($_POST['registerUser'])) {
                 $emailValidate = $_POST['emailValidate'] ?? '';
                 $passwordValidate = $_POST['passwordValidate'] ?? '';
                 $userName = $_POST['userName'] ?? '';
 
                 $error = $this->checkErrorsRegister($email, $emailValidate, $password, $passwordValidate);
-
-
-                if ($error->isNoError()) {
-                    try {
-                        $id = $this->dbFactory->createUser($userName, $email, $password);
-                        $user = Factory::getFactory()->createUser($id);
-                        $_SESSION['UserId'] = $user->getId();
-                        KindOf::QUIZCONTENT->getDBHandler()->createTables();
-                        $stats = new UserStats($user);
-                        $this->view(UseCase::WELCOME->getView(), ['user' => $user, 'stats' => $stats]);
-                    } catch (Exception $e) {
-                        $error->fatal = ErrorMessage::USER_CREATE_FAILS->getErrorElement();
-                        $this->reportError($error);
-                    }
-                }
+                if ($error->isNoError()) $this->successfulRegister($userName,$email,$password);
                 else $this->reportError($error);
-            } // invalid post request
-            else {
-                $this->view(UseCase::LOGIN_REGISTER->getView(), []);
             }
+            // invalid post request
+            else $this->view(UseCase::LOGIN_REGISTER->getView(), []);
         // no post request
-        } else {
-            $this->view(UseCase::LOGIN_REGISTER->getView(), []);
         }
+        else $this->view(UseCase::LOGIN_REGISTER->getView(), []);
     }
 
+    private function successfulLogin(string $email):void{
+        $userData = KindOf::USER->getDBHandler()->findAll(['userEmail' => $email]);
+        $user = $this->factory->createUser($userData[0]['id']);
+        $_SESSION['UserId'] = $user->getId();
+        UseCase::WELCOME->getController()->index();
+    }
+
+    private function successfulRegister(string $userName, string $email, string $password):void
+    {
+        try {
+            $id = $this->dbFactory->createUser($userName, $email, $password);
+            $user = Factory::getFactory()->createUser($id);
+            $_SESSION['UserId'] = $user->getId();
+            KindOf::QUIZCONTENT->getDBHandler()->createTables();
+            $stats = new UserStats($user);
+            $this->view(UseCase::WELCOME->getView(), ['user' => $user, 'stats' => $stats]);
+        } catch (Exception $e) {
+            $error = new LoginRegisterError();
+            $error->isLoginError = false;
+            $error->fatal = ErrorMessage::USER_CREATE_FAILS->getErrorElement();
+            $this->reportError($error);
+        }
+    }
 
     /**
      * creates LoginRegisterError object depending on email is valid format, user does exist and password fulfilling
