@@ -21,7 +21,7 @@
     </div>
 {% endblock %}
 {% block contentright %}
-    <div class="card align-self-center rounded-3 mx-1 my-1 py-1">
+    <div class="card align-self-center rounded-3 mt-3 ml-1 ml-1 pl-1 h-75">
         <div class="card-body rounded-3">
             <br>
             <h5 class="card-title">Statistic Question #<span id="statsTitle"></span></h5>
@@ -38,22 +38,22 @@
     </div>
 {% endblock %}
 {% block buttons %}
-    <div class="row row-cols-3 py-5" id="answerActionButtons">
-        <div class="col" id="divPrev">
+    <div class="row row-cols-5 px-5 mx-3" id="answerActionButtons">
+        <div class="col  actionButton" id="divPrev">
             <label>
-                <input type="submit" name="setPrev" class="btn-lg btn-info shadow-sm "
+                <input type="submit" name="setPrev" class="btn-lg btn-info shadow-sm w-100"
                        value="previous question" id="prev">
             </label>
         </div>
-        <div class="col" id="divFinish">
+        <div class="col actionButton" id="divFinish">
             <label>
-                <input type="submit" name="finish" class="btn-lg btn-info shadow-sm"
+                <input type="submit" name="finish" class="btn-lg btn-info shadow-sm w-100"
                        value="finish quiz" id="finishQuiz">
             </label>
         </div>
-        <div class="col" id="divNext">
+        <div class="col actionButton" id="divNext">
             <label>
-                <input type="submit" name="setNext" class="btn-lg btn-info shadow-sm"
+                <input type="submit" name="setNext" class="btn-lg btn-info shadow-sm w-100"
                        value="next question" id="next">
             </label>
         </div>

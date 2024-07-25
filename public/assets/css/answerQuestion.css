@@ -11,3 +11,9 @@
     scrollbar-gutter: stable both-edges;
 }
 
+#answerActionButtons {
+    position: absolute;
+}
+.actionButton {
+    width: 25%;
+}

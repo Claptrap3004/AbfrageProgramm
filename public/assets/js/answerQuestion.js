@@ -105,13 +105,15 @@ const setButtonState = () => {
 
 const setButtonPosition = () => {
     const positionQuestion =  document.querySelector('#answersList').getBoundingClientRect();
-    const left = positionQuestion.left;
-    const right = positionQuestion.right;
-    const width = positionQuestion.width;
-    document.querySelector('#divPrev').style.left = `${left}`;
-    document.querySelector('#divNext').style.right = `${right}`;
-    document.querySelector('#divFinish').style.left = `${left + width / 3}`;
-    console.log(document.querySelector('#divFinish'))
+    const left = document.querySelector('#divPrev').getBoundingClientRect().left;
+    const right = document.querySelector('#divNext').getBoundingClientRect().right;
+    document.querySelector('#answersList').style.left = `${left}px`;
+    document.querySelector('#answersList').style.right = `${right}px`;
+    // document.querySelector('#answerActionButtons').style.right = `${right/2}px`;
+    // document.querySelector('#divPrev').style.left = `${left}px`;
+    // document.querySelector('#divNext').style.right = `${right}px`;
+    // document.querySelector('#divFinish').style.left = `${left + width / 2.5}px`;
+    // console.log(document.querySelector('#divFinish').style)
     document.querySelector('#spacerContentLeft').remove();
 }
 
