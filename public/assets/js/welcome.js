@@ -3,7 +3,6 @@ const initWelcome = ()=>{
 }
 const clearAllStats = () => {
     changeModal('Löschen aller Stats','Durch bestätigen werden alle Stats gelöscht', confirmDeleteStats)
-
 }
 
 const confirmDeleteStats = () => {
@@ -13,6 +12,7 @@ const confirmDeleteStats = () => {
     document.querySelector('#closeModal').click();
     deleteAllStats();
 }
+
 const deleteAllStats = () => {
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/quizQuestion/deleteStatsAll",true);

@@ -18,6 +18,7 @@ const createQuestionInfos = () => {
     let input = document.createElement('input');
     input.style.visibility = 'hidden';
     input.name = "questionId";
+    input.id = "questionId";
     input.value = questionObject.id;
     label.innerHTML = questionObject.text;
     label.appendChild(input);
@@ -48,12 +49,12 @@ const createAnswerButtons = () => {
 const setContentInfos = (clear = null) => {
     document.querySelector('#subTitle').innerHTML = `Frage ${contentInfos.actual} / ${contentInfos.totalQuestions}`;
 }
+
 const setStats = (clear = null) => {
     let timesAsked = document.querySelector('#statsTimesAsked');
     let timesRight = document.querySelector('#statsTimesRight');
     if (clear === null) {
         document.querySelector('#statsTitle').innerHTML = questionObject.id;
-        document.querySelector('#clearStatsOfQuestion').value = questionObject.id;
         timesAsked.innerHTML = questionObject.stats.timesAsked;
         timesRight.innerHTML = questionObject.stats.timesRight;
     } else {
@@ -68,7 +69,7 @@ const setListeners = () => {
     for (const answerLabel of answerLabels) {
         answerLabel.addEventListener('click', clickAnswer)
     }
-    document.querySelector('#labelClearStatsOfQuestion').addEventListener('click', clearStatsOfQuestion)
+    document.querySelector('#labelClearStatsOfQuestion').addEventListener('click', clearStatsOfQuestion);
 
 }
 
@@ -98,14 +99,14 @@ const setButtonState = () => {
 }
 
 const clearStatsOfQuestion = () => {
+    console.log('clicked button');
     changeModal('Lösche Stats der aktuellen Frage','Durch bestätigen werden alle Stats zu dieser Frage gelöscht', confirmDeleteStatsOfQuestion)
 }
 
 
 
 const confirmDeleteStatsOfQuestion = () => {
-    let stats = document.querySelector('#labelClearStatsOfQuestion');
-    stats.disabled = true;
+    console.log('clicked');
     document.querySelector('#statsTimesAsked').innerHTML = '0';
     document.querySelector('#statsTimesRight').innerHTML = '0';
     document.querySelector('#closeModal').click();
