@@ -32,7 +32,7 @@ class App
             }
             $data = isset($url[2]) ? [$url[2]] : [];
             call_user_func_array([$controller, $this->method], $data);
-        } else header("refresh:0.01;url='https://abfrageprogramm.ddev.site:8443/QuizQuestion'");;
+        } else UseCase::WELCOME->getController()->index();
     }
 
 
