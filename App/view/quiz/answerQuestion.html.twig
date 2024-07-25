@@ -11,40 +11,29 @@
     /quizQuestion/answer
 {% endblock %}
 {% block contentleft %}
-    <div id="jsDataAnswers" data-content="{{ jsData.givenAnswers }}" hidden="hidden"></div>
-    <div id="jsDataQuestionAnswers" data-content="{{ jsData.questionAnswers }}" hidden="hidden"></div>
-    <div id="jsDataQuestionStats" data-content="{{ jsData.stats }}" hidden="hidden"></div>
-    <div id="jsDataActual" data-content="{{ contentInfo.actual }}" hidden="hidden"></div>
-    <div id="jsDataNumberOfQuestions" data-content="{{ contentInfo.totalQuestions }}" hidden="hidden"></div>
+
+    <div id="jsDataAnswerQuestion" data-content="{{ jsData }}" hidden="hidden"></div>
+    <div id="jsDataContent" data-content="{{ contentInfo }}" hidden="hidden"></div>
     <div class="row mx-5 pb-2 scrollableQuestion">
-        <label class="col bold btn btn-primary rounded-3 shadow btn-lg disabled mx-2 my-4 p-2 w-100 questionLabel">
-            {{ question.text | nl2br }}
-            <input type="hidden" name="questionId" value="{{ question.id }}">
+        <label class="col bold btn btn-primary rounded-3 shadow btn-lg disabled mx-2 my-4 p-2 w-100 questionLabel" id="questionText">
         </label>
     </div>
-    {% for answer in question.answers %}
-        <div class="row align-self-center mx-5 pb-2">
-            <label class="answerLabels col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-2 my-2 p-2 w-100"
-                   data-bs-toggle='button' id="l_id{{ answer.id }}">{{ answer.text }}
-                <input type="checkbox" name="answers[]" id="a_id{{ answer.id }}" value="{{ answer.id }}"
-                       hidden="hidden">
-            </label>
-        </div>
-    {% endfor %}
+    <div id="answersList">
+    </div>
 {% endblock %}
 {% block contentright %}
     <div class="card align-self-center rounded-3 mx-4 my-5 py-3">
         <div class="card-body rounded-3">
             <br>
-            <h5 class="card-title">Statistic Question #{{ question.id }}</h5>
+            <h5 class="card-title">Statistic Question #<span id="statsTitle"></span></h5>
             <br>
             <br>
-            <p id="statsTimesAsked" class="card-text">{{ question.stats.timesAsked }} times asked</p>
+            <p class="card-text"><span id="statsTimesAsked"></span> times asked</p>
             <br>
-            <p id="statsTimesRight" class="card-text">{{ question.stats.timesRight }} times answered correct</p>
+            <p class="card-text"><span id="statsTimesRight"></span> times answered correct</p>
 
             <label id="labelClearStatsOfQuestion" class="btn btn-warning rounded-3 shadow-sm w-100" ><span id="labelClearStats"> clear Stats</span>
-                <input id="clearStatsOfQuestion" type="checkbox" name="clearStats" value="{{ question.id }}" hidden>
+                <input id="clearStatsOfQuestion" type="checkbox" name="clearStats" value="" hidden>
             </label>
         </div>
     </div>

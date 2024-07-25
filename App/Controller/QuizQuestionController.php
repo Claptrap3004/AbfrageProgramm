@@ -20,16 +20,17 @@ class QuizQuestionController extends Controller
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $questions = $handler->findAll();
         if (count($questions) === 0) {
-          $this->welcome();
+            $this->welcome();
         } else $this->answer();
     }
 
-    public function welcome():void
+    public function welcome(): void
     {
         $user = $this->factory->createUser($_SESSION['UserId']);
         $stats = new UserStats($user);
         $this->view(UseCase::WELCOME->getView(), ['user' => $user, 'stats' => $stats]);
     }
+
     /**
      * expects key 'question_ids' which holds int[] storing selected question_ids that will be asked in the quiz.
      * populates quiz_content table of actual user and directs to answer options of the first question
@@ -76,7 +77,7 @@ class QuizQuestionController extends Controller
     {
         $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-             $clearStats = $_POST['clearStats'] ?? '';
+            $clearStats = $_POST['clearStats'] ?? '';
             $answers = $_POST['answers'] ?? [];
             $questionId = $_POST['questionId'] ?? $id;
             if ($id !== null) {
@@ -111,37 +112,15 @@ class QuizQuestionController extends Controller
                 $trackContent = KindOf::QUIZCONTENT->getDBHandler()->findById($id);
                 $answers = [];
                 foreach ($trackContent as $item) $answers[] = $item['answer_id'];
-                $content = $this->getContentInfos();
-                $jsData = $this->jsFormat($question,$answers);
-                $this->view(UseCase::ANSWER_QUESTION->getView(), ['question' => $question, 'answers' => $answers, 'contentInfo' => $content,'jsData'=> $jsData]);
+                $question->setGivenAnswers($answers);
+                $jsData = json_encode($question);
+                $jsContent = json_encode(new ContentInfos());
+                $this->view(UseCase::ANSWER_QUESTION->getView(), ['contentInfo' => $jsContent, 'jsData' => $jsData]);
             } catch (\Exception $e) {
                 if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
                 $this->answer();
             }
         }
-    }
-
-    private function jsFormat(QuizQuestion $question, array $answers): array{
-        $data = [];
-        $questionAnswers = [];
-        foreach ($question->getAnswers() as $answer) $questionAnswers[]= $answer->getId();
-        $data['givenAnswers'] = json_encode($answers);
-        $data['questionAnswers'] = json_encode($questionAnswers);
-        $stats = ['timesAsked' => $question->getStats()->getTimesAsked(), 'timesRight' => $question->getStats()->getTimesRight()];
-        $data['stats'] = json_encode($stats);
-        return $data;
-
-    }
-
-    private function getContentInfos(): array
-    {
-        $handler = KindOf::QUIZCONTENT->getDBHandler();
-        $data = $handler->findAll();
-        $id = null;
-        foreach ($data as $item) {
-            if ($item['is_actual']) $id = $item['id'];
-        }
-        return ['totalQuestions' => count($data), 'actual' => $id];
     }
 
     public function final(): void
@@ -154,9 +133,8 @@ class QuizQuestionController extends Controller
         } elseif (isset($_REQUEST['confirm'])) {
             $_SESSION['final'] = true;
             $this->view(UseCase::FINALIZE_QUIZ->getView(), ['questionsJS' => $quizStatsView]);
-        }
-        else{
-        $this->view(UseCase::CHECK_BEFORE_FINALIZE->getView(), ['questionsJS' => $quizStatsView]);
+        } else {
+            $this->view(UseCase::CHECK_BEFORE_FINALIZE->getView(), ['questionsJS' => $quizStatsView]);
         }
         $_SERVER['REQUEST_METHOD'] = null;
     }
