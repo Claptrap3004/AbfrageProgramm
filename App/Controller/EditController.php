@@ -11,7 +11,7 @@ class EditController extends Controller
 
     }
 
-    public function selectImport():void
+    public function selectImport(): void
     {
 
     }
@@ -40,7 +40,8 @@ class EditController extends Controller
         $exporter->writeCSV('export.csv', $questionIds);
     }
 
-    private function cleanUp():void {
+    private function cleanUp(): void
+    {
         $this->deleteInvalidQuestions();
         $this->deleteDuplicates();
     }
@@ -57,6 +58,7 @@ class EditController extends Controller
                 $categoryId = $_POST['editCategoryId'] ?? null;
                 $categoryText = $_POST['editCategoryText'] ?? null;
                 $answers = json_decode($answerArray);
+
                 // if new question is created no valid id will be submitted, hence new question needs to be created
                 if (!$id) $id = DBFactory::getFactory()->createNewQuizQuestion($text, $categoryId);
 
@@ -64,46 +66,47 @@ class EditController extends Controller
                 if ($categoryId < 1) $categoryId = DBFactory::getFactory()->createCategory($categoryText);
 
                 // new EditQuestion instance needs to be created and updated with submitted user inputs, after
-                // EditQuestion has contains all edited values it needs to update itself to db
-                try {
-                    $editQuestion = $this->factory->createEditQuestionById($id);
-                    $editQuestion->setText($text);
-                    $editQuestion->setCategory($this->factory->findIdTextObjectById($categoryId, KindOf::CATEGORY));
-                    $editQuestion->setExplanation($explanation);
-                    $editQuestion->resetAnswers();
-                    if ($answers) {
-                        foreach ($answers as $answer) {
-                            // since createAnswer method in DBFactory checks for existence of answer text and either
-                            // returns id of existing answer or id of newly created answer there is no need to check for
-                            // existence of answer in controller
-                            $answerId = DBFactory::getFactory()->createAnswer($answer->text);
-                            $answerToRelate = $this->factory->findIdTextObjectById($answerId, KindOf::ANSWER);
-                            $editQuestion->setAnswer($answerToRelate, $answer->isRight);
-                        }
-                    }
-                    $editQuestion->saveQuestion();
-                } catch (Exception $e) {
-
-                }
-                $this->view(UseCase::WELCOME->getView(),[]);
-            } else {
-                // sends data of question to according view in json format
-                try {
-                    $jsData = json_encode(Factory::getFactory()->createEditQuestionById($questionId));
-                    $jsDataCategories = json_encode(Factory::getFactory()->findAllIdTextObject(KindOf::CATEGORY));
-                    $this->view(UseCase::EDIT_QUESTION->getView(), ['jsData' => $jsData, 'jsDataCategories' => $jsDataCategories]);
-                } catch (\Exception $e) {
-                }
+                // EditQuestion contains all edited values it needs to update itself to db
+                $this->updateEditedQuestion($id, $categoryId, $text, $explanation, $answers);
+                $this->view(UseCase::WELCOME->getView(), []);
             }
+            else $this->showEditQuestion($questionId);
         } else {
             // if method has been called with no proper parameter it will return user to main screen
-            $this->view(UseCase::WELCOME->getView(),[]);
+            $this->view(UseCase::WELCOME->getView(), []);
         }
     }
 
-
-    private function createQuestion()
+    // sends data of question to according view in json format
+    private function showEditQuestion(int $questionId): void
     {
+        try {
+            $jsData = json_encode(Factory::getFactory()->createEditQuestionById($questionId));
+            $jsDataCategories = json_encode(Factory::getFactory()->findAllIdTextObject(KindOf::CATEGORY));
+            $this->view(UseCase::EDIT_QUESTION->getView(), ['jsData' => $jsData, 'jsDataCategories' => $jsDataCategories]);
+        } catch (Exception $e){ $this->view(UseCase::WELCOME->getView(), []);}
+
+    }
+
+    private function updateEditedQuestion(int $id, int $categoryId, string $text, string $explanation, array $answers): void
+    {
+        try {
+            $editQuestion = $this->factory->createEditQuestionById($id);
+            $editQuestion->setText($text);
+            $editQuestion->setCategory($this->factory->findIdTextObjectById($categoryId, KindOf::CATEGORY));
+            $editQuestion->setExplanation($explanation);
+            $editQuestion->resetAnswers();
+            if ($answers) {
+                foreach ($answers as $answer) {
+                    $answerId = DBFactory::getFactory()->createAnswer($answer->text);
+                    $answerToRelate = $this->factory->findIdTextObjectById($answerId, KindOf::ANSWER);
+                    $editQuestion->setAnswer($answerToRelate, $answer->isRight);
+                }
+            }
+            $editQuestion->saveQuestion();
+        } // if anything goes wrong question just stays unchanged
+        catch (Exception $e) {
+        }
 
     }
 
