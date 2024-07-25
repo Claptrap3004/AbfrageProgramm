@@ -1,9 +1,9 @@
 let questionObject;
 let contentInfos;
+
 const initAnswerQuestion = () => {
     questionObject = JSON.parse(document.querySelector('#jsDataAnswerQuestion').getAttribute('data-content'));
     contentInfos = JSON.parse(document.querySelector('#jsDataContent').getAttribute('data-content'));
-    console.log(questionObject);
     createQuestionInfos();
     createAnswerButtons();
     setListeners();
@@ -11,6 +11,7 @@ const initAnswerQuestion = () => {
     markGivenAnswers();
     setButtonState();
 }
+
 const createQuestionInfos = () => {
     let label = document.querySelector('#questionText');
     let input = document.createElement('input');
@@ -50,7 +51,7 @@ const setStats = (clear = null) => {
     let timesAsked = document.querySelector('#statsTimesAsked');
     let timesRight = document.querySelector('#statsTimesRight');
     if (clear === null){
-        document.querySelector('#statsTitle').innerHTML = questionObject.id;;
+        document.querySelector('#statsTitle').innerHTML = questionObject.id;
         document.querySelector('#clearStatsOfQuestion').value = questionObject.id;
         timesAsked.innerHTML = questionObject.stats.timesAsked;
         timesRight.innerHTML = questionObject.stats.timesRight;

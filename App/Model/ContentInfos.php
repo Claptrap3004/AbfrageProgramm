@@ -11,10 +11,10 @@ class ContentInfos implements JsonSerializable
 
     public function __construct()
     {
-        $this->colllectInfos();
+        $this->collectInfos();
     }
 
-    private function colllectInfos(): void
+    private function collectInfos(): void
     {
         $data = KindOf::QUIZCONTENT->getDBHandler()->findAll();
         $this->totalQuestions = count($data);

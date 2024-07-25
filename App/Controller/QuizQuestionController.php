@@ -114,7 +114,8 @@ class QuizQuestionController extends Controller
                 foreach ($trackContent as $item) $answers[] = $item['answer_id'];
                 $question->setGivenAnswers($answers);
                 $jsData = json_encode($question);
-                $jsContent = json_encode(new ContentInfos());
+                $content = new ContentInfos();
+                $jsContent = json_encode($content);
                 $this->view(UseCase::ANSWER_QUESTION->getView(), ['contentInfo' => $jsContent, 'jsData' => $jsData]);
             } catch (\Exception $e) {
                 if (KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId() === $id) KindOf::QUIZCONTENT->getDBHandler()->deleteAtId($id);
