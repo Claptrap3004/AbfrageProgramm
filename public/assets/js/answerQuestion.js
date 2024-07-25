@@ -69,7 +69,7 @@ const setListeners = () => {
     for (const answerLabel of answerLabels) {
         answerLabel.addEventListener('click', clickAnswer)
     }
-    document.querySelector('#labelClearStatsOfQuestion').addEventListener('click', clearStatsOfQuestion);
+    document.querySelector('#clearStatsOfQuestion').addEventListener('click', clearStatsOfQuestion);
 
 }
 
@@ -99,14 +99,12 @@ const setButtonState = () => {
 }
 
 const clearStatsOfQuestion = () => {
-    console.log('clicked button');
     changeModal('Lösche Stats der aktuellen Frage','Durch bestätigen werden alle Stats zu dieser Frage gelöscht', confirmDeleteStatsOfQuestion)
 }
 
 
 
 const confirmDeleteStatsOfQuestion = () => {
-    console.log('clicked');
     document.querySelector('#statsTimesAsked').innerHTML = '0';
     document.querySelector('#statsTimesRight').innerHTML = '0';
     document.querySelector('#closeModal').click();
