@@ -115,14 +115,15 @@ class Factory
         );
     }
 
-    public function createStatsByQuestionId(int $questionId): Stats
+    public function createStatsByQuestionId(int $questionId): ?Stats
     {
         $statsAttributes = KindOf::STATS->getDBHandler()->findById($questionId);
-        return new Stats($statsAttributes['id'],
+        return $statsAttributes ? new Stats($statsAttributes['id'],
                         $statsAttributes['user_id'],
                         $statsAttributes['question_id'],
                         $statsAttributes['times_asked'],
-                        $statsAttributes['times_right']);
+                        $statsAttributes['times_right']) :
+            null;
     }
 
 

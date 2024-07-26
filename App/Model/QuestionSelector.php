@@ -7,16 +7,48 @@ use Random\RandomException;
 class QuestionSelector implements CanSelectQuestions
 {
     private array $questionPool;
+    private bool $preferUnperfect;
+
+    public function __construct(bool $preferUnperfect = false)
+    {
+        $this->preferUnperfect = $preferUnperfect;
+    }
 
     public function select(int $numberOfQuestions, array $categoryIds = []): array
     {
         $questions = [];
         $this->questionPool = KindOf::QUESTION->getDBHandler()->findAll(Filters::CATEGORY->createArray($categoryIds));
         if ($numberOfQuestions > count($this->questionPool)) return [];
+        if ($this->preferUnperfect) $this->modifyPool($numberOfQuestions);
         for ($i = 0; $i < $numberOfQuestions; $i++) {
             $questions[] = $this->pickOne();
         }
         return $questions;
+    }
+
+    private function modifyPool(int $numberOfQuestions):void
+    {
+        $tempPool = [];
+        $newPool = [];
+        foreach ($this->questionPool as $data){
+            $id = (int)($data['id']);
+            $stats = Factory::getFactory()->createStatsByQuestionId($id);
+            if ($stats === null || $this->statsUnperfect($stats)) $newPool[]['id'] = $id;
+            else $tempPool[]['id'] = $id;
+        }
+        $availableQuestions = count($newPool);
+        if ($availableQuestions < $numberOfQuestions){
+            shuffle($tempPool);
+            $difference = $numberOfQuestions - $availableQuestions;
+            $add = array_slice($tempPool,0,$difference);
+            $newPool[] = array_merge($newPool,$add);
+        }
+        $this->questionPool = $newPool;
+    }
+
+    private function statsUnperfect(Stats $stats):bool
+    {
+        return ($stats->getTimesAsked() !== $stats->getTimesRight());
     }
 
     private function pickOne() : int

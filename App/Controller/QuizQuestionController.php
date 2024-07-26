@@ -56,12 +56,12 @@ class QuizQuestionController extends Controller
      * is created and random selection of question ids is sent to according method to create the content
      * @return void
      */
-    public function select(): void
+    public function select(bool $preferUnperfect = false): void
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $categories = $_POST['categories'] ?? [];
             $numberOfQuestions = (int)$_POST['range'] ?? 0;
-            $selector = new QuestionSelector();
+            $selector = new QuestionSelector($preferUnperfect);
             $questions = $selector->select($numberOfQuestions, $categories);
             $this->fillTableAndStartActual($questions);
         } else {
