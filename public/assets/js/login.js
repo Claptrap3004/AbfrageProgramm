@@ -1,4 +1,5 @@
 const initLogin = () => {
+
     let contentLeft = document.querySelector('#contentLeft');
     let errorData = document.querySelector('#jsLoginErrorData').getAttribute('data-content');
     document.querySelector('#spacerContentLeft').className = "col-4";

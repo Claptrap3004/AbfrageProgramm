@@ -16,7 +16,7 @@ const initAnswerQuestion = () => {
 }
 
 const setScreen = () => {
-    document.querySelector('#spacerContentLeft').display = 'none';
+    removeLeftContentSpacer();
 }
 
 const createQuestionInfos = () => {

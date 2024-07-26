@@ -11,9 +11,9 @@ class RangeQuestionSelector implements CanSelectQuestions
         if (count($categoryIds) !== 1) return [];
         $questionPool = KindOf::QUESTION->getDBHandler()->findAll(Filters::CATEGORY->createArray($categoryIds));
         $end = $startIndex + $numberOfQuestions;
-        if ($end > count($questionPool)-1) $end = count($questionPool)-1;
+        if ($end > (count($questionPool)-1)) $end = count($questionPool)-1;
         for ($i = $startIndex; $i <= $end; $i++) {
-            $questions[] = $questionPool[$i]['id'];
+            $questions[] = (int)$questionPool[$i]['id'];
         }
         return $questions;
     }

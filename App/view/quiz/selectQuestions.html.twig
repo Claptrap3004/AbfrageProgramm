@@ -57,28 +57,44 @@
 {% endblock %}
 {% block contentright %}
     <div class="row text-black p-2 m-2">
-        <p>Fragen alle Kategorien: <br><span id="maxQuestionsAll"></span></p><br>
-        <p>Fragen gewählte Kategorien: <br><span id="maxQuestionsSelected"></span></p><br>
+        <p>all questions: <span id="maxQuestionsAll"></span></p>
+        <p>questions in selected categories: <span id="maxQuestionsSelected"></span></p>
     </div>
     <div class="row text-black p-2 m-2">
-        <label for="currentVal"> Bitte Anzahl der Fragen wählen: <br></label><input type="number" id="currentVal"
+        <label for="currentVal"> enter number of questions to select: </label><input type="number" id="currentVal"
                                                                                     name="range" value="0">
     </div>
-
     <div class="row text-black p-2 m-2">
         <label>Prefer not yet asked and answered wrong questions:
             <input type="checkbox" name="prefered" value="1">
         </label>
     </div>
+
+    <div class="row text-black p-2 m-2" id="alternativeOptionCheckBox">
+        <label>
+            select ordered questions in category
+            <input type="checkbox" name="chooseAlt" id="chooseAlternativeOption">
+        </label>
+    </div>
+    <div class="row text-black p-2 m-2" id="alternativeOption">
+        <label>
+            <input class="alternativeOptionInput" type="number" name="startQuestion" id="startQuestion" placeholder="from question">
+        </label>
+        <label>
+            <input class="alternativeOptionInput" type="number" name="endQuestion" id="endQuestion" placeholder="to question">
+        </label>
+
+    </div>
+
     <div class="row text-black p-2 m-2">
-        <button type="submit" class="btn-lg btn-primary">Auswahl bestätigen</button>
+        <button type="submit" class="btn-lg btn-primary">Confirm choice</button>
     </div>
 
 
     <div class="row text-black p-2 m-2"></div>
     <div class="row text-black p-2 m-2">
         <a href="/index">
-            <label style="width: 100%" class="btn-lg btn-primary">Zum Hauptmenü</label>
+            <label style="width: 100%" class="btn-lg btn-primary">back</label>
         </a>
     </div>
 {% endblock %}

@@ -47,7 +47,7 @@ class QuizQuestionController extends Controller
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $handler->create(['question_ids' => $data]);
-        header("refresh:0.01;url='" . HOST . "QuizQuestion/answer'");
+        $this->answer();
 
     }
 
@@ -62,8 +62,17 @@ class QuizQuestionController extends Controller
             $categories = $_POST['categories'] ?? [];
             $numberOfQuestions = (int)$_POST['range'] ?? 0;
             $preferUnperfect = (isset($_POST['prefered']));
-            $selector = new QuestionSelector($preferUnperfect);
-            $questions = $selector->select($numberOfQuestions, $categories);
+            $altMethod = (isset($_POST['chooseAlt']));
+            $start = (int)($_POST['startQuestion'] ?? 0);
+            $end = (int)($_POST['endQuestion'] ?? 0);
+            if ($altMethod && $start > 0 && $end > 0) {
+                $selector = new RangeQuestionSelector();
+                $numberOfQuestions = $end - $start;
+                $questions = $selector->select($numberOfQuestions, $categories, $start);
+            } else {
+                $selector = new QuestionSelector($preferUnperfect);
+                $questions = $selector->select($numberOfQuestions, $categories);
+            }
             $this->fillTableAndStartActual($questions);
         } else {
             $questionsByCategories = KindOf::QUESTION->getDBHandler()->findAll(['question_by_category' => null]);
@@ -102,7 +111,7 @@ class QuizQuestionController extends Controller
      *
      * @return void
      */
-    private function clearActionRequests():void
+    private function clearActionRequests(): void
     {
         unset($_POST['finish']);
         unset($_POST['setPrev']);
@@ -116,7 +125,7 @@ class QuizQuestionController extends Controller
      * @param int $id
      * @return void
      */
-    private function showNextQuestion(int $id):void
+    private function showNextQuestion(int $id): void
     {
         try {
             $question = $this->factory->createQuizQuestionById($id);
@@ -139,7 +148,8 @@ class QuizQuestionController extends Controller
      * @param array $answers
      * @return void
      */
-    private function evaluateUserInput(int $id, array $answers):void {
+    private function evaluateUserInput(int $id, array $answers): void
+    {
         try {
             $question = $this->factory->createQuizQuestionById($id);
             foreach ($answers as $answer) {
@@ -154,7 +164,7 @@ class QuizQuestionController extends Controller
 
             KindOf::QUIZCONTENT->getDBHandler()->setActual($whichActual);
         } catch (Exception $e) {
-           $this->reactOnQuestionCreateError($id);
+            $this->reactOnQuestionCreateError($id);
         }
     }
 
@@ -175,7 +185,7 @@ class QuizQuestionController extends Controller
      * necessary to avoid skip to next question on users page refresh od answerQuestion.html.twig
      * @return bool
      */
-    public function isActionSet():bool
+    public function isActionSet(): bool
     {
         return isset($_POST['finish']) || isset($_POST['setPrev']) || isset($_POST['setNext']);
     }
