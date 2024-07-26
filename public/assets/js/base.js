@@ -11,5 +11,3 @@ const changeModal = (title, text, confirmFunction) => {
     document.querySelector('#modalText').innerHTML = text;
     document.querySelector('#modalConfirm').addEventListener('click', confirmFunction);
 }
-
-

@@ -48,13 +48,14 @@ class EditController extends Controller
 
     public function createQuestion():void
     {
-        $this->showEditQuestion(0);
+        if ($_SERVER['REQUEST_METHOD'] == "POST") $this->editQuestion(0);
+        else $this->showEditQuestion(0);
     }
 
     public function editQuestion(int|string|null $questionId = null): void
     {
         if (gettype($questionId) == 'string') $questionId = is_numeric($questionId) ? (int)($questionId) : null;
-        if ($questionId !== null && $this->questionExists($questionId)) {
+        if ($questionId !== null && ( $this->questionExists($questionId) || $questionId === 0)) {
 
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $answerArray = $_POST['answerArrayJSON'] ?? '';
@@ -65,12 +66,11 @@ class EditController extends Controller
                 $categoryText = $_POST['editCategoryText'] ?? null;
                 $answers = json_decode($answerArray);
 
-                // if new question is created no valid id will be submitted, hence new question needs to be created
-                if (!$id) $id = DBFactory::getFactory()->createNewQuizQuestion($text, $categoryId);
-
                 // if user selects create new category id will be 0, hence new category needs to be created
                 if ($categoryId < 1) $categoryId = DBFactory::getFactory()->createCategory($categoryText);
 
+                // if new question is created no valid id will be submitted, hence new question needs to be created
+               if ($questionId === 0) $id = DBFactory::getFactory()->createNewQuizQuestion($text, $categoryId);
                 // new EditQuestion instance needs to be created and updated with submitted user inputs, after
                 // EditQuestion contains all edited values it needs to update itself to db
                 $this->updateEditedQuestion($id, $categoryId, $text, $explanation, $answers);

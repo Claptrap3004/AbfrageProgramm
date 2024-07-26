@@ -38,7 +38,7 @@ class DBFactory
 
     public function createNewQuizQuestion(string $questionText, int $categoryId):int
     {
-        return $this->createQuestion($categoryId,$questionText);
+        return $this->createQuestion($categoryId,$questionText,'');
 
     }
 
