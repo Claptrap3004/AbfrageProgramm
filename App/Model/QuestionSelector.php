@@ -33,15 +33,15 @@ class QuestionSelector implements CanSelectQuestions
         foreach ($this->questionPool as $data){
             $id = (int)($data['id']);
             $stats = Factory::getFactory()->createStatsByQuestionId($id);
-            if ($stats === null || $this->statsUnperfect($stats)) $newPool[]['id'] = $id;
-            else $tempPool[]['id'] = $id;
+            if ($stats === null || $this->statsUnperfect($stats)) $newPool[] = $data;
+            else $tempPool[] = $data;
         }
         $availableQuestions = count($newPool);
         if ($availableQuestions < $numberOfQuestions){
             shuffle($tempPool);
             $difference = $numberOfQuestions - $availableQuestions;
             $add = array_slice($tempPool,0,$difference);
-            $newPool[] = array_merge($newPool,$add);
+            $newPool = array_merge($newPool,$add);
         }
         $this->questionPool = $newPool;
     }
