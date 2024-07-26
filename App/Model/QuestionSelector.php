@@ -14,7 +14,7 @@ class QuestionSelector implements CanSelectQuestions
         $this->preferUnperfect = $preferUnperfect;
     }
 
-    public function select(int $numberOfQuestions, array $categoryIds = []): array
+    public function select(int $numberOfQuestions, array $categoryIds = [], int $startIndex = 0): array
     {
         $questions = [];
         $this->questionPool = KindOf::QUESTION->getDBHandler()->findAll(Filters::CATEGORY->createArray($categoryIds));

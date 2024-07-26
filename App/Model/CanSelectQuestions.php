@@ -4,6 +4,6 @@ namespace quiz;
 
 interface CanSelectQuestions
 {
-    public function select(int $numberOfQuestions,array $categoryIds) : array;
+    public function select(int $numberOfQuestions,array $categoryIds, int $startIndex) : array;
 
 }
