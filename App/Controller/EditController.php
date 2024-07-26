@@ -37,7 +37,7 @@ class EditController extends Controller
         $all = KindOf::QUESTION->getDBHandler()->findAll();
         $questionIds = [];
         foreach ($all as $item) $questionIds[] = $item['id'];
-        $exporter->writeCSV('export.csv', $questionIds);
+        $exporter->writeCSV('js.csv', $questionIds);
     }
 
     private function cleanUp(): void
@@ -48,7 +48,8 @@ class EditController extends Controller
 
     public function editQuestion(int|string|null $questionId = null): void
     {
-        if ($questionId !== null && (int)($questionId) >= 0) {
+        if (typeOf($questionId) == 'string') $questionId = is_numeric($questionId) ? (int)($questionId) : null;
+        if ($questionId !== null && $this->questionExists($questionId)) {
 
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $answerArray = $_POST['answerArrayJSON'] ?? '';
@@ -77,6 +78,12 @@ class EditController extends Controller
         }
     }
 
+    private function questionExists(int $id):bool
+    {
+        $ids = KindOf::QUESTION->getDBHandler()->findAll();
+        foreach ($ids as $data) if ($data['id'] === $id) return true;
+        return false;
+    }
     // sends data of question to according view in json format
     private function showEditQuestion(int $questionId): void
     {

@@ -1,5 +1,6 @@
 body {
     display: block;
+    position:  relative;
     background-image: url('/assets/img/qmarks.jpg');
     background-size: cover;
     overflow: hidden;
@@ -11,6 +12,11 @@ body {
 }
 
 .scrollable-contentleft {
+    /*position: absolute;*/
+    /*left: 5%;*/
+    /*right: 25%;*/
+    /*top: 15%;*/
+    /*bottom:25%;*/
     min-width: 75rem;
     max-width: 75rem;
     max-height: 35rem;
@@ -22,6 +28,11 @@ body {
 
 
 .content-right {
+    /*position: absolute;*/
+    /*right: 5%;*/
+    /*bottom: 25%;*/
+    /*left:75%;*/
+    /*top: 15%;*/
     min-width: 18em;
     max-width: 18rem;
     max-height: 35rem;
@@ -31,6 +42,10 @@ body {
 }
 
 .scrollable-contentbuttons {
+    /*position: absolute;*/
+    /*left: 10%;*/
+    /*right: 25%;*/
+    /*bottom: 5%;*/
     min-width: 120rem;
     max-width: 120rem;
     min-height: 10rem;
@@ -40,8 +55,16 @@ body {
 
 }
 #modal {
-    position: relative;
+}
+.overlay {
+    position: fixed;
     top: 30%;
+    bottom: 30%;
+    left: 35%;
+    right: 35%;
+    width: 30%;
+    height: 30%;
+
 }
 
 body, html, head,
