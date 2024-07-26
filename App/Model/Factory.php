@@ -77,6 +77,10 @@ class Factory
         ];
     }
 
+    public function createEmptyEditQuestion():EditQuestion
+    {
+        return new EditQuestion(0,'','',new IdText(0,'',KindOf::CATEGORY),[],[]);
+    }
     /**
      * @throws Exception
      */

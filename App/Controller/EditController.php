@@ -46,9 +46,14 @@ class EditController extends Controller
         $this->deleteDuplicates();
     }
 
+    public function createQuestion():void
+    {
+        $this->showEditQuestion(0);
+    }
+
     public function editQuestion(int|string|null $questionId = null): void
     {
-        if (typeOf($questionId) == 'string') $questionId = is_numeric($questionId) ? (int)($questionId) : null;
+        if (gettype($questionId) == 'string') $questionId = is_numeric($questionId) ? (int)($questionId) : null;
         if ($questionId !== null && $this->questionExists($questionId)) {
 
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -88,7 +93,9 @@ class EditController extends Controller
     private function showEditQuestion(int $questionId): void
     {
         try {
-            $jsData = json_encode(Factory::getFactory()->createEditQuestionById($questionId));
+            $jsData = $this->questionExists($questionId) ?
+                json_encode(Factory::getFactory()->createEditQuestionById($questionId)):
+                json_encode(Factory::getFactory()->createEmptyEditQuestion());
             $jsDataCategories = json_encode(Factory::getFactory()->findAllIdTextObject(KindOf::CATEGORY));
             $this->view(UseCase::EDIT_QUESTION->getView(), ['jsData' => $jsData, 'jsDataCategories' => $jsDataCategories]);
         } catch (Exception $e){ $this->view(UseCase::WELCOME->getView(), []);}
