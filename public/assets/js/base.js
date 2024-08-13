@@ -1,5 +1,5 @@
 const init = () => {
-    console.log('');
+    document.querySelector('#navQuickStart').addEventListener('click', quick20);
 }
 
 const changeModal = (title, text, confirmFunction) => {
@@ -14,4 +14,16 @@ const changeModal = (title, text, confirmFunction) => {
 
 const removeLeftContentSpacer = () => {
     document.querySelector('#spacerContentLeft').remove();
+}
+
+const quick20 = () => quickstart(20);
+const quick50 = () => quickstart(50);
+
+const quickstart = (numberOfQuestions) => {
+    let xhttp = new XMLHttpRequest();
+    let url = `/quizQuestion/quickStart?numberOfQuestions=${numberOfQuestions}`;
+    xhttp.open("GET", url,true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send();
+    document.querySelector('#directToAnswers').click();
 }

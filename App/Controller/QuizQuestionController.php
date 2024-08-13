@@ -96,7 +96,6 @@ class QuizQuestionController extends Controller
      */
     public function answer(): void
     {
-//        file_put_contents('test.log',json_encode($_POST),FILE_APPEND);
         $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $answers = $_POST['answers'] ?? [];
@@ -222,11 +221,11 @@ class QuizQuestionController extends Controller
 
     /**
      * quick randomly generated quiz from all available question with standard selection method
-     * @param $numberOfQuestions
      * @return void
      */
-    public function quickStart($numberOfQuestions = 20): void
+    public function quickStart(): void
     {
+        $numberOfQuestions = $_REQUEST['numberOfQuestions'] ?? 20;
         $selector = new QuestionSelector();
         $questions = $selector->select((int)$numberOfQuestions);
         $this->fillTables($questions);

@@ -129,7 +129,7 @@ const callSelection = () => {
     xhttp.open("GET", bodyString,true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send();
-    document.querySelector('#afterSelectConfirm').click();
+    document.querySelector('#directToAnswers').click();
 }
 
 
