@@ -239,8 +239,8 @@ class QuizQuestionController extends Controller
      */
     public function deleteStatsQuestion(): void
     {
-        $id = $_POST['id'] ?? 0;
-        KindOf::STATS->getDBHandler()->deleteAtId($id);
+        $id = $_REQUEST['id'] ?? 0;
+        if ($id > 0) $this->factory->createStatsByQuestionId((int) $id)->reset();
     }
 
     /**
