@@ -43,11 +43,11 @@ class QuizQuestionController extends Controller
      * @param array $data
      * @return void
      */
-    private function fillTableAndStartActual(array $data = []): void
+    private function fillTables(array $data = []): void
     {
         $handler = KindOf::QUIZCONTENT->getDBHandler();
         $handler->create(['question_ids' => $data]);
-        $this->answer();
+
 
     }
 
@@ -58,27 +58,32 @@ class QuizQuestionController extends Controller
      */
     public function select(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $categories = $_POST['categories'] ?? [];
-            $numberOfQuestions = (int)$_POST['range'] ?? 0;
-            $preferUnperfect = (isset($_POST['prefered']));
-            $altMethod = (isset($_POST['chooseAlt']));
-            $start = (int)($_POST['startQuestion'] ?? 0);
-            $end = (int)($_POST['endQuestion'] ?? 0);
-            if ($altMethod && $start > 0 && $end > 0) {
-                $selector = new RangeQuestionSelector();
-                $numberOfQuestions = $end - $start;
-                $questions = $selector->select($numberOfQuestions, $categories, $start);
-            } else {
-                $selector = new QuestionSelector($preferUnperfect);
-                $questions = $selector->select($numberOfQuestions, $categories);
-            }
-            $this->fillTableAndStartActual($questions);
-        } else {
             $questionsByCategories = KindOf::QUESTION->getDBHandler()->findAll(['question_by_category' => null]);
             $jsData = json_encode($questionsByCategories);
             $this->view('quiz/selectQuestions', ['categories' => $questionsByCategories, 'jsData' => $jsData]);
+    }
+
+    public function makeSelection(): void
+    {
+        $json = json_encode($_REQUEST);
+        file_put_contents('test.log',$json,FILE_APPEND);
+        $categories = $_REQUEST['categories'] ?? [];
+        $numberOfQuestions = (int)$_REQUEST['range'] ?? 0;
+        $preferUnperfect = (isset($_REQUEST['prefered']));
+        $altMethod = (isset($_REQUEST['chooseAlt']));
+        $start = (int)($_REQUEST['startQuestion'] ?? 0);
+        $end = (int)($_REQUEST['endQuestion'] ?? 0);
+        if ($altMethod && $start > 0 && $end > 0) {
+            $selector = new RangeQuestionSelector();
+            $numberOfQuestions = $end - $start;
+            $questions = $selector->select($numberOfQuestions, $categories, $start);
+        } else {
+            $selector = new QuestionSelector($preferUnperfect);
+            $questions = $selector->select($numberOfQuestions, $categories);
         }
+        $json = json_encode($questions);
+        file_put_contents('test.log',$json,FILE_APPEND);
+        $this->fillTables($questions);
     }
 
 
@@ -91,6 +96,7 @@ class QuizQuestionController extends Controller
      */
     public function answer(): void
     {
+//        file_put_contents('test.log',json_encode($_POST),FILE_APPEND);
         $id = KindOf::QUIZCONTENT->getDBHandler()->getActualQuestionId();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $answers = $_POST['answers'] ?? [];
@@ -223,7 +229,8 @@ class QuizQuestionController extends Controller
     {
         $selector = new QuestionSelector();
         $questions = $selector->select((int)$numberOfQuestions);
-        $this->fillTableAndStartActual($questions);
+        $this->fillTables($questions);
+        $this->answer();
     }
 
     /**

@@ -71,12 +71,14 @@ const setMax = () => {
 
 const setListeners = () => {
     document.querySelector('#categoryAll').addEventListener('click', changeAllCategories);
+    document.querySelector('#selectConfirmButton').addEventListener('click', callSelection);
     const categoryCheckboxes = document.querySelectorAll('.categories');
     for (const categoryCheckbox of categoryCheckboxes) {
         categoryCheckbox.addEventListener('click', clickCategory);
     }
     document.querySelector('#currentVal').addEventListener('change',checkCurrent);
     document.querySelector('#alternativeOptionCheckBox').addEventListener('click', checkSetAlternativeSelectionMethod);
+
 }
 
 
@@ -103,7 +105,6 @@ const onlyOneCategorySelected = () => {
     for (let category of document.querySelectorAll('.categories')) {
         if (category.checked) count++;
     }
-    console.log(count)
     return count === 1;
 }
 
@@ -111,4 +112,32 @@ const checkCurrent = () => {
     let current = document.querySelector('#currentVal');
     if (Number(current.value) > selectedAll) current.value = selectedAll;
     else if (Number(current.value) < 0) current.value = 0;
+}
+
+const callSelection = () => {
+    let alternativeTestSelected = document.querySelector('#chooseAlternativeOption').selected;
+    let preferedSelected = document.querySelector('#choosePrefered').selected;
+    let numberOfQuestions = document.querySelector('#currentVal').value;
+    let categories = getSelectedCategoryIdArray();
+    let startQuestion = document.querySelector('#startQuestion').value ?? 0;
+    let endQuestion = document.querySelector('#endQuestion').value ?? 0;
+    let bodyString = "/quizQuestion/makeSelection?" + `categories[]=${categories}&range=${numberOfQuestions}`;
+    bodyString += preferedSelected ? '&prefered=1' : '';
+    bodyString += alternativeTestSelected ? `&chooseAlt=1&startQuestion=${startQuestion}&endQuestion=${endQuestion}`: '';
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("GET", bodyString,true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send();
+    // document.querySelector('#afterSelectConfirm').click();
+}
+const getSelectedCategoryIdArray = () => {
+    let ids = [];
+    let allCategories = document.querySelectorAll('.categories');
+    for (const allCategory of allCategories) {
+        if (allCategory.checked) ids.push(allCategory.value);
+    }
+    console.log(ids);
+    return ids;
+
 }

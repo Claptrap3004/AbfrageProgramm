@@ -133,9 +133,9 @@ const confirmDeleteStatsOfQuestion = () => {
 const deleteStats = () => {
     let id = document.querySelector('#questionId').value;
     let xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/quizQuestion/deleteStatsQuestion",true);
+    xhttp.open("GET", `/quizQuestion/deleteStatsQuestion?id=${id}`,true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send(`id=${id}`);
+    xhttp.send();
 }
 
 const clickAnswer = (event) => {
