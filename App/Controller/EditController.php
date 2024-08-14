@@ -52,6 +52,19 @@ class EditController extends Controller
         else $this->showEditQuestion(0);
     }
 
+    public function selectQuestionToEdit():void
+    {
+        $questionIds = KindOf::QUESTION->getDBHandler()->findAll(['userIds' => [$_SESSION['UserId']]]);
+        $questions = [];
+        foreach ($questionIds as $questionId) try {
+            $questions[] = Factory::getFactory()->createEditQuestionById($questionId['id']);
+        } catch (Exception $e) {
+            continue;
+        }
+        $jsData = json_encode($questions);
+        $this->view(UseCase::SELECT_EDIT_QUESTION->getView(), ['jsData' => $jsData]);
+    }
+
     public function editQuestion(int|string|null $questionId = null): void
     {
         if (gettype($questionId) == 'string') $questionId = is_numeric($questionId) ? (int)($questionId) : null;

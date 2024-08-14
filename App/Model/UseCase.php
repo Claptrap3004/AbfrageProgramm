@@ -9,6 +9,7 @@ enum UseCase:string
     case SELECT_QUESTIONS = 'quiz/select';
     case ANSWER_QUESTION = 'quiz/answerQuestion';
     case EDIT_QUESTION = 'edit/editQuestion';
+    case SELECT_EDIT_QUESTION = 'edit/selectQuestionToEdit';
     case IMPORT = 'edit/import';
     case EXPORT = 'edit/export';
     case FINALIZE_QUIZ = 'quiz/finalStats';
@@ -29,7 +30,7 @@ enum UseCase:string
     {
         return match ($this->getName()) {
             'LOGIN_REGISTER' => new UserController(),
-            'EDIT_QUESTION','IMPORT','EXPORT' => new EditController(),
+            'EDIT_QUESTION','IMPORT','EXPORT','SELECT_EDIT_QUESTION' => new EditController(),
             'ERROR' => new PageNotFoundController(),
             default => new QuizQuestionController()
         };
