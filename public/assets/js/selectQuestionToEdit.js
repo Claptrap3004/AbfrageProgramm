@@ -35,23 +35,12 @@ const createRadioButton = (question) => {
     input.name = 'questionId';
     input.autocomplete = 'off';
     input.value = question.id;
-    // input.style.visibility = 'hidden';
 
     div.appendChild(input);
     div.appendChild(label);
     if (question.id === questions[0].id) input.checked = true;
     return div;
 }
-
-// const changeLabelState = () => {
-//     let idStr = "#ql_id" + event.target.id.replace('q_id', '');
-//     let label = document.querySelector(idStr);
-//
-//     label.ariaPressed = event.target.checked ? 'true' : 'false';
-//     label.className = event.target.checked ?
-//         "questionLabels col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-3 my-2 p-1 w-100 active" :
-//         "questionLabels col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-3 my-2 p-1 w-100";
-// }
 
 const clickQuestion = (event) => {
     let idStr = "#q_id" + event.target.id.replace('ql_id', '');

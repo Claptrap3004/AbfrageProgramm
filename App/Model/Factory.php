@@ -133,9 +133,19 @@ class Factory
         return $userData ? new User($userData['id'], $userData['username'], $userData['email'], $userData['password']) : null;
     }
 
+    public function createQuestionsForEditView(): ?array
+    {
+        $questionIds = KindOf::QUESTION->getDBHandler()->findAll(['userIds' => [$_SESSION['UserId']]]);
+        $questions = [];
+        foreach ($questionIds as $questionId) {
+            $id = (int)$questionId['id'];
+            $text = $questionId['text'];
+            $category = $this->findIdTextObjectById((int)$questionId['category_id'], KindOf::CATEGORY);
+            $questions[] = new QuestionView($id, $category->getText(), $text);
 
-
-
+        }
+        return $questions;
+    }
 
 
 }
