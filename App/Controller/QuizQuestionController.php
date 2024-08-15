@@ -65,8 +65,7 @@ class QuizQuestionController extends Controller
 
     public function makeSelection(): void
     {
-        $json = json_encode($_REQUEST);
-        file_put_contents('test.log',$json,FILE_APPEND);
+
         $categories = $_REQUEST['categories'] ?? [];
         $numberOfQuestions = (int)$_REQUEST['range'] ?? 0;
         $preferUnperfect = (isset($_REQUEST['prefered']));

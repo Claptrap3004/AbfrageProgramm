@@ -18,9 +18,28 @@ class EditController extends Controller
 
     public function import(): void
     {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $json = json_encode($_FILES);
+            file_put_contents('test.log',$json,FILE_APPEND);
+            $dest = '/public/files/' . $_FILES["name"];
+            if (move_uploaded_file($_FILES["name"], $dest)) file_put_contents('test.log','done',FILE_APPEND);
+            else file_put_contents('test.log','error',FILE_APPEND);
+
+            $importer = new CSVImporterStandard();
+            $importer->readCSV($dest);
+            $this->cleanUp();
+
+        }
+        else $this->view(UseCase::IMPORT->getView(),[]);
+
+    }
+
+    public function importStandard(): void
+    {
         $importer = new CSVImporterStandard();
         $importer->readCSV('../Files/jscerti.csv');
         $this->cleanUp();
+
     }
 
     public function importNiklas(): void

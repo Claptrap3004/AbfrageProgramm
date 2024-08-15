@@ -10,8 +10,8 @@ enum UseCase:string
     case ANSWER_QUESTION = 'quiz/answerQuestion';
     case EDIT_QUESTION = 'edit/editQuestion';
     case SELECT_EDIT_QUESTION = 'edit/selectQuestionToEdit';
-    case IMPORT = 'edit/import';
-    case EXPORT = 'edit/export';
+    case IMPORT = 'importExport/import';
+    case EXPORT = 'importExport/export';
     case FINALIZE_QUIZ = 'quiz/finalStats';
     case CHECK_BEFORE_FINALIZE ='quiz/beforeFinal';
     case UNEXPECTED_ERROR ='error';
