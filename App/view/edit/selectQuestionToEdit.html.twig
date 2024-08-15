@@ -19,10 +19,24 @@
 {% block contentright %}
 {% endblock %}
 {% block buttons %}
-    <a href="quizQuestion/welcome" id="backToMain">
-        <label class="btn-lg btn-primary">back</label>
-    </a>
-    <a href="" id="selectQuestionToEdit">
-        <label class="btn-lg btn-primary">edit selected question</label>
-    </a>
+    <table>
+        <tr  class="w-100">
+            <td class="w-50">
+                <div class="divBackToMain">
+                    <a href="quizQuestion/welcome" id="backToMain">
+                        <label class="btn-lg btn-primary">back</label>
+                    </a>
+                </div>
+            </td>
+            <td class="w-50">
+
+                <div class="divSelectQuestionToEdit">
+                    <a href="" id="selectQuestionToEdit">
+                        <label class="btn-lg btn-primary">edit selected question</label>
+                    </a>
+                </div>
+
+            </td>
+        </tr>
+    </table>
 {% endblock %}

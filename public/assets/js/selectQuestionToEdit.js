@@ -4,6 +4,7 @@ const initSelectQuestions = () => {
     questions = JSON.parse(document.querySelector('#jsDataQuestions').getAttribute('data-content'));
     resizeLeftContentSpacer(10);
     createRadioButtons();
+    arrangeButtons();
 }
 
 const createTableDiv = () => {
@@ -117,3 +118,7 @@ const clickQuestion = (event) => {
     anker.href = 'edit/editQuestion/' + button.value;
 }
 
+const arrangeButtons = () => {
+    document.querySelector('#divBackToMain').style.left = '20%';
+    document.querySelector('#divSelectQuestionToEdit').style.right= '20%';
+}
