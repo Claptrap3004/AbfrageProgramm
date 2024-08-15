@@ -2,6 +2,7 @@ const initWelcome = ()=>{
     document.querySelector('#clearAllStatsButton').addEventListener('click',clearAllStats)
     document.querySelector('#quickstart20').addEventListener('click',quick20)
     document.querySelector('#quickstart50').addEventListener('click',quick50)
+    resizeLeftContentSpacer(10);
 }
 const clearAllStats = () => {
     changeModal('Löschen aller Stats','Durch bestätigen werden alle Stats gelöscht', confirmDeleteStats)

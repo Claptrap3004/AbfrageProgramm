@@ -3,7 +3,7 @@ let questions;
 const initFinalStats = () => {
     statsData = JSON.parse(document.querySelector('#jsStatsData').getAttribute('data-content'));
     questions = statsData.questions;
-    console.log(statsData);
+    resizeLeftContentSpacer(10);
     for (let i = 0; i < questions.length; i++) {
         addStatsButton(questions[i].id,i)
     }

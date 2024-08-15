@@ -16,6 +16,13 @@ const removeLeftContentSpacer = () => {
     document.querySelector('#spacerContentLeft').remove();
 }
 
+const resizeLeftContentSpacer = (percentage) => {
+    let spacer = document.querySelector('#spacerContentLeft');
+    document.querySelector('#spacerContentLeft').className = "col-4";
+    spacer.style.minWidth= percentage + '%';
+    spacer.style.maxWidth= percentage + '%';
+}
+
 const quick20 = () => quickstart(20);
 const quick50 = () => quickstart(50);
 

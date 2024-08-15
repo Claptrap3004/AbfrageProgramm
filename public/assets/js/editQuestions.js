@@ -10,6 +10,7 @@ const initEditQuestion = () => {
         answers.push({id:null,text:''})
     }
     document.querySelector('#editCategoryText').style.visibility = 'hidden';
+    // resizeLeftContentSpacer(10);
     createSelectOptions();
     createInputFields();
     addListeners();
