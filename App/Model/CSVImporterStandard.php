@@ -23,13 +23,15 @@ class CSVImporterStandard implements CanHandleCSV
     {
         $row = 0;
         if (($handle = fopen($fileName, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 0, $separator)) !== FALSE) {
+
+            while (($dataSet = fgetcsv($handle, 0, $separator)) !== FALSE) {
                 $row++;
                 if ($row === 1) continue;
-
+                $data = explode(',', $dataSet[0]);
                 $this->proceedData($data);
             }
         }
+
         fclose($handle);
     }
 
@@ -41,6 +43,7 @@ class CSVImporterStandard implements CanHandleCSV
         $answers = [];
         for ($i = 3; $i < count($data)-1; $i += 2) {
             $answers[$data[$i]] = (int)$data[$i + 1];
+
         }
         try {
             $this->dbFactory->createQuizQuestionByCSVImport($question, $category,$explanation, $answers);
