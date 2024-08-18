@@ -8,18 +8,35 @@ use PDO;
 
 class MariaDBConnector implements CanConnectDB
 {
-    private string $servername = 'ddev-AbfrageProgramm-db';
-    private string $username = 'root';
-    private string $password = 'root';
+//    private string $servername = 'ddev-AbfrageProgramm-db';
+//    private string $username = 'root';
+//    private string $password = 'root';
+//    private string $dbname;
+//    private static ?\PDO $connection = null;
+//
+//
+//    public function __construct(string $dbname = 'abfrageprogramm')
+//    {
+//        $this->dbname = $dbname;
+//    }
+    private string $servername;
+    private string $username;
+    private string $password;
     private string $dbname;
     private static ?\PDO $connection = null;
 
 
-    public function __construct(string $dbname = 'abfrageprogramm')
+    public function __construct(string $dbname = null)
     {
-        $this->dbname = $dbname;
+        $this->servername =  getenv('DB_HOST') ? getenv('DB_HOST') : 'ddev-AbfrageProgramm-db' ;
+        $this->dbname =  getenv('DB_NAME') ? getenv('DB_NAME') : 'abfrageprogramm';
+        $this->username = getenv('DB_USER') ? getenv('DB_USER') : 'root';;
+        $this->password = getenv('DB_PASSWORD') ? getenv('DB_PASSWORD') : 'root';;
+        file_put_contents('dbCred.txt', 'server: ' . $this->servername . "\n" .
+            'user: ' . $this->username . "\n" .
+            'pw: ' . $this->password . "\n" .
+            'db: ' . $this->dbname . "\n", 8);
     }
-
     /**
      * @throws Exception
      */
