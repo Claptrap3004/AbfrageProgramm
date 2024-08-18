@@ -8,7 +8,7 @@ use PDO;
 
 class MariaDBConnector implements CanConnectDB
 {
-    private string $servername = 'db:3306';
+    private string $servername = 'ddev-AbfrageProgramm-db';
     private string $username = 'root';
     private string $password = 'root';
     private string $dbname;

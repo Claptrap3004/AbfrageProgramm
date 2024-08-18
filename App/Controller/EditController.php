@@ -64,7 +64,7 @@ class EditController extends Controller
         $all = KindOf::QUESTION->getDBHandler()->findAll();
         $questionIds = [];
         foreach ($all as $item) $questionIds[] = $item['id'];
-        $exporter->writeCSV('js.csv', $questionIds);
+        $exporter->writeCSV('export.csv', $questionIds);
     }
 
     private function cleanUp(): void
