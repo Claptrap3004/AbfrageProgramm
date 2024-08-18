@@ -17,18 +17,15 @@ class CSVImporterStandard implements CanHandleCSV
         $this->factory = Factory::getFactory();
         $this->dbFactory = DBFactory::getFactory();
     }
-
-
     function readCSV(string $fileName, string $separator = '@' ): void
     {
         $row = 0;
         if (($handle = fopen($fileName, "r")) !== FALSE) {
-
+            file_put_contents('logImport','opened file',8);
             while (($dataSet = fgetcsv($handle, 0, $separator)) !== FALSE) {
                 $row++;
-                if ($row === 1 || trim($dataSet[0]) === '') continue;
-                $data = explode($separator, $dataSet[0]);
-                $this->proceedData($data);
+                if ($row === 1) continue;
+                $this->proceedData($dataSet);
             }
         }
 
