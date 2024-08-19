@@ -99,7 +99,8 @@ class EditController extends Controller
                 $categoryId = $_POST['editCategoryId'] ?? null;
                 $categoryText = $_POST['editCategoryText'] ?? null;
                 $answers = json_decode($answerArray);
-
+                $log = 'qid : ' . $id . "\n text : " . $text . "\n explanation : " . $explanation . "\n category : " . $categoryText . "\n answerJson : " . $answerArray;
+                file_put_contents('logEdit', $log,8);
                 // if user selects create new category id will be 0, hence new category needs to be created
                 if ($categoryId < 1) $categoryId = DBFactory::getFactory()->createCategory($categoryText);
 
@@ -146,6 +147,8 @@ class EditController extends Controller
             $editQuestion->resetAnswers();
             if ($answers) {
                 foreach ($answers as $answer) {
+
+                    file_put_contents('logEdit', $answer->text,8);
                     $answerId = DBFactory::getFactory()->createAnswer($answer->text);
                     $answerToRelate = $this->factory->findIdTextObjectById($answerId, KindOf::ANSWER);
                     $editQuestion->setAnswer($answerToRelate, $answer->isRight);
