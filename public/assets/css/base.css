@@ -48,8 +48,8 @@ body {
     /*bottom: 5%;*/
     min-width: 120rem;
     max-width: 120rem;
-    min-height: 10rem;
-    max-height: 10rem;
+    min-height: 14rem;
+    max-height: 14rem;
     overflow: hidden;
     scrollbar-gutter: stable both-edges;
 

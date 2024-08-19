@@ -36,7 +36,7 @@ const createAnswerButtons = () => {
         let div = document.createElement('div');
         div.className = "row align-self-center mx-5 pb-2";
         let label = document.createElement('label');
-        label.className = "answerLabels col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-3 my-2 p-1 w-100";
+        label.className = "col align-self-center bold btn btn-outline-secondary rounded-3 shadow btn-lg  mx-3 my-2 p-1 w-100 answerLabels";
         label.id = 'l_id' + answer.id;
         label.innerHTML = answer.text;
         label.setAttribute('data-bs-toggle', 'button');
