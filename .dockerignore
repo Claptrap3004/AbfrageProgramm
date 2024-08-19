@@ -1,0 +1,11 @@
+.ddev/*
+.idea/*
+ProjektDoku/*
+Files/*
+Dockerfile
+test/*
+UnitTests/*
+sslcerts/*
+temp/*
+
+.dockerignore
